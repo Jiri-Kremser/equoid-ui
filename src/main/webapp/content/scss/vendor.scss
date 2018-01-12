@@ -6,7 +6,7 @@ put Sass variables here:
 eg $input-color: red;
 ****************************/
 // Override Boostrap variables
-@import 'bootstrap-variables';
+//@import 'bootstrap-variables';
 
 // Import Bootstrap source files from node_modules (no need patternfly will do this)
 //@import 'node_modules/bootstrap/scss/bootstrap';
@@ -14,4 +14,9 @@ eg $input-color: red;
 
 
 // Patternfly
-@import '~patternfly/dist/css/patternfly'
+//@import '~patternfly/node_modules/bootstrap/dist/css/bootstrap';
+//@import '~patternfly/dist/css/patternfly';
+//@import '~patternfly/dist/css/patternfly-additions';
+
+
+@import '~patternfly/dist/sass/patternfly';

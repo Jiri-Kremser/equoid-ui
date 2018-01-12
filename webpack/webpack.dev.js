@@ -78,7 +78,8 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
                 loader: 'css-loader',
                 options: {
                   alias: {
-                    '../fonts': '../../../../../node_modules/patternfly-sass/assets/fonts/patternfly/'
+                    '../fonts': '../../../../../node_modules/patternfly/dist/fonts/',
+                    '../img': '../../../../../node_modules/patternfly/dist/img/'
                   }
               }
             }, {
@@ -87,7 +88,9 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
                 loader: 'sass-loader',
                 options: {
                     includePaths: [
-                     'node_modules/patternfly/dist/sass/'
+                     'node_modules/patternfly/dist/sass/',
+                     'node_modules/patternfly/node_modules/bootstrap-sass/assets/stylesheets/',
+                     'node_modules/patternfly/node_modules/font-awesome/scss/'
                     ]
                 }
             }]
@@ -113,24 +116,6 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
         }, {
             reload: false
         }),
-        //copy patternfly assets for demo app
-        new CopyWebpackPlugin([
-            {
-                from: { glob: './node_modules/patternfly/dist/img/*.*'},
-                to: './img',
-                flatten: true
-            },
-            {
-                from: { glob: './node_modules/patternfly/dist/fonts/*.*'},
-                to: './fonts',
-                flatten: true
-            },
-            {
-                from: { glob: './node_modules/patternfly/dist/css/*.*'},
-                to: './css',
-                flatten: true
-            }
-        ]),
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.NamedModulesPlugin(),
         new writeFilePlugin(),
@@ -138,8 +123,8 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
             utils.root('src/test'),
         ]),
         new WebpackNotifierPlugin({
-            title: 'JHipster',
-            contentImage: path.join(__dirname, 'logo-jhipster.png')
+            title: 'Equoid',
+            contentImage: path.join(__dirname, 'logo-radley.png')
         })
     ]
 });
