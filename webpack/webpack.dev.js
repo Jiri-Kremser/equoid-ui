@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const writeFilePlugin = require('write-file-webpack-plugin');
 const webpackMerge = require('webpack-merge');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const WebpackNotifierPlugin = require('webpack-notifier');
 const path = require('path');
@@ -44,7 +45,9 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
     },
     output: {
         path: utils.root('target/www'),
-        filename: 'app/[name].bundle.js',
+        /*filename: 'app/[name].bundle.js',*/
+        filename: 'app/[name].js',
+        sourceMapFilename: 'app/[name].js.map',
         chunkFilename: 'app/[id].chunk.js'
     },
     module: {
@@ -69,7 +72,29 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
         },
         {
             test: /(vendor\.scss|global\.scss)/,
-            loaders: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+            use: [{
+                loader: 'style-loader'
+            }, {
+                loader: 'css-loader',
+                options: {
+                  alias: {
+                    "../fonts": "../../../../../node_modules/patternfly-sass/assets/fonts/patternfly/"
+                  }
+              }
+            }, {
+                loader: 'postcss-loader?pack=sass'
+            }, {
+                loader: 'sass-loader',
+                options: {
+                    includePaths: ['node_modules/patternfly/node_modules/',
+                     'node_modules/patternfly/node_modules/bootstrap-sass/assets/stylesheets/',
+                     'node_modules/patternfly/node_modules/font-awesome/scss/',
+                     'node_modules/patternfly/dist/sass/',
+                     'node_modules/patternfly/dist/',
+                     'node_modules/bootstrap-sass/assets/stylesheets'
+                     ]
+                }
+            }]
         },
         {
             test: /\.css$/,
@@ -92,6 +117,24 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
         }, {
             reload: false
         }),
+        //copy patternfly assets for demo app
+        new CopyWebpackPlugin([
+            {
+                from: { glob: './node_modules/patternfly/dist/img/*.*'},
+                to: './img',
+                flatten: true
+            },
+            {
+                from: { glob: './node_modules/patternfly/dist/fonts/*.*'},
+                to: './fonts',
+                flatten: true
+            },
+            {
+                from: { glob: './node_modules/patternfly/dist/css/*.*'},
+                to: './css',
+                flatten: true
+            }
+        ]),
         new webpack.NoEmitOnErrorsPlugin(),
         new webpack.NamedModulesPlugin(),
         new writeFilePlugin(),
