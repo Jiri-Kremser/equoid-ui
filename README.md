@@ -1,4 +1,6 @@
-# equoid
+# Equoid-UI
+
+[![Build status](https://travis-ci.org/Jiri-Kremser/equoid-ui-prototype.svg?branch=master)](https://travis-ci.org/Jiri-Kremser/equoid-ui-prototype)
 
 ## Development
 
