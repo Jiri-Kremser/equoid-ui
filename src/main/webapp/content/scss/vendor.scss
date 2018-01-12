@@ -1,34 +1,17 @@
 /* after changing this file run 'yarn run webpack:build' */
 //$fa-font-path: '~font-awesome/fonts';
-//$fa-font-path: '.';
-
-$icon-font-path: '~patternfly/node_modules/bootstrap/dist/';
 
 /***************************
 put Sass variables here:
 eg $input-color: red;
 ****************************/
 // Override Boostrap variables
-//@import 'bootstrap-variables';
-// Import Bootstrap source files from node_modules
+@import 'bootstrap-variables';
+
+// Import Bootstrap source files from node_modules (no need patternfly will do this)
 //@import 'node_modules/bootstrap/scss/bootstrap';
 //@import 'node_modules/font-awesome/scss/font-awesome';
 
 
 // Patternfly
-//@import 'node_modules/patternfly/dist/sass/patternfly';
-//@import 'node_modules/font-awesome/scss/font-awesome';
-//@import 'font-awesome/css/font-awesome.css';
-
-
-
-//@import "~patternfly/dist/sass/patternfly"
-
 @import '~patternfly/dist/css/patternfly'
-
-/* jhipster-needle-scss-add-vendor JHipster will add new css style */
-
-
-//../img/spinner-xs.gif
-//../img/bg-modal-about-pf.png
-//../fonts/OpenSans-Bold-webfont.eot

@@ -42,7 +42,27 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
             test: /(vendor\.scss|global\.scss)/,
             use: extractSASS.extract({
                 fallback: 'style-loader',
-                use: ['css-loader', 'postcss-loader', 'sass-loader']
+                use: [{
+                  loader: 'css-loader',
+                  options: {
+                     alias: {
+                       '../fonts': '../../../../../node_modules/patternfly-sass/assets/fonts/patternfly/'
+                     }
+                 }
+                },
+                {
+                  loader: 'postcss-loader'
+                },
+                {
+                  loader: 'sass-loader',
+                  options: {
+                      includePaths: [
+                       'node_modules/patternfly/dist/sass/'
+                      ]
+                  }
+                }
+                ]
+
             })
         },
         {
