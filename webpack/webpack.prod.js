@@ -46,7 +46,8 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
                   loader: 'css-loader',
                   options: {
                      alias: {
-                       '../fonts': '../../../../../node_modules/patternfly-sass/assets/fonts/patternfly/'
+                       '../fonts': '../../../../../node_modules/patternfly/dist/fonts/',
+                       '../img': '../../../../../node_modules/patternfly/dist/img/'
                      }
                  }
                 },
@@ -57,7 +58,9 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
                   loader: 'sass-loader',
                   options: {
                       includePaths: [
-                       'node_modules/patternfly/dist/sass/'
+                        'node_modules/patternfly/dist/sass/',
+                        'node_modules/bootstrap-sass/assets/stylesheets/',
+                        'node_modules/font-awesome/scss/'
                       ]
                   }
                 }

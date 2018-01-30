@@ -30,7 +30,25 @@ module.exports = (WATCH) => ({
             },
             {
                 test: /\.scss$/,
-                loaders: ['to-string-loader', 'css-loader', 'sass-loader']
+                use: [{
+                  loader: 'to-string-loader'
+                }, {
+                  loader: 'css-loader',
+                  options: {
+                     alias: {
+                       '../fonts': '../../../../../node_modules/patternfly/dist/fonts/',
+                       '../img': '../../../../../node_modules/patternfly/dist/img/'
+                     }
+                },{
+                  loader: 'sass-loader',
+                  options: {
+                    includePaths: [
+                     'node_modules/patternfly/dist/sass/',
+                     'node_modules/bootstrap-sass/assets/stylesheets/',
+                     'node_modules/font-awesome/scss/'
+                    ]
+                  }
+                 }]
             },
             {
                 test: /\.(jpe?g|png|gif|svg|woff2?|ttf|eot)$/i,
