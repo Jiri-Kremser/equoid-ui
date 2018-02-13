@@ -19,14 +19,14 @@ oc-run:
 grafana-ds:
 	curl -i -u admin:jhipster \
      -H "Content-Type: application/json;charset=UTF-8" \
-     -d '{"Name":"equoid-app","Type":"prometheus","Url":"http://jhipster-prometheus:9090","Access":"proxy","basicAuth":false,"isDefault":true}' \
+     -d '{"Name":"equoid-app","Type":"prometheus","Url":"http://equoid-prometheus:9090","Access":"proxy","basicAuth":false,"isDefault":true}' \
      --trace-ascii /dev/stdout \
-     'http://jhipster-grafana-equoid.127.0.0.1.nip.io/api/datasources'
+     'http://equoid-grafana-equoid.127.0.0.1.nip.io/api/datasources'
 
 grafana-dashboard:
 	curl -i -u admin:jhipster -H "Content-Type: application/json;charset=UTF-8" \
      -d @grafana-dashboard.json --trace-ascii /dev/stdout \
-     'http://jhipster-grafana-equoid.127.0.0.1.nip.io/api/dashboards/db'
+     'http://equoid-grafana-equoid.127.0.0.1.nip.io/api/dashboards/db'
 
 wait20:
 	sleep 20

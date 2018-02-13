@@ -226,10 +226,6 @@
         "templating": {
             "list": []
         },
-        "time": {
-            "from": "2018-02-12T14:35:49.199Z",
-            "to": "2018-02-13T14:35:49.199Z"
-        },
         "timepicker": {
             "refresh_intervals": [
                 "5s",

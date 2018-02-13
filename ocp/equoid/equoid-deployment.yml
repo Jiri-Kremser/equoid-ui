@@ -16,10 +16,10 @@ metadata:
     tags: equoid, service
     openshift.io/display-name: equoid-template
     openshift.io/long-description: This template provides objects that are required to spin up a equoid service pod.
-    openshift.io/provider-display-name: JHipster
+    openshift.io/provider-display-name: Equoid
 labels:
   app: equoid-app
-  createdBy: JHipster-Team
+  createdBy: radanalytics.io
 parameters:
   -
     name: APPLICATION_NAME

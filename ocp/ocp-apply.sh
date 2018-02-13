@@ -3,7 +3,7 @@ oc new-project equoid
 
 # workaround for postgresql docker image that requires root
 oc login -u system:admin
-oc adm policy add-scc-to-user anyuid system:serviceaccount:equoid:jhipster
+oc adm policy add-scc-to-user anyuid system:serviceaccount:equoid:equoid
 oc login -u developer
 
 

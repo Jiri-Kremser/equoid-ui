@@ -8,40 +8,39 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: jhipster-metrics-template
+  name: equoid-metrics-template
   namespace: equoid
   annotations:
     description: This template defines objects that are required to spin up metrics monitoring pod
-    tags: prometheus, alertmanager, grafana, jhipster-metrics  ,ephemeral 
-    openshift.io/display-name: jhipster-metrics-monitoring-template
+    tags: prometheus, alertmanager, grafana, equoid-metrics  ,ephemeral
+    openshift.io/display-name: equoid-metrics-monitoring-template
     openshift.io/long-description: "This template provides objects that are required to spin up a metrics monitoring pod. It contains
     prometheus for metrics aggregation, and grafana for visualization .The database is not stored on persistent storage, so any restart of the service will result in all data being lost."
-    openshift.io/provider-display-name: JHipster-OpenShift
+    openshift.io/provider-display-name: Equoid-OpenShift
 labels:
-  app: jhipster-metrics
-  createdBy: JHipster-Team
+  createdBy: radanalytics.io
 parameters:
   -
     name: PT_APP_NAME
-    value: jhipster-prometheus
+    value: equoid-prometheus
     description: Name of the prometheus application
     required: true
     displayName: Prometheus Application Name
   -
     name: AM_APP_NAME
-    value: jhipster-alertmanager
+    value: equoid-alertmanager
     description: Name of the alert manager application
     required: true
     displayName: Alert Manager Application Name
   -
     name: GF_APP_NAME
-    value: jhipster-grafana
+    value: equoid-grafana
     description: Name of the grafana application
     required: true
     displayName: Grafana Application Name
   -
     name: SVC_ID
-    value: jhipster
+    value: equoid
     description: Name of the service account
     required: true
     displayName: "*** PLEASE DO NOT CHANGE THIS ***"
@@ -60,7 +59,7 @@ objects:
     #common configuration shared between all applications
     data:
       prometheus.conf: |-
-        # Sample global config for monitoring JHipster applications
+        # Sample global config for monitoring Equoid applications
         global:
           scrape_interval:     15s # By default, scrape targets every 15 seconds.
           evaluation_interval: 15s # By default, scrape targets every 15 seconds.
@@ -93,7 +92,6 @@ objects:
                   - equoid:8080
           # This is to scrape metrics of all the pods, containers, services from the openshift cluster
           #- job_name: 'openshift-nodes'
-          #  scheme: https  # remove if you want to scrape metrics on insecure port
           #  tls_config:
           #    ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
           #  bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
@@ -183,7 +181,7 @@ objects:
               - '/bin/prometheus'
               - '-config.file=/etc/prometheus/prometheus.yml'
               - '-storage.local.path=/prometheus'
-              - '-alertmanager.url=http://jhipster-alertmanager:9093'
+              - '-alertmanager.url=http://equoid-alertmanager:9093'
             ports:
             - containerPort: 9090
               name: tcp
@@ -344,7 +342,7 @@ objects:
             image: grafana/grafana:4.3.2
             env:
             - name: GF_SECURITY_ADMIN_PASSWORD
-              value: jhipster
+              value: equoid
             - name: GF_USERS_ALLOW_SIGN_UP
               value: "false"
             ports:

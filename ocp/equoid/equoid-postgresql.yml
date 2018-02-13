@@ -11,13 +11,13 @@ metadata:
   namespace: equoid
   annotations:
     description: This template defines objects that are required to spin up a postgresqldb pod
-    tags: db, equoid-postgresqldb  ,ephemeral 
+    tags: db, equoid-postgresqldb  ,ephemeral
     openshift.io/display-name: equoid-postgresqldb-template
     openshift.io/long-description: "This template provides objects that are required to spin up a postgresqldb pod. The database is not stored on persistent storage, so any restart of the service will result in all data being lost."
-    openshift.io/provider-display-name: JHipster-OpenShift
+    openshift.io/provider-display-name: Equoid-OpenShift
 labels:
   app: equoid-postgresqldb
-  createdBy: JHipster-Team
+  createdBy: radanalytics.io
 parameters:
   -
     name: APPLICATION_NAME
@@ -52,7 +52,7 @@ parameters:
     required: true
   -
     name: SVC_ID
-    value: jhipster
+    value: equoid
     description: Name of the service account
     required: true
     displayName: "*** PLEASE DO NOT CHANGE THIS ***"
