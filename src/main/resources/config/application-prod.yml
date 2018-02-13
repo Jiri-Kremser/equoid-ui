@@ -89,7 +89,7 @@ jhipster:
             timeToLiveInDays: 1461
     cache: # Cache configuration
         infinispan:
-            config-file: default-configs/default-jgroups-tcp.xml
+            config-file: default-configs/default-jgroups-udp.xml
             statsEnabled: true
             # local app cache
             local:

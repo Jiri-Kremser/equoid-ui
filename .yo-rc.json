@@ -27,6 +27,17 @@
     "applicationType": "monolith",
     "testFrameworks": [],
     "jhiPrefix": "jhi",
-    "enableTranslation": false
+    "enableTranslation": false,
+    "appsFolders": [
+      "equoid-ui-prototype"
+    ],
+    "directoryPath": ".",
+    "monitoring": "prometheus",
+    "jwtSecretKey": "2fb3969add3352006853910eae2e928c1a14ad21",
+    "dockerRepositoryName": "jkremser",
+    "dockerPushCommand": "docker push",
+    "openshiftNamespace": "equoid",
+    "storageType": "ephemeral",
+    "registryReplicas": 2
   }
 }
