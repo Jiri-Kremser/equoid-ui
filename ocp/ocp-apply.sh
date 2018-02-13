@@ -1,4 +1,12 @@
 #!/usr/bin/env sh
+oc new-project equoid
+
+# workaround for postgresql docker image that requires root
+oc login -u system:admin
+oc adm policy add-scc-to-user anyuid system:serviceaccount:equoid:jhipster
+oc login -u developer
+
+
 # Use this script to run oc commands to create resources in the selected namespace. Files are ordered
 # in proper order. 'oc process' processes the template as resources which is again piped to
 # 'oc apply' to create those resources in OpenShift namespace
