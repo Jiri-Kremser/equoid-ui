@@ -5,7 +5,7 @@ clean:
 	./mvnw clean
 
 build:
-	./mvnw package -Pprod,prometheus dockerfile:build
+	./mvnw package -Pprod,prometheus,no-liquibase dockerfile:build
 
 push:
 	docker image tag equoid $(USER)/equoid
@@ -17,16 +17,16 @@ oc-run:
 	./ocp/ocp-apply.sh
 
 grafana-ds:
-	curl -i -u admin:jhipster \
+	curl -i -u admin:equoid \
      -H "Content-Type: application/json;charset=UTF-8" \
      -d '{"Name":"equoid-app","Type":"prometheus","Url":"http://equoid-prometheus:9090","Access":"proxy","basicAuth":false,"isDefault":true}' \
      --trace-ascii /dev/stdout \
-     'http://equoid-grafana-equoid.127.0.0.1.nip.io/api/datasources'
+     'http://'`oc get routes -l app=equoid-grafana --no-headers | awk '{printf $$2}'`'/api/datasources'
 
 grafana-dashboard:
-	curl -i -u admin:jhipster -H "Content-Type: application/json;charset=UTF-8" \
+	curl -i -u admin:equoid -H "Content-Type: application/json;charset=UTF-8" \
      -d @grafana-dashboard.json --trace-ascii /dev/stdout \
-     'http://equoid-grafana-equoid.127.0.0.1.nip.io/api/dashboards/db'
+     'http://'`oc get routes -l app=equoid-grafana --no-headers | awk '{printf $$2}'`'/api/dashboards/db'
 
 wait20:
 	sleep 20

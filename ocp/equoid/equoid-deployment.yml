@@ -60,24 +60,24 @@ objects:
           timeoutSeconds: 600
           maxUnavailable: 25%
           maxSurge: 25%
-          pre:
-            failurePolicy: ignore
-            execNewPod:
-              command:
-                - "/bin/sh"
-                - "-c"
-                - |
-                    while true
-                    do
-                      rt=$(nc -z -w 1 ${APPLICATION_NAME}-postgresqldb 80)
-                      if [ $? -eq 0 ]; then
-                        echo "DB is UP"
-                        break
-                      fi
-                      echo "DB is not yet reachable;sleep for 10s before retry"
-                      sleep 10
-                    done
-              containerName: ${APPLICATION_NAME}
+#          pre:
+#            failurePolicy: ignore
+#            execNewPod:
+#              command:
+#                - "/bin/sh"
+#                - "-c"
+#                - |
+#                    while true
+#                    do
+#                      rt=$(nc -z -w 1 ${APPLICATION_NAME}-postgresqldb 80)
+#                      if [ $? -eq 0 ]; then
+#                        echo "DB is UP"
+#                        break
+#                      fi
+#                      echo "DB is not yet reachable;sleep for 10s before retry"
+#                      sleep 10
+#                    done
+#              containerName: ${APPLICATION_NAME}
         resources:
       replicas: "1"
       template:
@@ -92,18 +92,19 @@ objects:
             env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod,swagger
-            - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://${APPLICATION_NAME}-postgresqldb/${APPLICATION_NAME}
-            - name: SPRING_DATASOURCE_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: ${SECRET_REF}
-                  key: database-user
-            - name: SPRING_DATASOURCE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: ${SECRET_REF}
-                  key: database-password
+#            - name: SPRING_DATASOURCE_URL
+##              value: jdbc:postgresql://${APPLICATION_NAME}-postgresqldb/${APPLICATION_NAME}
+#              value: jdbc:h2:mem:equoid;DB_CLOSE_DELAY=-1
+#            - name: SPRING_DATASOURCE_USERNAME
+#              valueFrom:
+#                secretKeyRef:
+#                  name: ${SECRET_REF}
+#                  key: database-user
+#            - name: SPRING_DATASOURCE_PASSWORD
+#              valueFrom:
+#                secretKeyRef:
+#                  name: ${SECRET_REF}
+#                  key: database-password
             - name: JHIPSTER_METRICS_LOGS_ENABLED
               value: "true"
             - name: JHIPSTER_METRICS_PROMETHEUS_ENABLED
@@ -117,9 +118,9 @@ objects:
     apiVersion: v1
     kind: Service
     metadata:
-      annotations:
-        service.alpha.openshift.io/dependencies: '[{
-          "name":"${APPLICATION_NAME}-postgresqldb", "namespace": "", "kind": "Service"}]'
+#      annotations:
+#        service.alpha.openshift.io/dependencies: '[{
+#          "name":"${APPLICATION_NAME}-postgresqldb", "namespace": "", "kind": "Service"}]'
       labels:
         app: ${APPLICATION_NAME}
       name: ${APPLICATION_NAME}

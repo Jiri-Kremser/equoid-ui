@@ -216,6 +216,8 @@ objects:
     kind: Route
     metadata:
       name: ${PT_APP_NAME}
+      labels:
+        app: ${PT_APP_NAME}
     spec:
       to:
         kind: Service
@@ -297,6 +299,8 @@ objects:
     kind: Route
     metadata:
       name: ${AM_APP_NAME}
+      labels:
+        app: ${AM_APP_NAME}
     spec:
       to:
         kind: Service
@@ -379,6 +383,8 @@ objects:
     kind: Route
     metadata:
       name: ${GF_APP_NAME}
+      labels:
+        app: ${GF_APP_NAME}
     spec:
       to:
         kind: Service

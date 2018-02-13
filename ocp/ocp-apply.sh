@@ -12,5 +12,5 @@ oc login -u developer
 # 'oc apply' to create those resources in OpenShift namespace
 oc process -f ./ocp/registry/scc-config.yml | oc apply -f -
 oc process -f ./ocp/monitoring/jhipster-metrics.yml | oc apply -f -
-oc process -f ./ocp/equoid/equoid-postgresql.yml | oc apply -f -
+#oc process -f ./ocp/equoid/equoid-postgresql.yml | oc apply -f -
 oc process -f ./ocp/equoid/equoid-deployment.yml | oc apply -f -

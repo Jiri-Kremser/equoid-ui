@@ -15,11 +15,11 @@ metadata:
     openshift.io/provider-display-name: JHipster-OpenShift
 labels:
   app: scc-config-template
-  createdBy: JHipster-Team
+  createdBy: radanalytics.io
 parameters:
   -
     name: SVC_ID
-    value: jhipster
+    value: equoid
     description: Name of the service account
     required: true
     readOnly: true
@@ -34,7 +34,7 @@ objects:
     apiVersion: v1
     kind: SecurityContextConstraints
     metadata:
-      name: jhipster-scc
+      name: equoid-scc
       annotations:
         kubernetes.io/description: "This provides all features of the restricted SCC but allows users to run with any UID and any GID.
          This mostly inherits anyuid scc."
