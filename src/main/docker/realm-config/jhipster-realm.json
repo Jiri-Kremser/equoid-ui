@@ -808,7 +808,7 @@
         "useTemplateScope" : false,
         "useTemplateMappers" : false,
         "authorizationSettings" : {
-            "allowRemoteResourceManagement" : false,
+            "allowRemoteResourceManagement" : true,
             "policyEnforcementMode" : "ENFORCING",
             "resources" : [ {
                 "name" : "Default Resource",
@@ -1081,8 +1081,8 @@
         "enabled" : true,
         "clientAuthenticatorType" : "client-secret",
         "secret" : "web_app",
-        "redirectUris" : [ "http://localhost:8080/*", "http://localhost:9000/*", "http://127.0.0.1:8761/*" ],
-        "webOrigins" : [ "http://localhost:8080/*", "http://localhost:9000/*", "http://127.0.0.1:8761/*" ],
+        "redirectUris" : [ "http://localhost:8080/*", "http://localhost:9000/*", "http://127.0.0.1:8761/*", "http://keycloak-equoid.127.0.0.1.nip.io/*", "http://keycloak-equoid*" ],
+        "webOrigins" : [ "http://localhost:8080/*", "http://localhost:9000/*", "http://127.0.0.1:8761/*", "http://keycloak-equoid.127.0.0.1.nip.io/*", "http://keycloak-equoid*" ],
         "notBefore" : 0,
         "bearerOnly" : false,
         "consentRequired" : false,

@@ -14,13 +14,15 @@ export class LoginService {
     ) {}
 
     login() {
+        console.log(location.href);
         let port = (location.port ? ':' + location.port : '');
-        if (port === ':9000') {
+        if (port === ':9000') { // dev mode
             port = ':8080';
-        } else if (port === ':80') {
+        } else {
             console.log('Port = 80');
-            // todo: take suffix from url and prepend the keycloak
-            location.href = '//keycloak/login';
+            const target = location.href.replace(/^(.*)equoid-equoid([^\/]*).*/, '$1keycloak-equoid$2/login');
+            console.log('Login redirect to ' + target);
+            location.href = target;
         }
         location.href = '//' + location.hostname + port + '/login';
     }

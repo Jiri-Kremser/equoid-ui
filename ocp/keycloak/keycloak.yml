@@ -69,6 +69,23 @@ objects:
           - name: ${APPLICATION_NAME}
             image: ${CONTAINER_IMAGE}
             imagePullPolicy: IfNotPresent
+            volumeMounts:
+              - name: kc-realm-vol
+                mountPath: /opt/jboss/keycloak/realm
+                readOnly: true
+              - name: kc-users-vol
+                mountPath: /opt/jboss/keycloak/users
+                readOnly: true
+            command:
+              - "/bin/sh"
+              - "-c"
+              - |
+                  mkdir -p /tmp/config
+                  cp /opt/jboss/keycloak/realm/realm.json /tmp/config
+                  cp /opt/jboss/keycloak/users/users.json /tmp/config
+                  /opt/jboss/docker-entrypoint.sh -b 0.0.0.0 -Dkeycloak.migration.action=import \
+                   -Dkeycloak.migration.provider=dir -Dkeycloak.migration.dir=/tmp/config \
+                   -Dkeycloak.migration.strategy=OVERWRITE_EXISTING
             env:
             - name: DB_VENDOR
               value: H2
@@ -79,6 +96,13 @@ objects:
             ports:
             - name: http
               containerPort: "${APP_PORT}"
+          volumes:
+            - name: kc-realm-vol
+              secret:
+                secretName: kc-realm
+            - name: kc-users-vol
+              secret:
+                secretName: kc-users
   -
     apiVersion: v1
     kind: Service
