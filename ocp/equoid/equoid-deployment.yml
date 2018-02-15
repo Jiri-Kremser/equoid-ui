@@ -118,9 +118,9 @@ objects:
     apiVersion: v1
     kind: Service
     metadata:
-#      annotations:
-#        service.alpha.openshift.io/dependencies: '[{
-#          "name":"${APPLICATION_NAME}-postgresqldb", "namespace": "", "kind": "Service"}]'
+      annotations:
+        service.alpha.openshift.io/dependencies: '[{
+          "name":"keycloak", "namespace": "", "kind": "Service"}]'
       labels:
         app: ${APPLICATION_NAME}
       name: ${APPLICATION_NAME}
