@@ -20,3 +20,40 @@ eg $input-color: red;
 
 
 @import '~patternfly/dist/sass/patternfly';
+
+.mt-4 {
+    margin-top: 80px !important;
+}
+
+a.nav-link {
+    color: #fff !important;
+    font-family: Open Sans,Helvetica,Arial,sans-serif !important;
+    padding: 25px 15px !important;
+    display: block !important;
+}
+
+a.nav-link:focus {
+    color: #3bb1dc!important;
+    background-color: rgb(44, 44, 44) !important;
+}
+
+a.nav-link:hover {
+    background-color: rgb(44, 44, 44) !important;
+}
+
+
+.dropdown-menu>li>a:hover {
+    border-color: #bee1f4;
+}
+
+.dropdown-menu>li>a {
+    border-color: transparent !important;
+    border-style: solid !important;
+    border-width: 1px 0 !important;
+    padding: 1px 10px !important;
+    display: block !important;
+    clear: both !important;
+    font-weight: 400;
+    color: #363636;
+    font-family: Open Sans,Helvetica,Arial,sans-serif !important;
+}

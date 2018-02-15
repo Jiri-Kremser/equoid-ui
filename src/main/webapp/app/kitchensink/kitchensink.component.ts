@@ -4,14 +4,14 @@ import { JhiEventManager } from 'ng-jhipster';
 import { Account, LoginService, Principal } from '../shared';
 
 @Component({
-    selector: 'jhi-home',
-    templateUrl: './home.component.html',
+    selector: 'jhi-kitchensink',
+    templateUrl: './kitchensink.component.html',
     styleUrls: [
-        'home.scss'
+        'kitchensink.scss'
     ]
 
 })
-export class HomeComponent implements OnInit {
+export class KitchensinkComponent implements OnInit {
     account: Account;
 
     constructor(

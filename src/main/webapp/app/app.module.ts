@@ -7,6 +7,7 @@ import { Ng2Webstorage } from 'ngx-webstorage';
 import { EquoidSharedModule, UserRouteAccessService } from './shared';
 import { EquoidAppRoutingModule} from './app-routing.module';
 import { EquoidHomeModule } from './home/home.module';
+import { EquoidKitchensinkModule } from './kitchensink/kitchensink.module';
 import { EquoidAdminModule } from './admin/admin.module';
 import { EquoidEntityModule } from './entities/entity.module';
 import { customHttpProvider } from './blocks/interceptor/http.provider';
@@ -30,6 +31,7 @@ import {
         Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-'}),
         EquoidSharedModule,
         EquoidHomeModule,
+        EquoidKitchensinkModule,
         EquoidAdminModule,
         EquoidEntityModule,
         // jhipster-needle-angular-add-module JHipster will add new module here

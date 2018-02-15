@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 
 import { EquoidSharedModule } from '../shared';
 
-import { HOME_ROUTE, HomeComponent } from './';
+import { HOME_ROUTE, KitchensinkComponent } from './';
 
 @NgModule({
     imports: [
@@ -11,7 +11,7 @@ import { HOME_ROUTE, HomeComponent } from './';
         RouterModule.forChild([ HOME_ROUTE ])
     ],
     declarations: [
-        HomeComponent,
+        KitchensinkComponent,
     ],
     entryComponents: [
     ],
@@ -19,4 +19,4 @@ import { HOME_ROUTE, HomeComponent } from './';
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class EquoidHomeModule {}
+export class EquoidKitchensinkModule {}

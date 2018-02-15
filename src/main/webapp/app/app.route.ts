@@ -1,9 +1,9 @@
 import { Route } from '@angular/router';
 
-import { NavbarComponent } from './layouts';
+import { JhiMainComponent } from './layouts';
 
 export const navbarRoute: Route = {
     path: '',
-    component: NavbarComponent,
+    component: JhiMainComponent,
     outlet: 'navbar'
 };
