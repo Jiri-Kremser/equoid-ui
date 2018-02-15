@@ -21,7 +21,8 @@ parameters:
     displayName: Application Name
   -
     name: CONTAINER_IMAGE
-    value: jboss/keycloak-openshift:3.4.3.Final
+#    value: jboss/keycloak-openshift:3.4.3.Final
+    value: jboss/keycloak:3.3.0.Final
     description: Container image to be used for the Keycloak
     required: true
     displayName: Keycloak Container Image
@@ -81,8 +82,8 @@ objects:
               - "-c"
               - |
                   mkdir -p /tmp/config
-                  cp /opt/jboss/keycloak/realm/realm.json /tmp/config
-                  cp /opt/jboss/keycloak/users/users.json /tmp/config
+                  cp /opt/jboss/keycloak/realm/*.json /tmp/config
+                  cp /opt/jboss/keycloak/users/*.json /tmp/config
                   /opt/jboss/docker-entrypoint.sh -b 0.0.0.0 -Dkeycloak.migration.action=import \
                    -Dkeycloak.migration.provider=dir -Dkeycloak.migration.dir=/tmp/config \
                    -Dkeycloak.migration.strategy=OVERWRITE_EXISTING
@@ -96,6 +97,8 @@ objects:
             ports:
             - name: http
               containerPort: "${APP_PORT}"
+          serviceAccount: equoid
+          serviceAccountName: equoid
           volumes:
             - name: kc-realm-vol
               secret:

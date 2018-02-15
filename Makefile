@@ -34,4 +34,6 @@ wait20:
 wait5:
 	sleep 5
 
-all: clean build push oc-run wait20 grafana-ds wait5 grafana-dashboard
+all: clean build push oc-run
+
+allall: all wait20 grafana-ds wait5 grafana-dashboard

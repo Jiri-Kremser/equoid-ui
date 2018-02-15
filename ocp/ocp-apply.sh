@@ -17,12 +17,13 @@ oc process -f ./ocp/registry/scc-config.yml | oc apply -f -
 
 
 # Prometheus and Grafana
-oc process -f ./ocp/monitoring/metrics.yml | oc apply -f -
+#oc process -f ./ocp/monitoring/metrics.yml | oc apply -f -
 
 
 # Keycloak SSO
-oc secrets new kc-realm realm.json=$DIR/../src/main/docker/realm-config/jhipster-realm.json
-oc secrets new kc-users users.json=$DIR/../src/main/docker/realm-config/jhipster-users-0.json
+# example realm json: https://github.com/kameshsampath/keycloak-demo-server/blob/master/src/main/resources/springboot-realm.json
+oc secrets new kc-realm jhipster-realm.json=$DIR/../src/main/docker/realm-config/jhipster-realm.json
+oc secrets new kc-users jhipster-users-0.json=$DIR/../src/main/docker/realm-config/jhipster-users-0.json
 oc process -f ./ocp/keycloak/keycloak.yml | oc apply -f -
 
 
