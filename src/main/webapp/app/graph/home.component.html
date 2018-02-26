@@ -1,0 +1,32 @@
+<div class="row">
+    <div class="col-md-3">
+        <span class="hipster img-fluid rounded"></span>
+    </div>
+    <div class="col-md-9">
+        <h1 class="display-4">Welcome</h1>
+        <p class="lead">Equoid helps you to identify frequent patterns</p>
+        <p>Equoid uses probabilistic data structures applied on a stream of events</p>
+
+        <div [ngSwitch]="isAuthenticated()">
+            <div class="alert alert-success" *ngSwitchCase="true">
+                <span *ngIf="account"
+                   > You are logged in as user "{{account.login}}". </span>
+            </div>
+
+            <div class="alert alert-warning" *ngSwitchCase="false">
+                <span>If you want to </span>
+                <a class="alert-link" (click)="login()">sign in</a><span>, you can try the default accounts:<br/>- Administrator: <code>admin/admin</code> <br/>- User: <code>user/user</code></span>
+            </div>
+        </div>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <p>
+            <span>If you like this app, don't forget to give us a star on</span> <a href="https://github.com/Jiri-Kremser/equoid-ui-prototype" target="_blank" rel="noopener">GitHub</a>!
+        </p>
+    </div>
+</div>
