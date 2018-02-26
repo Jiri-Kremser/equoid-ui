@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { Principal } from '../auth/principal.service';
 import { AuthServerProvider } from '../auth/auth-session.service';
+import { DEBUG_INFO_ENABLED } from '../../app.constants';
 // import { JhiTrackerService } from '../tracker/tracker.service';
 
 @Injectable()
@@ -14,17 +15,12 @@ export class LoginService {
     ) {}
 
     login() {
-        console.log(location.href);
-        let port = (location.port ? ':' + location.port : '');
-        if (port === ':9000') { // dev mode
-            port = ':8080';
+        const port = (location.port ? ':' + location.port : '');
+        if (port === ':9000' || DEBUG_INFO_ENABLED === 'true') {
+            location.href = '//localhost:8080/login';
         } else {
-            console.log('Port = 80');
-            const target = location.href.replace(/^(.*)equoid-equoid([^\/]*).*/, '$1keycloak-equoid$2/login');
-            console.log('Login redirect to ' + target);
-            location.href = target;
+            location.href = location.origin + '/login';
         }
-        location.href = '//' + location.hostname + port + '/login';
     }
 
     logout() {

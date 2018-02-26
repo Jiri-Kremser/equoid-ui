@@ -47,6 +47,8 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins="*", maxAge=3600,
+    allowedHeaders={"x-auth-token", "x-requested-with", "x-xsrf-token"})
 public class UserResource {
 
     private final Logger log = LoggerFactory.getLogger(UserResource.class);

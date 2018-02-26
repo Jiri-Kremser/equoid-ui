@@ -17,23 +17,37 @@ security:
         enabled: false
     oauth2:
         client:
-            access-token-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/token
-            user-authorization-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/auth
+            access-token-uri: http://127.0.0.1:9080/auth/realms/jhipster/protocol/openid-connect/token
+            user-authorization-uri: http://127.0.0.1:9080/auth/realms/jhipster/protocol/openid-connect/auth
             client-id: web_app
             client-secret: web_app
             client-authentication-scheme: form
             scope: openid profile email
         resource:
             filter-order: 3
-            user-info-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/userinfo
-            token-info-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/token/introspect
+            user-info-uri: http://127.0.0.1:9080/auth/realms/jhipster/protocol/openid-connect/userinfo
+            token-info-uri: http://127.0.0.1:9080/auth/realms/jhipster/protocol/openid-connect/token/introspect
             prefer-token-info: false
+#        client:
+#            access-token-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/token
+#            user-authorization-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/auth
+#            client-id: web_app
+#            client-secret: web_app
+#            client-authentication-scheme: form
+#            scope: openid profile email
+#        resource:
+#            filter-order: 3
+#            user-info-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/userinfo
+#            token-info-uri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/token/introspect
+#            prefer-token-info: false
 
 logging:
     level:
         ROOT: DEBUG
         io.radanalytics.equoid: DEBUG
         io.github.jhipster: DEBUG
+        org.springframework: DEBUG
+        org.springframework.security: DEBUG
 
 spring:
     profiles:

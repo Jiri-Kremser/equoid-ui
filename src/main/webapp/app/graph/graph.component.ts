@@ -4,14 +4,14 @@ import { JhiEventManager } from 'ng-jhipster';
 import { Account, LoginService, Principal } from '../shared';
 
 @Component({
-    selector: 'jhi-home',
-    templateUrl: './home.component.html',
+    selector: 'jhi-graph',
+    templateUrl: './graph.component.html',
     styleUrls: [
-        'home.scss'
+        'graph.scss'
     ]
 
 })
-export class HomeComponent implements OnInit {
+export class GraphComponent implements OnInit {
     account: Account;
 
     constructor(

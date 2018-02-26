@@ -12,28 +12,34 @@
 # Full reference is available at:
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
+
+#this works with keycloak:
+#curl -X POST -d 'grant_type=authorization_code&client_id=web_app&client_secret=web_app&code=uss.pgRUeRfTl5PoHQMVosVcNz5vw-XgXsDczvkGf4l725M.74d307fa-3e33-4350-8f84-96a5615f9182.9080f291-17ef-4022-8afe-7822595006c6&redirect_uri=http://equoid-equoid.127.0.0.1.nip.io/login' 'http://keycloak-equoid.127.0.0.1.nip.io/auth/realms/jhipster/protocol/openid-connect/token' | less
+
 security:
     basic:
         enabled: false
     oauth2:
         client:
-            access-token-uri: http://keycloak-equoid.127.0.0.1.nip.io/auth/realms/jhipster/protocol/openid-connect/token
-            user-authorization-uri: http://keycloak-equoid.127.0.0.1.nip.io/auth/realms/jhipster/protocol/openid-connect/auth
+            access-token-uri: http://${KEYCLOAK_SERVICE_HOST}:${KEYCLOAK_SERVICE_PORT}/auth/realms/jhipster/protocol/openid-connect/token
+            user-authorization-uri: http://${KEYCLOAK_SERVICE_HOST}:${KEYCLOAK_SERVICE_PORT}/auth/realms/jhipster/protocol/openid-connect/auth
             client-id: web_app
             client-secret: web_app
-            client-authentication-scheme: header
+            client-authentication-scheme: form
             scope: openid profile email
         resource:
             filter-order: 3
-            user-info-uri: http://keycloak-equoid.127.0.0.1.nip.io/auth/realms/jhipster/protocol/openid-connect/userinfo
-            token-info-uri: http://keycloak-equoid.127.0.0.1.nip.io/auth/realms/jhipster/protocol/openid-connect/token/introspect
+            user-info-uri: http://${KEYCLOAK_SERVICE_HOST}:${KEYCLOAK_SERVICE_PORT}/auth/realms/jhipster/protocol/openid-connect/userinfo
+            token-info-uri: http://${KEYCLOAK_SERVICE_HOST}:${KEYCLOAK_SERVICE_PORT}/auth/realms/jhipster/protocol/openid-connect/token/introspect
             prefer-token-info: false
 
 logging:
     level:
         ROOT: INFO
-        io.radanalytics.equoid: INFO
+        io.radanalytics.equoid: DEBUG
         io.github.jhipster: INFO
+        org.springframework: DEBUG
+        org.springframework.security: DEBUG
 
 spring:
     devtools:
@@ -94,6 +100,9 @@ server:
         enabled: true
         mime-types: text/html,text/xml,text/plain,text/css, application/javascript, application/json
         min-response-size: 1024
+    remote_ip_header: X-Forwarded-For
+    protocol_header: X-Forwarded-Proto
+    use-forward-headers: true
 
 # ===================================================================
 # JHipster specific properties

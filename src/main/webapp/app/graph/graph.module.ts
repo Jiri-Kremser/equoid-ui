@@ -3,15 +3,15 @@ import { RouterModule } from '@angular/router';
 
 import { EquoidSharedModule } from '../shared';
 
-import { HOME_ROUTE, HomeComponent } from './';
+import { GRAPH_ROUTE, GraphComponent } from './';
 
 @NgModule({
     imports: [
         EquoidSharedModule,
-        RouterModule.forChild([ HOME_ROUTE ])
+        RouterModule.forChild([ GRAPH_ROUTE ])
     ],
     declarations: [
-        HomeComponent,
+        GraphComponent,
     ],
     entryComponents: [
     ],
@@ -19,4 +19,4 @@ import { HOME_ROUTE, HomeComponent } from './';
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class EquoidHomeModule {}
+export class EquoidGraphModule {}
