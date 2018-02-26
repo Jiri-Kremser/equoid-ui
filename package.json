@@ -1,9 +1,9 @@
 {
   "name": "equoid",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Description for equoid",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "cacheDirectories": [
     "node_modules"
   ],
@@ -18,8 +18,10 @@
     "@angular/router": "5.1.0",
     "@ng-bootstrap/ng-bootstrap": "1.0.0-beta.7",
     "angular-patternfly": "4.14.2",
+    "bootstrap-sass": "3.3.7",
     "core-js": "2.4.1",
     "font-awesome": "4.7.0",
+    "infinispan": "0.4.0",
     "jquery": "3.2.1",
     "ng-jhipster": "0.3.6",
     "ngx-cookie": "2.0.1",
@@ -90,7 +92,7 @@
     "xml2js": "0.4.17"
   },
   "engines": {
-    "node": ">=6.9.0"
+    "node": ">=8.0.0"
   },
   "scripts": {
     "lint": "tslint --project tsconfig.json -e 'node_modules/**'",

@@ -7,7 +7,7 @@
 Before you can build this project, you must install and configure the following dependencies on your machine:
 
 1. [Node.js][]: We use Node to run a development web server and build the project.
-   Depending on your system, you can install Node either from source or as a pre-packaged bundle.
+   Depending on your system, you can install Node either from source, as a pre-packaged bundle or using the [n tool](https://github.com/tj/n). We require node `8.0.0` and higher.
 2. [Yarn][]: We use Yarn to manage Node dependencies.
    Depending on your system, you can install Yarn either from source or as a pre-packaged bundle.
 
