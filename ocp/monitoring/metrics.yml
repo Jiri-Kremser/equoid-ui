@@ -39,12 +39,6 @@ parameters:
     required: true
     displayName: Grafana Application Name
   -
-    name: SVC_ID
-    value: equoid
-    description: Name of the service account
-    required: true
-    displayName: "*** PLEASE DO NOT CHANGE THIS ***"
-  -
     name: VOLUME_CAPACITY
     displayName: Volume Capacity
     description: Volume space available for data, e.g. 512Mi, 2Gi.
@@ -91,26 +85,26 @@ objects:
               - targets:
                   - equoid:8080
           # This is to scrape metrics of all the pods, containers, services from the openshift cluster
-          #- job_name: 'openshift-nodes'
-          #  tls_config:
-          #    ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-          #  bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-          #  kubernetes_sd_configs:
-          #    - role: node
-          #  relabel_configs:
-          #    - action: labelmap
-          #      regex: __meta_openshift_node_label_(.+)
-          #  metric_relabel_configs:
-          #    - action: replace
-          #      source_labels: [id]
-          #      regex: '^/machine\.slice/machine-rkt\\x2d([^\\]+)\\.+/([^/]+)\.service$'
-          #      target_label: rkt_container_name
-          #      replacement: '${2}-${1}'
-          #    - action: replace
-          #      source_labels: [id]
-          #      regex: '^/system\.slice/(.+)\.service$'
-          #      target_label: systemd_service_name
-          #      replacement: '${1}'
+          - job_name: 'openshift-nodes'
+           tls_config:
+             ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+           bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+           kubernetes_sd_configs:
+             - role: node
+           relabel_configs:
+             - action: labelmap
+               regex: __meta_openshift_node_label_(.+)
+           metric_relabel_configs:
+             - action: replace
+               source_labels: [id]
+               regex: '^/machine\.slice/machine-rkt\\x2d([^\\]+)\\.+/([^/]+)\.service$'
+               target_label: rkt_container_name
+               replacement: '${2}-${1}'
+             - action: replace
+               source_labels: [id]
+               regex: '^/system\.slice/(.+)\.service$'
+               target_label: systemd_service_name
+               replacement: '${1}'
       alertmanager.conf: |-
         route:
           receiver: 'webhook'
@@ -358,8 +352,6 @@ objects:
               mountPath: /var/lib/grafana
             resources:
             imagePullPolicy: IfNotPresent
-          serviceAccount: ${SVC_ID}
-          serviceAccountName: ${SVC_ID}
           restartPolicy: Always
           terminationGracePeriodSeconds: 30
   -

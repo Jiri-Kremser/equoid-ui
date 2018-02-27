@@ -21,8 +21,7 @@ parameters:
     displayName: Application Name
   -
     name: CONTAINER_IMAGE
-#    value: jboss/keycloak-openshift:3.4.3.Final
-    value: jboss/keycloak:3.3.0.Final
+    value: jkremser/keycloak:3.4.3.Final
     description: Container image to be used for the Keycloak
     required: true
     displayName: Keycloak Container Image
@@ -97,8 +96,6 @@ objects:
             ports:
             - name: http
               containerPort: "${APP_PORT}"
-          serviceAccount: equoid
-          serviceAccountName: equoid
           volumes:
             - name: kc-realm-vol
               secret:
