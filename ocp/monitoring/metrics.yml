@@ -57,12 +57,15 @@ objects:
         global:
           scrape_interval:     15s # By default, scrape targets every 15 seconds.
           evaluation_interval: 15s # By default, scrape targets every 15 seconds.
-          # scrape_timeout is set to the global default (10s).
-
-          # Attach these labels to any time series or alerts when communicating with
-          # external systems (federation, remote storage, Alertmanager).
           external_labels:
-              monitor: 'my-project'
+              monitor: 'equoid'
+
+        # Alertmanager configuration
+        alerting:
+          alertmanagers:
+          - static_configs:
+            - targets:
+               - equoid-alertmanager:9093
 
         # Load and evaluate rules in this file every 'evaluation_interval' seconds.
         rule_files:
@@ -85,26 +88,27 @@ objects:
               - targets:
                   - equoid:8080
           # This is to scrape metrics of all the pods, containers, services from the openshift cluster
-          - job_name: 'openshift-nodes'
-           tls_config:
-             ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-           bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
-           kubernetes_sd_configs:
-             - role: node
-           relabel_configs:
-             - action: labelmap
-               regex: __meta_openshift_node_label_(.+)
-           metric_relabel_configs:
-             - action: replace
-               source_labels: [id]
-               regex: '^/machine\.slice/machine-rkt\\x2d([^\\]+)\\.+/([^/]+)\.service$'
-               target_label: rkt_container_name
-               replacement: '${2}-${1}'
-             - action: replace
-               source_labels: [id]
-               regex: '^/system\.slice/(.+)\.service$'
-               target_label: systemd_service_name
-               replacement: '${1}'
+          # it requires the service account with correct rights, otherwise it fails with Failed to list *v1.Node: User \"system:serviceaccount:myproject:default\" cannot list nodes at the cluster scope: User \"system:serviceaccount:myproject:default\" cannot list all nodes in the cluster (get nodes)"
+          # - job_name: 'openshift-nodes'
+          #   tls_config:
+          #     ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+          #   bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+          #   kubernetes_sd_configs:
+          #     - role: node
+          #   relabel_configs:
+          #     - action: labelmap
+          #       regex: __meta_openshift_node_label_(.+)
+          #   metric_relabel_configs:
+          #     - action: replace
+          #       source_labels: [id]
+          #       regex: '^/machine\.slice/machine-rkt\\x2d([^\\]+)\\.+/([^/]+)\.service$'
+          #       target_label: rkt_container_name
+          #       replacement: '${2}-${1}'
+          #     - action: replace
+          #       source_labels: [id]
+          #       regex: '^/system\.slice/(.+)\.service$'
+          #       target_label: systemd_service_name
+          #       replacement: '${1}'
       alertmanager.conf: |-
         route:
           receiver: 'webhook'
@@ -117,17 +121,19 @@ objects:
         - name: 'webhook'
           webhook_configs:
           # For testing, create a sample alerting webhook at http://webhook.site/
-          - url: 'http://webhook.site/9e24e73e-d938-409e-96e6-77ecadab1558'
+          - url: 'http://webhook.site/5320c72c-003d-4806-a4d6-331e94a85f31'
             send_resolved: true
       alertrules.conf: |-
-        # Sample alerting rules
-
-        ALERT first_registration
-          IF com_mycompany_myapp_web_rest_AccountResource_registerAccount_count == 1
-          ANNOTATIONS {
-            summary = "Your first user has registered his account. Congrats !",
-            description = "Current AccountResource_registerAccount_count value: {{ $value }}"
-          }
+        groups:
+        - name: equoid
+          rules:
+          - alert: InstanceDown
+            expr: up == 0
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              description: "stuff's happening with {{ $labels.service }}"
   -
     apiVersion: v1
     kind: DeploymentConfig
@@ -136,16 +142,6 @@ objects:
       labels:
         app: ${PT_APP_NAME}
     spec:
-# This is to define the deployment strategy (either be Rolling or Recreate)
-#     strategy:
-#       type: Rolling
-#       rollingParams:
-#         updatePeriodSeconds: 1
-#         intervalSeconds: 1
-#         timeoutSeconds: 600
-#         maxUnavailable: 25%
-#         maxSurge: 25%
-#       resources:
       triggers:
         -
           type: ConfigChange
@@ -170,12 +166,11 @@ objects:
                 path: alert.rules
           containers:
           - name: ${PT_APP_NAME}
-            image: prom/prometheus:v1.6.3
-            command:
-              - '/bin/prometheus'
-              - '-config.file=/etc/prometheus/prometheus.yml'
-              - '-storage.local.path=/prometheus'
-              - '-alertmanager.url=http://equoid-alertmanager:9093'
+            image: openshift/prometheus:v2.1.0
+            args:
+              - --storage.tsdb.retention=6h
+              - --config.file=/etc/prometheus/prometheus.yml
+              - --web.listen-address=localhost:9090
             ports:
             - containerPort: 9090
               name: tcp
@@ -228,16 +223,6 @@ objects:
       labels:
         app: ${AM_APP_NAME}
     spec:
-# This is to define the deployment strategy (either be Rolling or Recreate)
-#     strategy:
-#       type: Rolling
-#       rollingParams:
-#         updatePeriodSeconds: 1
-#         intervalSeconds: 1
-#         timeoutSeconds: 600
-#         maxUnavailable: 25%
-#         maxSurge: 25%
-#       resources:
       triggers:
         -
           type: ConfigChange
@@ -260,7 +245,7 @@ objects:
                 path: config.yml
           containers:
           - name: ${AM_APP_NAME}
-            image: prom/alertmanager:v0.6.2
+            image: openshift/prometheus-alertmanager:v0.14.0
             ports:
             - containerPort: 9093
               name: tcp
@@ -311,16 +296,6 @@ objects:
       labels:
         app: ${GF_APP_NAME}
     spec:
-# This is to define the deployment strategy (either be Rolling or Recreate)
-#     strategy:
-#       type: Rolling
-#       rollingParams:
-#         updatePeriodSeconds: 1
-#         intervalSeconds: 1
-#         timeoutSeconds: 600
-#         maxUnavailable: 25%
-#         maxSurge: 25%
-#       resources:
       triggers:
         -
           type: ConfigChange
@@ -337,7 +312,7 @@ objects:
             emptyDir: {}
           containers:
           - name: ${GF_APP_NAME}
-            image: grafana/grafana:4.3.2
+            image: wkulhanek/grafana:4.6.3
             env:
             - name: GF_SECURITY_ADMIN_PASSWORD
               value: equoid
