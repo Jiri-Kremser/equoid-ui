@@ -36,10 +36,10 @@ security:
 logging:
     level:
         ROOT: INFO
-        io.radanalytics.equoid: DEBUG
+        io.radanalytics.equoid: INFO
         io.github.jhipster: INFO
-        org.springframework: DEBUG
-        org.springframework.security: DEBUG
+        org.springframework: INFO
+        org.springframework.security: INFO
 
 spring:
     devtools:
