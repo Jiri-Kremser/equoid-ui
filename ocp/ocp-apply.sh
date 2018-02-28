@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-METRICS="${METRICS:-true}"
+METRICS="${METRICS:-"0"}"
 
 # Prometheus and Grafana
-if [ "$METRICS" = true ] ; then
+if [ "$METRICS" = "1" ] ; then
   oc process -f $DIR/monitoring/metrics.yml | oc apply -f -
 fi
 

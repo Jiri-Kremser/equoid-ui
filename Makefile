@@ -14,7 +14,8 @@ push:
 oc-run:
 	-docker kill `docker ps -q` || true
 	oc cluster up
-	./ocp/ocp-apply.sh
+	METRICS=1 ./ocp/ocp-apply.sh
+	#./ocp/ocp-apply.sh
 
 grafana-ds:
 	curl -i -u admin:equoid \
