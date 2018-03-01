@@ -4,7 +4,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { Account, LoginService, Principal } from '../shared';
 
 @Component({
-    selector: 'jhi-graph',
+    selector: 'equoid-graph',
     templateUrl: './graph.component.html',
     styleUrls: [
         'graph.scss'

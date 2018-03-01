@@ -15,7 +15,7 @@
         "polyfills": "app/polyfills.ts",
         "test": "src/test/javascript/spec/entry.ts",
         "tsconfig": "../../../tsconfig.json",
-        "prefix": "jhi",
+        "prefix": "equoid",
         "mobile": false,
         "styles": [
             "content/scss/vendor.scss",

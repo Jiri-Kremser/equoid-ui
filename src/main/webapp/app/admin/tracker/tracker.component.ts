@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { JhiTrackerService } from '../../shared';
 
 @Component({
-    selector: 'jhi-tracker',
+    selector: 'equoid-tracker',
     templateUrl: './tracker.component.html'
 })
 export class JhiTrackerComponent implements OnInit, OnDestroy {

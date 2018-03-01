@@ -5,7 +5,7 @@ import { JhiMetricsMonitoringModalComponent } from './metrics-modal.component';
 import { JhiMetricsService } from './metrics.service';
 
 @Component({
-    selector: 'jhi-metrics',
+    selector: 'equoid-metrics',
     templateUrl: './metrics.component.html'
 })
 export class JhiMetricsMonitoringComponent implements OnInit {

@@ -7,7 +7,7 @@ import { AuditsService } from './audits.service';
 import { ITEMS_PER_PAGE } from '../../shared';
 
 @Component({
-  selector: 'jhi-audit',
+  selector: 'equoid-audit',
   templateUrl: './audits.component.html'
 })
 export class AuditsComponent implements OnInit {

@@ -1,30 +1,18 @@
 <div class="row">
-    <div class="col-md-3">
+    <div class="col-md-1">
     </div>
     <div class="col-md-9">
-        <h1 class="display-4">Welcome</h1>
-        <p class="lead">Graph</p>
+        <h1 class="display-4">Graph</h1>
 
         <div [ngSwitch]="isAuthenticated()">
-            <div class="alert alert-success" *ngSwitchCase="true">
-                <span *ngIf="account"
-                   > You are logged in as user "{{account.login}}". </span>
+            a
+            <div *ngSwitchCase="true">
+                <equoid-topk></equoid-topk>
             </div>
-
+b
             <div class="alert alert-warning" *ngSwitchCase="false">
-                <span>If you want to </span>
-                <a class="alert-link" (click)="login()">sign in</a><span>, you can try the default accounts:<br/>- Administrator: <code>admin/admin</code> <br/>- User: <code>user/user</code></span>
+                To be able to see the graph, you need to login
             </div>
         </div>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <br/>
-        <p>
-            <span>If you like this app, don't forget to give us a star on</span> <a href="https://github.com/Jiri-Kremser/equoid-ui-prototype" target="_blank" rel="noopener">GitHub</a>!
-        </p>
     </div>
 </div>

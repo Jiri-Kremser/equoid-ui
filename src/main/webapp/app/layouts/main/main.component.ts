@@ -4,7 +4,7 @@ import { Router, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-    selector: 'jhi-main',
+    selector: 'equoid-main',
     templateUrl: './main.component.html'
 })
 export class JhiMainComponent implements OnInit {

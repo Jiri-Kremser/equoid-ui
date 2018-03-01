@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { JhiConfigurationService } from './configuration.service';
 
 @Component({
-    selector: 'jhi-configuration',
+    selector: 'equoid-configuration',
     templateUrl: './configuration.component.html'
 })
 export class JhiConfigurationComponent implements OnInit {

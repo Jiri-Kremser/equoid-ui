@@ -4,14 +4,14 @@ import { JhiEventManager } from 'ng-jhipster';
 import { Account, LoginService, Principal } from '../shared';
 
 @Component({
-    selector: 'equoid-kitchensink',
-    templateUrl: './kitchensink.component.html',
+    selector: 'equoid-topk',
+    templateUrl: './topk.component.html',
     styleUrls: [
-        'kitchensink.scss'
+        'topk.scss'
     ]
 
 })
-export class KitchensinkComponent implements OnInit {
+export class TopkComponent implements OnInit {
     account: Account;
 
     constructor(

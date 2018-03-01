@@ -3,17 +3,14 @@ import { RouterModule } from '@angular/router';
 
 import { EquoidSharedModule } from '../shared';
 
-import { GRAPH_ROUTE, GraphComponent } from './';
-import { TopkComponent } from '../topk/topk.component';
+import { TopkComponent } from './';
 
 @NgModule({
     imports: [
-        EquoidSharedModule,
-        RouterModule.forChild([ GRAPH_ROUTE ])
+        EquoidSharedModule
     ],
     declarations: [
-        GraphComponent,
-        TopkComponent
+        TopkComponent,
     ],
     entryComponents: [
     ],
@@ -21,4 +18,4 @@ import { TopkComponent } from '../topk/topk.component';
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class EquoidGraphModule {}
+export class EquoidTopkModule {}

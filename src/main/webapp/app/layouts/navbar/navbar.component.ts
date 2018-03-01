@@ -7,7 +7,7 @@ import { Principal, LoginService } from '../../shared';
 import { VERSION } from '../../app.constants';
 
 @Component({
-    selector: 'jhi-navbar',
+    selector: 'equoid-navbar',
     templateUrl: './navbar.component.html',
     styleUrls: [
         'navbar.scss'

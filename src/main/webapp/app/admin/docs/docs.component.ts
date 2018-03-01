@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-    selector: 'jhi-docs',
+    selector: 'equoid-docs',
     templateUrl: './docs.component.html'
 })
 export class JhiDocsComponent {
