@@ -5,11 +5,9 @@
         <h1 class="display-4">Graph</h1>
 
         <div [ngSwitch]="isAuthenticated()">
-            a
             <div *ngSwitchCase="true">
                 <equoid-topk></equoid-topk>
             </div>
-b
             <div class="alert alert-warning" *ngSwitchCase="false">
                 To be able to see the graph, you need to login
             </div>

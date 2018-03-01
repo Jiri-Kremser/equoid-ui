@@ -3,7 +3,7 @@ import { Route } from '@angular/router';
 import { KitchensinkComponent } from './';
 
 export const HOME_ROUTE: Route = {
-    path: 'foo',
+    path: 'components',
     component: KitchensinkComponent,
     data: {
         authorities: [],
