@@ -1,10 +1,9 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { RouterModule } from '@angular/router';
-
 import { EquoidSharedModule } from '../shared';
-
 import { GRAPH_ROUTE, GraphComponent } from './';
 import { TopkComponent } from '../topk/topk.component';
+import { PiechartComponent } from '../piechart/piechart.component';
 
 @NgModule({
     imports: [
@@ -13,7 +12,8 @@ import { TopkComponent } from '../topk/topk.component';
     ],
     declarations: [
         GraphComponent,
-        TopkComponent
+        TopkComponent,
+        PiechartComponent
     ],
     entryComponents: [
     ],
