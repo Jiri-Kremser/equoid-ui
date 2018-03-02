@@ -1,15 +1,10 @@
-
-/* ==========================================================================
-Main page styles
-========================================================================== */
-
-.hipster {
-    display: inline-block;
-    width: 347px;
-    height: 497px;
-    background: url("../../content/images/radley.png") no-repeat center top;
-    background-size: contain;
-}
+.card{
+    width: calc(100% - 80px);
+    height: 50vh;
+    margin: 20px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  }
 
 /* wait autoprefixer update to allow simple generation of high pixel density media query */
 @media
