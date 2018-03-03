@@ -7,6 +7,7 @@ import io.github.jhipster.config.JHipsterConstants;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.actuate.autoconfigure.*;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -33,6 +34,14 @@ public class EquoidApp {
     public EquoidApp(Environment env) {
         this.env = env;
     }
+
+    private static String keycloak;
+
+    @Value("${application.keycloak}")
+    public void setKeycloak(String keycloak) {
+        EquoidApp.keycloak = keycloak;
+    }
+
 
     /**
      * Initializes equoid.
@@ -72,6 +81,7 @@ public class EquoidApp {
                 "Application '{}' is running! Access URLs:\n\t" +
                 "Local: \t\t{}://localhost:{}\n\t" +
                 "External: \t{}://{}:{}\n\t" +
+                "Keycloak: \thttp://{}\n\t" +
                 "Profile(s): \t{}\n----------------------------------------------------------",
             env.getProperty("spring.application.name"),
             protocol,
@@ -79,6 +89,7 @@ public class EquoidApp {
             protocol,
             InetAddress.getLocalHost().getHostAddress(),
             env.getProperty("server.port"),
+            keycloak,
             env.getActiveProfiles());
     }
 }
