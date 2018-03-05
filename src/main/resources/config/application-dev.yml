@@ -31,11 +31,11 @@ security:
 
 logging:
     level:
-        ROOT: DEBUG
-        io.radanalytics.equoid: DEBUG
-        io.github.jhipster: DEBUG
-        org.springframework: DEBUG
-        org.springframework.security: DEBUG
+        ROOT: INFO
+        io.radanalytics.equoid: INFO
+        io.github.jhipster: INFO
+        org.springframework: INFO
+        org.springframework.security: INFO
 
 spring:
     profiles:
