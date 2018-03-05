@@ -4,6 +4,7 @@ import { EquoidSharedModule } from '../shared';
 import { GRAPH_ROUTE, GraphComponent } from './';
 import { EquoidTopkModule } from '../topk/topk.module';
 import { PiechartComponent } from '../piechart/piechart.component';
+import { BarchartComponent } from '../barchart/barchart.component';
 
 @NgModule({
     imports: [
@@ -13,7 +14,8 @@ import { PiechartComponent } from '../piechart/piechart.component';
     ],
     declarations: [
         GraphComponent,
-        PiechartComponent
+        PiechartComponent,
+        BarchartComponent
     ],
     entryComponents: [
     ],

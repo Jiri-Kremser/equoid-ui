@@ -196,6 +196,12 @@
     semver "^5.3.0"
     semver-intersect "^1.1.2"
 
+"@types/c3@^0.4.54":
+  version "0.4.54"
+  resolved "https://registry.yarnpkg.com/@types/c3/-/c3-0.4.54.tgz#aed76de621b1e0617460efea1996a811f75de8cb"
+  dependencies:
+    "@types/d3" "^3"
+
 "@types/d3-array@*":
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/@types/d3-array/-/d3-array-1.2.1.tgz#e489605208d46a1c9d980d2e5772fa9c75d9ec65"
@@ -343,6 +349,10 @@
   dependencies:
     "@types/d3-interpolate" "*"
     "@types/d3-selection" "*"
+
+"@types/d3@^3":
+  version "3.5.40"
+  resolved "https://registry.yarnpkg.com/@types/d3/-/d3-3.5.40.tgz#277b575d79445a6dccc017d9bea71b72344c6e5f"
 
 "@types/d3@^5.0.0":
   version "5.0.0"
@@ -1286,7 +1296,7 @@ bytes@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/bytes/-/bytes-3.0.0.tgz#d32815404d689699f85a4ea4fa8755dd13a96048"
 
-c3@~0.4.11:
+c3@^0.4.21, c3@~0.4.11:
   version "0.4.21"
   resolved "https://registry.yarnpkg.com/c3/-/c3-0.4.21.tgz#61a2dc5a31c6a64e011d15b136c160c44fbb9631"
   dependencies:

@@ -9,6 +9,7 @@
             <div *ngSwitchCase="true">
                 <equoid-topk></equoid-topk>
                 <equoid-piechart [data]='data' [colours]='colours'></equoid-piechart>
+                <equoid-barchart [data]='data' [colours]='colours'></equoid-barchart>
             </div>
             <div class="alert alert-warning" *ngSwitchCase="false">
                 To be able to see the graph, you need to login
