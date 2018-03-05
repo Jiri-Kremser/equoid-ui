@@ -69,7 +69,7 @@ objects:
         spec:
           containers:
           - name: ${APPLICATION_NAME}
-            image: jkremser/equoid
+            image: jkremser/equoid:0.0.1
             imagePullPolicy: IfNotPresent
             env:
             - name: SPRING_PROFILES_ACTIVE
