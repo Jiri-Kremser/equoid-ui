@@ -35,14 +35,6 @@ public class EquoidApp {
         this.env = env;
     }
 
-    private static String keycloak;
-
-    @Value("${application.keycloak}")
-    public void setKeycloak(String keycloak) {
-        EquoidApp.keycloak = keycloak;
-    }
-
-
     /**
      * Initializes equoid.
      * <p>
@@ -89,7 +81,7 @@ public class EquoidApp {
             protocol,
             InetAddress.getLocalHost().getHostAddress(),
             env.getProperty("server.port"),
-            keycloak,
+            env.getProperty("application.keycloak"),
             env.getActiveProfiles());
     }
 }
