@@ -15,10 +15,12 @@
     }
   
     /deep/ .label{
+      font-family: "Open Sans", Helvetica, Arial, sans-serif;
       font-size: 1.2em;
     }
   
     /deep/ .percent{
+      font-family: "Open Sans", Helvetica, Arial, sans-serif;
       font-size: 2em;
     }
   }
@@ -39,7 +41,7 @@
   }
   
   .tooltip{
-    width: 250px;
+    width: 150px;
     position: fixed;
     background: #f5f6f5;
     pointer-events: none;

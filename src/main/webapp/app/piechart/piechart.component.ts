@@ -66,8 +66,8 @@ export class PiechartComponent implements OnInit, OnChanges {
     // chart configuration
     this.hostElement = this.chartContainer.nativeElement;
 
-    this.radius = Math.min(this.hostElement.offsetWidth, this.hostElement.offsetHeight) / 2;
-    const innerRadius = this.radius - 80;
+    this.radius = Math.min(this.hostElement.offsetWidth, this.hostElement.offsetHeight) / 3;
+    const innerRadius = this.radius - 35;
     const outerRadius = this.radius - 15;
     const hoverRadius = this.radius - 5;
     this.pieColours = this.colours ? d3.scaleOrdinal().range(this.colours) : d3.scaleOrdinal(d3.schemeCategory10);
@@ -153,19 +153,19 @@ export class PiechartComponent implements OnInit, OnChanges {
       .attr('dy', '-10px')
       .style('text-anchor', 'middle')
       .attr('class', 'label')
-      .attr('fill', '#57a1c6')
+      .attr('fill', '#000')
       .text(this.labels[i]);
 
     this.svg.append('text')
       .attr('dy', '20px')
       .style('text-anchor', 'middle')
       .attr('class', 'percent')
-      .attr('fill', '#57a1c6')
+      .attr('fill', '#000')
       .text(this.toPercent(this.values[i], this.values.reduce((sum, value) => sum + value)));
 
     // Tooltip
     this.tooltip.style.visibility = 'visible';
-    this.tooltip.style.opacity = 0.9;
+    this.tooltip.style.opacity = 0.8;
     this.tooltip.style.top = (d3.event.pageY) + 'px';
     this.tooltip.style.left = (d3.event.pageX - 100 ) + 'px';
   }
