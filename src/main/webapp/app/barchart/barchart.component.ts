@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, ViewChild, ElementRef, Input } from '@angular/core';
+import { AfterViewInit, Component, OnInit, OnChanges, ViewChild, ElementRef, Input } from '@angular/core';
 import * as c3 from 'c3';
 import * as _ from 'underscore';
 
@@ -13,7 +13,7 @@ import { PieDataService } from '../piechart/piechart.service';
   ]
 })
 
-export class BarchartComponent implements OnInit, OnChanges {
+export class BarchartComponent implements OnInit, OnChanges, AfterViewInit {
   /*@ViewChild('containerBarChart')*/ chartContainer: ElementRef;
   @Input() data: any;
   @Input() colours: Array<string>;

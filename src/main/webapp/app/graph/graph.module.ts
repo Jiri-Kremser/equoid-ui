@@ -3,6 +3,7 @@ import { RouterModule } from '@angular/router';
 import { EquoidSharedModule } from '../shared';
 import { GRAPH_ROUTE, GraphComponent } from './';
 import { EquoidTopkModule } from '../topk/topk.module';
+import { ChartModule } from 'patternfly-ng';
 import { PiechartComponent } from '../piechart/piechart.component';
 import { BarchartComponent } from '../barchart/barchart.component';
 
@@ -10,6 +11,7 @@ import { BarchartComponent } from '../barchart/barchart.component';
     imports: [
         EquoidSharedModule,
         EquoidTopkModule,
+        ChartModule,
         RouterModule.forChild([ GRAPH_ROUTE ])
     ],
     declarations: [
@@ -20,6 +22,7 @@ import { BarchartComponent } from '../barchart/barchart.component';
     entryComponents: [
     ],
     providers: [
+        
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

@@ -30,6 +30,7 @@
     "ngx-infinite-scroll": "0.5.1",
     "ngx-webstorage": "2.0.1",
     "patternfly": "3.35.1",
+    "patternfly-ng": "^3.1.2",
     "reflect-metadata": "0.1.10",
     "rxjs": "5.5.5",
     "sockjs-client": "1.1.4",
