@@ -6,12 +6,14 @@ import { EquoidTopkModule } from '../topk/topk.module';
 import { ChartModule } from 'patternfly-ng';
 import { PiechartComponent } from '../piechart/piechart.component';
 import { BarchartComponent } from '../barchart/barchart.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
     imports: [
         EquoidSharedModule,
         EquoidTopkModule,
         ChartModule,
+        FlexLayoutModule,
         RouterModule.forChild([ GRAPH_ROUTE ])
     ],
     declarations: [
@@ -21,9 +23,7 @@ import { BarchartComponent } from '../barchart/barchart.component';
     ],
     entryComponents: [
     ],
-    providers: [
-        
-    ],
+    providers: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class EquoidGraphModule {}

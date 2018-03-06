@@ -8,9 +8,11 @@
         <div [ngSwitch]="isAuthenticated()">
             <div *ngSwitchCase="true">
                 <equoid-topk></equoid-topk>
+                D3:
                 <equoid-piechart [data]='data' [colours]='colours'></equoid-piechart>
+                C3:
                 <equoid-barchart [data]='data' [colours]='colours'></equoid-barchart>
-                nevim
+                patternfly-ng:
                 <pfng-chart-donut [chartData]='chartData' [config]='largeConfig'></pfng-chart-donut>
             </div>
             <div class="alert alert-warning" *ngSwitchCase="false">

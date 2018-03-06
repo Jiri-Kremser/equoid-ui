@@ -13,9 +13,7 @@ import { EquoidAdminModule } from './admin/admin.module';
 import { EquoidEntityModule } from './entities/entity.module';
 import { customHttpProvider } from './blocks/interceptor/http.provider';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
-
 import { PieDataService } from './piechart/piechart.service'
-
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 
 import {
