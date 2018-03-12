@@ -11,7 +11,7 @@ import { ItemPopupService } from './item-popup.service';
 import { ItemService } from './item.service';
 
 @Component({
-    selector: 'jhi-item-dialog',
+    selector: 'equoid-item-dialog',
     templateUrl: './item-dialog.component.html'
 })
 export class ItemDialogComponent implements OnInit {
@@ -62,7 +62,7 @@ export class ItemDialogComponent implements OnInit {
 }
 
 @Component({
-    selector: 'jhi-item-popup',
+    selector: 'equoid-item-popup',
     template: ''
 })
 export class ItemPopupComponent implements OnInit, OnDestroy {

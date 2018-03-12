@@ -75,17 +75,17 @@ export class GraphComponent implements OnInit {
         this.registerAuthenticationSuccess();
 
         this.itemRestDataService.getData(0).subscribe(
-            data => { 
+            (data) => {
                 console.log(data.json);
                 this.data = data.json;
              },
-            err => console.error(err),
+            (err) => console.error(err),
             () => console.log('done loading data')
         )
         setInterval(() => {
             this.itemRestDataService.getData(0).subscribe(
-                data => { this.data = data.json },
-                err => console.error(err),
+                (data) => { this.data = data.json },
+                (err) => console.error(err),
                 () => console.log('done loading data')
             )
         }, 3000);

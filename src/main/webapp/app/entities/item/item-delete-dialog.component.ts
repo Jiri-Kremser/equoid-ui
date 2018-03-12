@@ -9,7 +9,7 @@ import { ItemPopupService } from './item-popup.service';
 import { ItemService } from './item.service';
 
 @Component({
-    selector: 'jhi-item-delete-dialog',
+    selector: 'equoid-item-delete-dialog',
     templateUrl: './item-delete-dialog.component.html'
 })
 export class ItemDeleteDialogComponent {
@@ -39,7 +39,7 @@ export class ItemDeleteDialogComponent {
 }
 
 @Component({
-    selector: 'jhi-item-delete-popup',
+    selector: 'equoid-item-delete-popup',
     template: ''
 })
 export class ItemDeletePopupComponent implements OnInit, OnDestroy {

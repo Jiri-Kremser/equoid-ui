@@ -7,7 +7,7 @@ import { ItemService } from './item.service';
 import { Principal, ResponseWrapper } from '../../shared';
 
 @Component({
-    selector: 'jhi-item',
+    selector: 'equoid-item',
     templateUrl: './item.component.html'
 })
 export class ItemComponent implements OnInit, OnDestroy {

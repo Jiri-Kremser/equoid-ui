@@ -7,7 +7,7 @@ import { Item } from './item.model';
 import { ItemService } from './item.service';
 
 @Component({
-    selector: 'jhi-item-detail',
+    selector: 'equoid-item-detail',
     templateUrl: './item-detail.component.html'
 })
 export class ItemDetailComponent implements OnInit, OnDestroy {
