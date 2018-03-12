@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { JhiEventManager } from 'ng-jhipster';
-
+import * as _ from 'underscore';
 import { Account, LoginService, Principal } from '../shared';
 // Services
 import { PieDataService } from '../piechart/piechart.service';
@@ -15,22 +15,29 @@ import { ItemRestDataService } from '../piechart/item-rest-data.service';
 
 })
 export class GraphComponent implements OnInit {
+    dummyData = true;
     account: Account;
-    data: Array<any>;
+    data: Array<any> = [];
     chartData: any[] = [
         ['Slivovitz', 2],
         ['Jim Beam', 1],
         ['Captain Morgan', 3],
         ['Becherovka', 2]
     ];
-
+    colours = ['#57A1C6', '#4FC3F7', '#36D7B7', '#46d736', '#6957c6', '#c69857', '#c66057', '#d73646', '#b3c657', '#f7db4f'];
     largeConfig = {
         chartId: 'exampleDonut',
         colors: {
             Slivovitz: '#0088ce',        // blue
             'Jim Beam': '#3f9c35',       // green
             'Captain Morgan': '#ec7a08', // orange
-            Becherovka: '#cc0000'        // red
+            Becherovka: '#cc0000',       // red
+            Jagermeister: this.colours[0],
+            'Tullamore Dew': this.colours[1],
+            'Black Velvet': this.colours[2],
+            'Pearl Gin': this.colours[3],
+            'Arrow Gin': this.colours[4],
+            'Wolfschmidt': this.colours[5]
         },
         data: {
             onclick: (data: any, element: any) => {
@@ -45,8 +52,6 @@ export class GraphComponent implements OnInit {
         }
     };
 
-    colours = ['#57A1C6', '#4FC3F7', '#36D7B7', '#46d736', '#6957c6', '#c69857', '#c66057', '#d73646', '#b3c657', '#f7db4f'];
-
     constructor(
         private principal: Principal,
         private loginService: LoginService,
@@ -56,38 +61,28 @@ export class GraphComponent implements OnInit {
     ) {
     }
 
-    // ngOnInit() {
-    //     this.principal.identity().then((account) => {
-    //         this.account = account;
-    //     });
-    //     this.registerAuthenticationSuccess();
-
-    //     this.data = this.pieDataService.addData(3, []);
-    //     setInterval(() => {
-    //         this.data = this.pieDataService.addData(1, this.data);
-    //     }, 3000);
-    // }
+    refresh() {
+        if (this.dummyData) {
+            this.data = this.pieDataService.addData(1, this.data);
+            this.chartData = _.map(this.data, (item) => [item.name, item.count]);
+        } else {
+            this.itemRestDataService.getData(0).subscribe(
+                (data) => {
+                    this.data = data.json;
+                },
+                (err) => console.error(err)
+            );
+        }
+    }
 
     ngOnInit() {
         this.principal.identity().then((account) => {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
-
-        this.itemRestDataService.getData(0).subscribe(
-            (data) => {
-                console.log(data.json);
-                this.data = data.json;
-             },
-            (err) => console.error(err),
-            () => console.log('done loading data')
-        )
+        this.refresh();
         setInterval(() => {
-            this.itemRestDataService.getData(0).subscribe(
-                (data) => { this.data = data.json },
-                (err) => console.error(err),
-                () => console.log('done loading data')
-            )
+            this.refresh();
         }, 3000);
     }
 
