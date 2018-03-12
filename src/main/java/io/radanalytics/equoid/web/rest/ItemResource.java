@@ -32,8 +32,11 @@ public class ItemResource {
 
     private final ItemRepository itemRepository;
 
-    public ItemResource(ItemRepository itemRepository) {
+    private final ItemJdgManager jdgManager;
+
+    public ItemResource(ItemRepository itemRepository, ItemJdgManager jdgManager) {
         this.itemRepository = itemRepository;
+        this.jdgManager = jdgManager;
     }
 
     /**
@@ -46,10 +49,11 @@ public class ItemResource {
     @PostMapping("/items")
     @Timed
     public ResponseEntity<Item> createItem(@Valid @RequestBody Item item) throws URISyntaxException {
-        log.debug("REST request to save Item : {}", item);
+        log.info("REST request to save Item : {}", item);
         if (item.getId() != null) {
             throw new BadRequestAlertException("A new item cannot already have an ID", ENTITY_NAME, "idexists");
         }
+        jdgManager.put(item);
         Item result = itemRepository.save(item);
         return ResponseEntity.created(new URI("/api/items/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -72,6 +76,7 @@ public class ItemResource {
         if (item.getId() == null) {
             return createItem(item);
         }
+        jdgManager.put(item);
         Item result = itemRepository.save(item);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, item.getId().toString()))
@@ -85,10 +90,14 @@ public class ItemResource {
      */
     @GetMapping("/items")
     @Timed
-    public List<Item> getAllItems() {
+    public List<Item> getAllItems(@RequestParam(required = false, defaultValue = "false") boolean cached) {
         log.debug("REST request to get all Items");
-        return itemRepository.findAll();
+        if ("true".equals(cached)) {
+            return jdgManager.getAll();
+        } else {
+            return itemRepository.findAll();
         }
+    }
 
     /**
      * GET  /items/:id : get the "id" item.

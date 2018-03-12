@@ -48,6 +48,9 @@ public class ItemResourceIntTest {
     private ItemRepository itemRepository;
 
     @Autowired
+    private ItemJdgManager itemJdgManager;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -66,7 +69,7 @@ public class ItemResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ItemResource itemResource = new ItemResource(itemRepository);
+        final ItemResource itemResource = new ItemResource(itemRepository, itemJdgManager);
         this.restItemMockMvc = MockMvcBuilders.standaloneSetup(itemResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

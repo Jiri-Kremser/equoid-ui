@@ -167,3 +167,4 @@ jhipster:
 
 application:
     keycloak: ${KEYCLOAK_URL:127.0.0.1:9080}
+    infinispan: ${INFINISPAN_URL:127.0.0.1:11222}

@@ -21,4 +21,14 @@ public class ApplicationProperties {
         this.keycloak = keycloak;
     }
 
+    private String infinispan;
+
+    public String getInfinispan() {
+        return infinispan;
+    }
+
+    public void setInfinispan(String infinispan) {
+        this.infinispan = infinispan;
+    }
+
 }

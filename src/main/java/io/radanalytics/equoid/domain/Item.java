@@ -16,6 +16,11 @@ public class Item implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public Item(String name, Long count) {
+        this.name = name;
+        this.count = count;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")

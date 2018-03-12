@@ -104,6 +104,7 @@ server:
     protocol_header: X-Forwarded-Proto
     use-forward-headers: true
 
+
 # ===================================================================
 # JHipster specific properties
 #
@@ -167,3 +168,4 @@ jhipster:
 
 application:
     keycloak: ${KEYCLOAK_URL:${KEYCLOAK_SERVICE_HOST}:${KEYCLOAK_SERVICE_PORT}}
+    infinispan: ${INFINISPAN_URL:${INFINISPAN_SERVICE_HOST}:${INFINISPAN_SERVICE_PORT}}
