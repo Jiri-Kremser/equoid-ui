@@ -54,12 +54,11 @@
          </a>
          <ul class="dropdown-menu" ngbDropdownMenu>
             <li>
-               <a class="dropdown-item" routerLink="equoid-tracker" routerLinkActive="active"
-                  (click)="collapseNavbar()">
-               <i class="fa fa-fw fa-eye" aria-hidden="true"></i>
-               <span>TODO: this</span>
-               </a>
-            </li>
+                        <a class="dropdown-item" routerLink="item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span>Item</span>
+                        </a>
+                    </li>
             <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
          </ul>
          </li>

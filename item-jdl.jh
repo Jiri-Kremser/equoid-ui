@@ -1,0 +1,4 @@
+entity Item {
+  name String required minlength(2),
+  count Long required min(0)
+}
