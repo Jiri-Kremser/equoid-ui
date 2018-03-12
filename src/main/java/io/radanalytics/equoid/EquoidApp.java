@@ -69,12 +69,13 @@ public class EquoidApp {
         if (env.getProperty("server.ssl.key-store") != null) {
             protocol = "https";
         }
-        log.info("\n----------------------------------------------------------\n\t" +
+        log.info("\n\n----------------------------------------------------------\n\t" +
                 "Application '{}' is running! Access URLs:\n\t" +
                 "Local: \t\t{}://localhost:{}\n\t" +
                 "External: \t{}://{}:{}\n\t" +
                 "Keycloak: \thttp://{}\n\t" +
-                "Profile(s): \t{}\n----------------------------------------------------------",
+                "Infinispan: \thttp://{}\n\t" +
+                "Profile(s): \t{}\n----------------------------------------------------------\n",
             env.getProperty("spring.application.name"),
             protocol,
             env.getProperty("server.port"),
@@ -82,6 +83,7 @@ public class EquoidApp {
             InetAddress.getLocalHost().getHostAddress(),
             env.getProperty("server.port"),
             env.getProperty("application.keycloak"),
+            env.getProperty("application.infinispan"),
             env.getActiveProfiles());
     }
 }
