@@ -10,12 +10,12 @@ export class PieDataService {
       const index = Math.floor(Math.random() * items.length);
       const existing = _.findWhere(newData, {id: index});
       if (existing) {
-        existing.counter++;
+        existing.count++;
       } else {
         newData.push({
           id: index,
-          item: items[index],
-          counter: 1
+          name: items[index],
+          count: 1
         });
       }
     }

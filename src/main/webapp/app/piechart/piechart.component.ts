@@ -98,10 +98,10 @@ export class PiechartComponent implements OnInit, OnChanges {
     const vm = this;
 
     this.slices = this.updateSlices(this.data);
-    this.labels = this.slices.map((slice) => slice.item);
-    this.colourSlices = this.slices.map((slice) => this.pieColours(slice.item));
+    this.labels = this.slices.map((slice) => slice.name);
+    this.colourSlices = this.slices.map((slice) => this.pieColours(slice.name));
 
-    this.values = firstRun ? [0, 0, 0] : _.toArray(this.slices).map((slice) => slice.counter);
+    this.values = firstRun ? [0, 0, 0] : _.toArray(this.slices).map((slice) => slice.count);
 
     this.pieGenerator = d3.pie().sort(null).value((d: number) => d)(this.values);
 
@@ -188,11 +188,11 @@ export class PiechartComponent implements OnInit, OnChanges {
 
   updateSlices = (newData: Array<any>): Array<any> => {
     const results = [];
-    const sorted = _.sortBy(newData, 'counter');
+    const sorted = _.sortBy(newData, 'count');
     _.each(sorted, (item) => {
       results.push({
-        item: item.item,
-        counter: item.counter
+        name: item.name,
+        count: item.count
       });
     });
 

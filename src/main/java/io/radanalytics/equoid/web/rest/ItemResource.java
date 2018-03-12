@@ -92,7 +92,7 @@ public class ItemResource {
     @Timed
     public List<Item> getAllItems(@RequestParam(required = false, defaultValue = "false") boolean cached) {
         log.debug("REST request to get all Items");
-        if ("true".equals(cached)) {
+        if (cached) {
             return jdgManager.getAll();
         } else {
             return itemRepository.findAll();

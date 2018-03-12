@@ -16,6 +16,10 @@ public class Item implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public Item(){
+        // default constructor because of json deserialization
+    }
+
     public Item(String name, Long count) {
         this.name = name;
         this.count = count;

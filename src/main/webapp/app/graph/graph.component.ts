@@ -4,6 +4,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { Account, LoginService, Principal } from '../shared';
 // Services
 import { PieDataService } from '../piechart/piechart.service';
+import { ItemRestDataService } from '../piechart/item-rest-data.service';
 
 @Component({
     selector: 'equoid-graph',
@@ -50,9 +51,22 @@ export class GraphComponent implements OnInit {
         private principal: Principal,
         private loginService: LoginService,
         private eventManager: JhiEventManager,
-        private pieDataService: PieDataService
+        private pieDataService: PieDataService,
+        private itemRestDataService: ItemRestDataService
     ) {
     }
+
+    // ngOnInit() {
+    //     this.principal.identity().then((account) => {
+    //         this.account = account;
+    //     });
+    //     this.registerAuthenticationSuccess();
+
+    //     this.data = this.pieDataService.addData(3, []);
+    //     setInterval(() => {
+    //         this.data = this.pieDataService.addData(1, this.data);
+    //     }, 3000);
+    // }
 
     ngOnInit() {
         this.principal.identity().then((account) => {
@@ -60,9 +74,20 @@ export class GraphComponent implements OnInit {
         });
         this.registerAuthenticationSuccess();
 
-        this.data = this.pieDataService.addData(3, []);
+        this.itemRestDataService.getData(0).subscribe(
+            data => { 
+                console.log(data.json);
+                this.data = data.json;
+             },
+            err => console.error(err),
+            () => console.log('done loading data')
+        )
         setInterval(() => {
-            this.data = this.pieDataService.addData(1, this.data);
+            this.itemRestDataService.getData(0).subscribe(
+                data => { this.data = data.json },
+                err => console.error(err),
+                () => console.log('done loading data')
+            )
         }, 3000);
     }
 

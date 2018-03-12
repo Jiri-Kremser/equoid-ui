@@ -15,10 +15,9 @@
   <div class='tooltip drilldownData'>
     <div class='header' *ngIf='selectedSlice'>
       <div fxLayout='row' fxLayoutAlign='start center'>
-        <!-- <img [src]='"assets/Icon-" + selectedSlice.item + ".svg"' alt='Database Icon'> -->
         <div fxLayout='column' fxLayoutAlign='center start'>
-          <div class='title'>{{selectedSlice.item}}</div>
-          <div>Ammount: {{selectedSlice.counter}}</div>
+          <div class='title'>{{selectedSlice.name}}</div>
+          <div>Ammount: {{selectedSlice.count}}</div>
         </div>
       </div>
     </div>
