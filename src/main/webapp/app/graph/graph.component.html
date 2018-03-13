@@ -10,10 +10,10 @@
                 <equoid-topk></equoid-topk>
                 D3:
                 <equoid-piechart [data]='data' [colours]='colours'></equoid-piechart>
-                C3:
-                <equoid-barchart [data]='data' [colours]='colours'></equoid-barchart>
                 patternfly-ng:
                 <pfng-chart-donut [chartData]='chartData' [config]='largeConfig'></pfng-chart-donut>
+                C3:
+                <equoid-barchart [data]='stackedData' [colours]='colours'></equoid-barchart>
             </div>
             <div class="alert alert-warning" *ngSwitchCase="false">
                 To be able to see the graph, you need to login
