@@ -27,13 +27,14 @@ export class BarchartComponent implements OnInit, OnChanges, AfterViewInit {
         columns: [
           this.data[0],
           this.data[1],
-          this.data[2]
+          this.data[2],
+          this.data[3]
         ],
         // type: 'area-step',
-        type: 'area-spline',
-        // type: 'area',
+        type: 'area',
+        // type: 'area-spline',
         groups: [
-          ['data1', 'data2', 'data3', 'data4', 'data5', 'data6', 'data7', 'data8', 'data9']
+          ['data1', 'data2', 'data3', 'data4']
         ]
       }
     });
@@ -48,7 +49,8 @@ export class BarchartComponent implements OnInit, OnChanges, AfterViewInit {
       columns: [
         this.data[0],
         this.data[1],
-        this.data[2]
+        this.data[2],
+        this.data[3]
       ]
     });
   }

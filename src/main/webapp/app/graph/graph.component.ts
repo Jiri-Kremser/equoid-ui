@@ -15,7 +15,7 @@ import { ItemRestDataService } from '../piechart/item-rest-data.service';
 
 })
 export class GraphComponent implements OnInit {
-    dummyData = true;
+    dummyData = false;
     account: Account;
     data: Array<any> = [];
     chartData: Array<any> = [];
@@ -23,13 +23,7 @@ export class GraphComponent implements OnInit {
     stackedData = [['Arrow Gin', 0],
                    ['Becherovka', 0],
                    ['Black Velvet', 0],
-                   ['Captain Morgan', 0],
-                   ['Jagermeister', 0],
-                   ['Jim Beam', 0],
-                   ['Pearl Gin', 0],
-                   ['Slivovitz', 0],
-                   ['Tullamore Dew', 0],
-                   ['Wolfschmidt', 0]
+                   ['Captain Morgan', 0]
                   ];
 
     colours = ['#57A1C6', '#4FC3F7', '#36D7B7', '#46d736', '#6957c6', '#c69857', '#c66057', '#d73646', '#b3c657', '#f7db4f'];
@@ -85,10 +79,7 @@ export class GraphComponent implements OnInit {
         if (this.dummyData) {
             this.data = this.pieDataService.addData(1, this.data);
             this.chartData = _.map(this.data, (item) => [item.name, item.count]);
-
-            this.stackedData = _.map(_.sortBy(this.chartData, (x) => x[0], (e) => e[1]));
-            console.log('aa=' + JSON.stringify(this.stackedData));
-            // this.increment();
+            this.increment();
         } else {
             this.itemRestDataService.getData(0).subscribe(
                 (data) => {
