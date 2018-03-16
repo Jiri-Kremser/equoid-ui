@@ -24,17 +24,14 @@ export class BarchartComponent implements OnInit, OnChanges, AfterViewInit {
     this.chart = c3.generate({
       bindto: '#chart',
       data: {
-        columns: [
-          this.data[0],
-          this.data[1],
-          this.data[2],
-          this.data[3]
-        ],
+        columns: this.data,
         // type: 'area-step',
         type: 'area',
         // type: 'area-spline',
         groups: [
-          ['data1', 'data2', 'data3', 'data4']
+          // _.map(this.data, (a) => a[0])
+          [this.data[0][0], this.data[1][0], this.data[2][0], this.data[3][0], this.data[4][0],
+           this.data[5][0], this.data[6][0], this.data[7][0], this.data[8][0], this.data[9][0]]
         ]
       }
     });
@@ -46,12 +43,7 @@ export class BarchartComponent implements OnInit, OnChanges, AfterViewInit {
 
   foo = () => {
     this.chart.load({
-      columns: [
-        this.data[0],
-        this.data[1],
-        this.data[2],
-        this.data[3]
-      ]
+      columns: this.data
     });
   }
 
