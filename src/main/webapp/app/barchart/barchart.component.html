@@ -4,6 +4,7 @@
   </div>
 
   <div class="col-md-8">
-    <div class='pie-chart' #containerBarChart id='chart'></div>
+    <div class='bar-chart' #containerBarChart id='chart'></div>
+    <button class="toggleStack" (click)="toggleStack()">{{ isStacked == true ? 'Unstack' : 'Stack' }}</button>
   </div>
 </div>

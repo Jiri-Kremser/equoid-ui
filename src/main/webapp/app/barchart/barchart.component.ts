@@ -19,6 +19,8 @@ export class BarchartComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() colours: Array<string>;
   svg: any;
   chart: any;
+  isStacked = true;
+  historyLength = 50;
 
   ngAfterViewInit() {
     this.chart = c3.generate({
@@ -33,16 +35,21 @@ export class BarchartComponent implements OnInit, OnChanges, AfterViewInit {
         ]
       }
     });
-
-    // setTimeout(function() {
-    //   chart.groups([['data1', 'data2', 'data3', 'data4']])
-    // }, 2000);
   }
 
-  foo = () => {
+  update = () => {
     this.chart.load({
       columns: this.data
     });
+  }
+
+  toggleStack = () => {
+    if (this.isStacked) {
+      this.chart.groups([]);
+    } else {
+      this.chart.groups([_.map(this.data, (a) => a[0])]);
+    }
+    this.isStacked = !this.isStacked;
   }
 
   ngOnInit() {
@@ -55,9 +62,7 @@ export class BarchartComponent implements OnInit, OnChanges, AfterViewInit {
     const self = this;
 
     setInterval(function() {
-      console.log('updating1....');
-      console.log(JSON.stringify(this.data));
-      self.foo();
+      self.update();
     }, 3000);
 
     // For animation purpose we load the real value after a second
@@ -68,13 +73,8 @@ export class BarchartComponent implements OnInit, OnChanges, AfterViewInit {
     const self = this;
     // update chart on data input value change
     if (this.chart) {
-      console.log('updating2....');
       this.chart.load({
-        columns: [
-          this.data[0],
-          this.data[1],
-          this.data[2]
-        ]
+        columns: this.data
       });
     }
   }

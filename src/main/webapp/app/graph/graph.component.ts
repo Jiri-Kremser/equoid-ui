@@ -20,16 +20,16 @@ export class GraphComponent implements OnInit {
     data: Array<any> = [];
     chartData: Array<any> = [];
 
-    stackedData = [['Arrow Gin', 0],
-                   ['Becherovka', 0],
-                   ['Black Velvet', 0],
-                   ['Captain Morgan', 0],
-                   ['Jagermeister', 0],
-                   ['Jim Beam', 0],
-                   ['Pearl Gin', 0],
-                   ['Slivovitz', 0],
-                   ['Tullamore Dew', 0],
-                   ['Wolfschmidt', 0]
+    stackedData: Array<any> = [['Arrow Gin'],
+                   ['Becherovka'],
+                   ['Black Velvet'],
+                   ['Captain Morgan'],
+                   ['Jagermeister'],
+                   ['Jim Beam'],
+                   ['Pearl Gin'],
+                   ['Slivovitz'],
+                   ['Tullamore Dew'],
+                   ['Wolfschmidt']
                   ];
 
     colours = ['#57A1C6', '#4FC3F7', '#36D7B7', '#46d736', '#6957c6', '#c69857', '#c66057', '#d73646', '#b3c657', '#f7db4f'];
@@ -72,7 +72,8 @@ export class GraphComponent implements OnInit {
     increment() {
         const inc = Math.floor(Math.random() * this.stackedData.length);
         for (let i = 0; i < this.stackedData.length; i += 1) {
-            const last = this.stackedData[i][this.stackedData[i].length - 1];
+            const lastItem = this.stackedData[i][this.stackedData[i].length - 1];
+            const last: number = (typeof lastItem === 'number') && lastItem || 0;
             if (i === inc) {
                 this.stackedData[i].push(+last + 1);
             } else {
