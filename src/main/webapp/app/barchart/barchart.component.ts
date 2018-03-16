@@ -29,9 +29,7 @@ export class BarchartComponent implements OnInit, OnChanges, AfterViewInit {
         type: 'area',
         // type: 'area-spline',
         groups: [
-          // _.map(this.data, (a) => a[0])
-          [this.data[0][0], this.data[1][0], this.data[2][0], this.data[3][0], this.data[4][0],
-           this.data[5][0], this.data[6][0], this.data[7][0], this.data[8][0], this.data[9][0]]
+          _.map(this.data, (a) => a[0])
         ]
       }
     });
