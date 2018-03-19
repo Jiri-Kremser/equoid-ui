@@ -77,8 +77,8 @@ server:
 infinispan:
     remote:
         server-list: ${application.infinispan}
-        socket-timeout: 10
-        connect-timeout: 10
+        socket-timeout: 3000
+        connect-timeout: 3000
         max-retries: 100
 
 info:
