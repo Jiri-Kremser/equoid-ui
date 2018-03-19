@@ -8,7 +8,7 @@ build:
 	./mvnw package -Pprod,prometheus,no-liquibase -DskipTests dockerfile:build
 
 push:
-	docker image tag equoid $(USER)/equoid
+	docker tag equoid:0.0.1 $(USER)/equoid
 	docker push $(USER)/equoid
 
 oc-run:
