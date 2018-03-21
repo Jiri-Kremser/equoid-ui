@@ -2,19 +2,16 @@ import { AfterViewInit, Component, OnInit, OnChanges, ViewChild, ElementRef, Inp
 import * as c3 from 'c3';
 import * as _ from 'underscore';
 
-// Services
-import { PieDataService } from '../piechart/piechart.service';
-
 @Component({
-  selector: 'equoid-barchart',
-  templateUrl: './barchart.component.html',
+  selector: 'equoid-stackchart',
+  templateUrl: './stackchart.component.html',
   styleUrls: [
-    'barchart.scss'
+    'stackchart.scss'
   ]
 })
 
-export class BarchartComponent implements OnInit, OnChanges, AfterViewInit {
-  @ViewChild('containerBarChart') chartContainer: ElementRef;
+export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
+  @ViewChild('containerStackChart') chartContainer: ElementRef;
   @Input() data: any;
   @Input() colours: Array<string>;
   svg: any;
@@ -80,8 +77,7 @@ export class BarchartComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   constructor(
-    private elRef: ElementRef,
-    private pieDataService: PieDataService
+    private elRef: ElementRef
   ) { }
 
   createChart = () => {

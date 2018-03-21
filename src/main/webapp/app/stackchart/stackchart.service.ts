@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as _ from 'underscore';
 
 @Injectable()
-export class BarDataService {
+export class StackDataService {
   addData = (num: number, data: Array<any>) => {
     const newData: Array<any> = data.slice(0)
     const items = ['Black Velvet', 'Jim Beam', 'Jagermeister', 'Tullamore Dew', 'Pearl Gin', 'Arrow Gin', 'Wolfschmidt', 'Captain Morgan', 'Becherovka', 'Slivovitz'];
