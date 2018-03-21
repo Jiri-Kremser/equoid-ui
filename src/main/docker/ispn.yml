@@ -1,0 +1,10 @@
+version: '2'
+services:
+  ispn:
+    image: jboss/infinispan-server:9.1.4.Final
+    command: ["-Djboss.default.jgroups.stack=tcp"]
+    environment:
+      - APP_USER=user
+      - APP_PASS=changeme
+    ports:
+      - 11222:11222
