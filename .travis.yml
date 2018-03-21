@@ -31,7 +31,9 @@ install:
   - yarn install
 script:
   - chmod +x mvnw
+  - docker run -d --rm --name=ispn -p 11222:11222 -e "APP_USER=user" -e "APP_PASS=changeme" jboss/infinispan-server:9.1.4.Final -Djboss.default.jgroups.stack=tcp
   - ./mvnw clean test
+  - docker stop ispn
   - yarn test
   - ./mvnw verify -Pprod -DskipTests
 notifications:
