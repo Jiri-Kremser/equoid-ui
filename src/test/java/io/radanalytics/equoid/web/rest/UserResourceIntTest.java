@@ -1,7 +1,6 @@
 package io.radanalytics.equoid.web.rest;
 
 import io.radanalytics.equoid.EquoidApp;
-import io.radanalytics.equoid.config.CacheConfiguration;
 import io.radanalytics.equoid.domain.Authority;
 import io.radanalytics.equoid.domain.User;
 import io.radanalytics.equoid.repository.UserRepository;
@@ -11,7 +10,6 @@ import io.radanalytics.equoid.service.UserService;
 import io.radanalytics.equoid.service.dto.UserDTO;
 import io.radanalytics.equoid.service.mapper.UserMapper;
 import io.radanalytics.equoid.web.rest.errors.ExceptionTranslator;
-import io.radanalytics.equoid.web.rest.vm.ManagedUserVM;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +17,6 @@ import org.junit.runner.RunWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.cache.CacheManager;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -91,9 +88,6 @@ public class UserResourceIntTest {
     @Autowired
     private EntityManager em;
 
-    @Autowired
-    private CacheManager cacheManager;
-
     private MockMvc restUserMockMvc;
 
     private User user;
@@ -101,8 +95,6 @@ public class UserResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).clear();
-        cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE).clear();
         UserResource userResource = new UserResource(userRepository, userService);
         this.restUserMockMvc = MockMvcBuilders.standaloneSetup(userResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
@@ -153,28 +145,6 @@ public class UserResourceIntTest {
             .andExpect(jsonPath("$.[*].email").value(hasItem(DEFAULT_EMAIL)))
             .andExpect(jsonPath("$.[*].imageUrl").value(hasItem(DEFAULT_IMAGEURL)))
             .andExpect(jsonPath("$.[*].langKey").value(hasItem(DEFAULT_LANGKEY)));
-    }
-
-    @Test
-    @Transactional
-    public void getUser() throws Exception {
-        // Initialize the database
-        userRepository.saveAndFlush(user);
-
-        assertThat(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).get(user.getLogin())).isNull();
-
-        // Get the user
-        restUserMockMvc.perform(get("/api/users/{login}", user.getLogin()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.login").value(user.getLogin()))
-            .andExpect(jsonPath("$.firstName").value(DEFAULT_FIRSTNAME))
-            .andExpect(jsonPath("$.lastName").value(DEFAULT_LASTNAME))
-            .andExpect(jsonPath("$.email").value(DEFAULT_EMAIL))
-            .andExpect(jsonPath("$.imageUrl").value(DEFAULT_IMAGEURL))
-            .andExpect(jsonPath("$.langKey").value(DEFAULT_LANGKEY));
-
-        assertThat(cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).get(user.getLogin())).isNotNull();
     }
 
     @Test
