@@ -23,11 +23,11 @@ import javax.cache.Caching;
 import javax.cache.spi.CachingProvider;
 import java.net.URI;
 
-@Configuration
-@EnableCaching
-@AutoConfigureAfter(value = { MetricsConfiguration.class })
-@AutoConfigureBefore(value = { WebConfigurer.class, DatabaseConfiguration.class })
-@Import(InfinispanEmbeddedCacheManagerAutoConfiguration.class)
+//@Configuration
+//@EnableCaching
+//@AutoConfigureAfter(value = { MetricsConfiguration.class })
+//@AutoConfigureBefore(value = { WebConfigurer.class, DatabaseConfiguration.class })
+//@Import(InfinispanEmbeddedCacheManagerAutoConfiguration.class)
 public class CacheConfiguration {
 
     private final Logger log = LoggerFactory.getLogger(CacheConfiguration.class);
