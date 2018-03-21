@@ -19,10 +19,11 @@ You will only need to run this command when dependencies change in [package.json
 We use yarn scripts and [Webpack][] as our build system.
 
 
-Run the following commands in two separate terminals to create a blissful development experience where your browser
+Run the following commands in three separate terminals to create a blissful development experience where your browser
 auto-refreshes when files change on your hard drive.
 
     ./mvnw
+    make local-services
     yarn start
 
 [Yarn][] is also used to manage CSS and JavaScript dependencies used in this application. You can upgrade dependencies by
@@ -33,51 +34,21 @@ The `yarn run` command will list all of the scripts available to run for this pr
 
 ## OAuth 2.0 / OpenID Connect
 
-Congratulations! You've selected an excellent way to secure your JHipster application. If you're not sure what OAuth and OpenID Connect (OIDC) are, please see [What the Heck is OAuth?](https://developer.okta.com/blog/2017/06/21/what-the-heck-is-oauth)
+To log in to your app, you'll need to have [Keycloak](https://keycloak.org) up and running. For local development you can run it with
 
-To log in to your app, you'll need to have [Keycloak](https://keycloak.org) up and running. The JHipster Team has created a Docker container for you that has the default users and roles. Start Keycloak using the following command.
-
-```
+```bash
 docker-compose -f src/main/docker/keycloak.yml up
 ```
 
+or 
+
+```bash
+make local-services
+```
+
+The former command starts also the local instance of infinispan.
+
 The security settings in `src/main/resources/application.yml` are configured for this image.
-
-```yaml
-security:
-    basic:
-        enabled: false
-    oauth2:
-        client:
-            accessTokenUri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/token
-            userAuthorizationUri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/auth
-            clientId: web_app
-            clientSecret: web_app
-            clientAuthenticationScheme: form
-            scope: openid profile email
-        resource:
-            userInfoUri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/userinfo
-            tokenInfoUri: http://localhost:9080/auth/realms/jhipster/protocol/openid-connect/token/introspect
-            preferTokenInfo: false
-```
-
-### Service workers
-
-Service workers are commented by default, to enable them please uncomment the following code.
-
-* The service worker registering script in index.html
-
-```html
-<script>
-    if ('serviceWorker' in navigator) {
-        navigator.serviceWorker
-        .register('./sw.js')
-        .then(function() { console.log('Service Worker Registered'); });
-    }
-</script>
-```
-
-Note: workbox creates the respective service worker and dynamically generate the `sw.js`
 
 ### Managing dependencies
 
