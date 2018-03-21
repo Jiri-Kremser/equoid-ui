@@ -18,12 +18,16 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
   chart: any;
   isStacked = true;
   historyLength = 50;
+  ticks: any[] = ['x']
 
   ngAfterViewInit() {
     this.chart = c3.generate({
       bindto: '#chart',
       data: {
-        columns: this.data,
+        x: 'x',
+        columns: [
+          this.ticks
+        ],
         // type: 'area-step',
         type: 'area',
         // type: 'area-spline',
@@ -31,12 +35,34 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
           _.map(this.data, (a) => a[0])
         ]
       }
+      ,
+      axis: {
+        x: {
+          type: 'timeseries',
+          label: 'Time',
+          tick: {
+            format: '%M:%S'
+          }
+        },
+        y: {
+          label: 'Amount'
+        }
+      }
     });
   }
 
   update = () => {
+    this.ticks.push(+new Date());
+
+    if (this.ticks.length > this.historyLength + 1) {
+      // forget the oldest data point
+      _.each(this.data, (a) => a.splice(1, 1))
+      this.ticks.splice(1, 1)
+    }
+    const all = [this.ticks].concat(this.data);
+    // console.log(JSON.stringify(all));
     this.chart.load({
-      columns: this.data
+      columns: all
     });
   }
 
@@ -70,9 +96,7 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
     const self = this;
     // update chart on data input value change
     if (this.chart) {
-      this.chart.load({
-        columns: this.data
-      });
+      this.update();
     }
   }
 

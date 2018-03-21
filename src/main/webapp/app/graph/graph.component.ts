@@ -17,7 +17,7 @@ import { ItemRestDataService } from '../piechart/item-rest-data.service';
 export class GraphComponent implements OnInit {
     dummyData = true;
     account: Account;
-    data: Array<any> = [];
+    data: DataPoint[] = [];
     chartData: Array<any> = [];
 
     stackedData: Array<any> = [['Arrow Gin'],
@@ -125,4 +125,10 @@ export class GraphComponent implements OnInit {
     login() {
         this.loginService.login();
     }
+}
+
+interface DataPoint {
+    id: String,
+    name: String,
+    count: Number
 }
