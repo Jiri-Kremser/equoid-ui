@@ -65,17 +65,17 @@ Then navigate to [http://localhost:8080](http://localhost:8080) in your browser.
 
 For more information, refer to the [Running tests page][].
 
-## Openshift
+## OpenShift
 
-You can deploy the application into local Openshift cloud by invoking
+You can deploy the application into local OpenShift cloud by invoking
 
 ```bash
 make oc-run
 ```
 
-This will kill all the running Docker containers, starts the local Openshift cloud and creates the resources representing deployment configs, services, routes, secretes, etc. It assumes the `docker` command can be run w/o root privileges and also the `oc` command on the `$PATH`.
+This will kill all the running Docker containers, starts the local OpenShift cloud and creates the resources representing deployment configs, services, routes, secretes, etc. It assumes the `docker` command can be run w/o root privileges and also the `oc` command on the `$PATH`.
 
-For deploying to an external Openshift cluster run:
+For deploying to an external OpenShift cluster run:
 
 ```bash
 METRICS=1 ./ocp/ocp-apply.sh
