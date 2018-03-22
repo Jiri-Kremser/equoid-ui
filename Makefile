@@ -1,4 +1,3 @@
-.PHONY: build clean push oc-run grafana-ds grafana-dashboard wait20 wait5 all os-deploy-keycloak os-add-service-account os-deploy-monitoring os-deploy-equoid
 
 .PHONY: clean
 clean:
