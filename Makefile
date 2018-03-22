@@ -1,3 +1,4 @@
+TAG ?= 0.0.3
 
 .PHONY: clean
 clean:
@@ -9,8 +10,8 @@ build:
 
 .PHONY: push
 push:
-	docker tag equoid:0.0.1 $(USER)/equoid
-	docker push $(USER)/equoid
+	docker tag equoid:0.0.1 $(USER)/equoid:$(TAG)
+	docker push $(USER)/equoid:$(TAG)
 
 .PHONY: oc-run
 oc-run:
@@ -18,6 +19,9 @@ oc-run:
 	oc cluster up
 	METRICS=1 ./ocp/ocp-apply.sh
 	#./ocp/ocp-apply.sh
+
+.PHONY: oc-clean
+	oc delete deploymentconfigs/equoid deploymentconfigs/equoid-alertmanager deploymentconfigs/equoid-grafana deploymentconfigs/equoid-prometheus deploymentconfigs/keycloak  routes/equoid routes/equoid-alertmanager routes/equoid-grafana routes/equoid-prometheus routes/keycloak svc/equoid svc/keycloak svc/equoid-alertmanager svc/equoid-grafana svc/equoid-prometheus
 
 .PHONY: grafana-ds
 grafana-ds:
