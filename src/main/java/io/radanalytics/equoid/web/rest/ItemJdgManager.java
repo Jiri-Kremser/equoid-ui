@@ -8,10 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ItemJdgManager {
@@ -26,8 +28,8 @@ public class ItemJdgManager {
     }
 
     public List<Item> getAll() {
-        RemoteCache<String, Long> cache = cacheManager.getCache();
-        Map<String, Long> all = Collections.emptyMap();
+        RemoteCache<Object, Object> cache = cacheManager.getCache();
+        Map<Object, Object> all = Collections.emptyMap();
         if (cache != null) {
             all = cache.getBulk();
             log.debug("Successfully retrieved " + all + " from ISPN cache");
@@ -37,7 +39,17 @@ public class ItemJdgManager {
         return all
             .entrySet()
             .stream()
-            .map(entry -> new Item(entry.getKey(), entry.getValue()))
+            .flatMap(entry -> {
+                if (entry.getValue() instanceof Long && entry.getKey() instanceof String) {
+                    return Stream.of(new Item((String) entry.getKey(), (Long) entry.getValue()));
+                } else {
+                    log.error("Broken contract when trying to retrieve items of type (String -> Long)");
+                    log.error("entry: " + entry);
+                    log.error("type of key: " + entry.getKey().getClass().getCanonicalName());
+                    log.error("type of value: " + entry.getValue().getClass().getCanonicalName());
+                    return Stream.empty();
+                }
+            })
             .collect(Collectors.toList());
     }
 
