@@ -32,7 +32,7 @@ export class GraphComponent implements OnInit {
                    ['Wolfschmidt']
                   ];
 
-    colours = ['#57A1C6', '#4FC3F7', '#36D7B7', '#46d736', '#6957c6', '#c69857', '#c66057', '#d73646', '#b3c657', '#f7db4f'];
+    colors = ['#57A1C6', '#4FC3F7', '#36D7B7', '#46d736', '#6957c6', '#c69857', '#c66057', '#d73646', '#b3c657', '#f7db4f'];
     largeConfig = {
         chartId: 'exampleDonut',
         colors: {
@@ -40,12 +40,12 @@ export class GraphComponent implements OnInit {
             'Jim Beam': '#3f9c35',       // green
             'Captain Morgan': '#ec7a08', // orange
             Becherovka: '#cc0000',       // red
-            Jagermeister: this.colours[0],
-            'Tullamore Dew': this.colours[1],
-            'Black Velvet': this.colours[2],
-            'Pearl Gin': this.colours[3],
-            'Arrow Gin': this.colours[4],
-            'Wolfschmidt': this.colours[5]
+            Jagermeister: this.colors[0],
+            'Tullamore Dew': this.colors[1],
+            'Black Velvet': this.colors[2],
+            'Pearl Gin': this.colors[3],
+            'Arrow Gin': this.colors[4],
+            'Wolfschmidt': this.colors[5]
         },
         data: {
             onclick: (data: any, element: any) => {
@@ -80,6 +80,11 @@ export class GraphComponent implements OnInit {
                 this.stackedData[i].push(+last);
             }
         }
+    }
+
+    updateStackedData(oldStackedData, newData: DataPoint[]) {
+
+        return oldStackedData;
     }
 
     refresh() {

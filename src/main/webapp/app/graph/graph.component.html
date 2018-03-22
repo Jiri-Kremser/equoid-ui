@@ -8,12 +8,10 @@
         <div [ngSwitch]="isAuthenticated()">
             <div *ngSwitchCase="true">
                 <equoid-topk></equoid-topk>
-                D3:
-                <equoid-piechart [data]='data' [colours]='colours'></equoid-piechart>
-                patternfly-ng:
+                <!-- D3:
+                <equoid-piechart [data]='data' [colors]='colors'></equoid-piechart> -->
                 <pfng-chart-donut [chartData]='chartData' [config]='largeConfig'></pfng-chart-donut>
-                C3:
-                <equoid-stackchart [data]='stackedData' [colours]='colours'></equoid-stackchart>
+                <equoid-stackchart [data]='stackedData' [colors]='colors'></equoid-stackchart>
             </div>
             <div class="alert alert-warning" *ngSwitchCase="false">
                 To be able to see the graph, you need to login

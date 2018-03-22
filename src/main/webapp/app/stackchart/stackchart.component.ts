@@ -13,7 +13,7 @@ import * as _ from 'underscore';
 export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('containerStackChart') chartContainer: ElementRef;
   @Input() data: any;
-  @Input() colours: Array<string>;
+  @Input() colors: string[];
   svg: any;
   chart: any;
   isStacked = true;
@@ -34,8 +34,10 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
         groups: [
           _.map(this.data, (a) => a[0])
         ]
-      }
-      ,
+      },
+      color: {
+        pattern: this.colors
+      },
       axis: {
         x: {
           type: 'timeseries',
