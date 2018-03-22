@@ -1,17 +1,16 @@
 package io.radanalytics.equoid.web.rest;
 
 import io.radanalytics.equoid.domain.Item;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.infinispan.client.hotrod.RemoteCache;
 import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,6 +35,15 @@ public class ItemJdgManager {
         } else {
             log.error("Unable to access infinispan cache");
         }
+        // todo: delete me
+        if (!all.entrySet().isEmpty()) {
+            Map.Entry<Object, Object> item = all.entrySet().iterator().next();
+            if (item.getKey() instanceof String && item.getKey() instanceof String) {
+                log.info("trying to handle the intervals");
+                return handleIntervalData(all);
+            }
+        }
+
         return all
             .entrySet()
             .stream()
@@ -53,6 +61,8 @@ public class ItemJdgManager {
             .collect(Collectors.toList());
     }
 
+
+
     public Item get(String name) {
         RemoteCache<String, Long> cache = cacheManager.getCache();
         if (cache != null) {
@@ -69,6 +79,61 @@ public class ItemJdgManager {
         RemoteCache<String, Long> cache = cacheManager.getCache();
         if (cache != null) {
             cache.put(item.getName(), item.getCount());
+        }
+    }
+
+    // todo: delete me
+    private List<Item> handleIntervalData(Map<Object, Object> all) {
+        List<ImmutablePair<Integer, String>> list = all.entrySet().stream()
+            .flatMap(entry -> {
+                try {
+                    int interval = Integer.parseInt((String) entry.getKey());
+                    return Stream.of(new ImmutablePair(interval, entry.getValue()));
+                } catch (NumberFormatException nfe) {
+                    log.error("case 0");
+                    return Stream.empty();
+                }
+            })
+            .collect(Collectors.toList());
+        if (list.isEmpty()) {
+            log.error("case 0.5");
+            return Collections.emptyList();
+        }
+        ImmutablePair<Integer, String> latestState = Collections.max(list, Comparator.comparingInt(ImmutablePair::getLeft));
+        if (latestState.getRight().contains(";")) {
+            String[] items = latestState.getRight().split(";");
+            if (items.length == 2) {
+                List<Item> retList = Arrays.stream(items).flatMap(item -> {
+                    if (item.contains(":")) {
+                        String[] itemChunks = item.split(":");
+                        if (itemChunks.length == 2) {
+                            try {
+                                long count = Long.parseLong(itemChunks[1]);
+                                return Stream.of(new Item(itemChunks[0], count));
+                            } catch (NumberFormatException nfe) {
+                                log.error("case 1");
+                                return Stream.empty();
+                            }
+                        } else {
+                            log.error("case 2");
+                            return Stream.empty();
+                        }
+                    } else {
+                        log.error("case 3");
+                        return Stream.empty();
+                    }
+                }).collect(Collectors.toList());
+                if (retList.isEmpty()) {
+                    log.error("case 3.5");
+                }
+                return retList;
+            } else {
+                log.error("case 4");
+                return Collections.emptyList();
+            }
+        } else {
+            log.error("case 5");
+            return Collections.emptyList();
         }
     }
 
