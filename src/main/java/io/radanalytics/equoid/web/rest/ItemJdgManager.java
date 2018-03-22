@@ -88,7 +88,7 @@ public class ItemJdgManager {
             .flatMap(entry -> {
                 try {
                     int interval = Integer.parseInt((String) entry.getKey());
-                    return Stream.of(new ImmutablePair(interval, entry.getValue()));
+                    return Stream.of(new ImmutablePair<Integer, String>(interval, entry.getValue().toString()));
                 } catch (NumberFormatException nfe) {
                     log.error("case 0");
                     return Stream.empty();
@@ -102,7 +102,7 @@ public class ItemJdgManager {
         ImmutablePair<Integer, String> latestState = Collections.max(list, Comparator.comparingInt(ImmutablePair::getLeft));
         if (latestState.getRight().contains(";")) {
             String[] items = latestState.getRight().split(";");
-            if (items.length == 2) {
+            if (items.length > 0) {
                 List<Item> retList = Arrays.stream(items).flatMap(item -> {
                     if (item.contains(":")) {
                         String[] itemChunks = item.split(":");
