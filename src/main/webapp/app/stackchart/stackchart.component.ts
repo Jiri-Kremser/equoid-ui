@@ -45,6 +45,9 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
         contents: (d, defaultTitleFormat, defaultValueFormat, color) => {
           const text = '<table class="c3-tooltip">'
             + _.map(d, (el) => {
+              if (el === null) {
+                return '<tr><td>-</td><td></td><td></td></tr>'
+              }
               return '<tr><td>'
                 + '<span style="background-color:'
                 + color(el)

@@ -18,7 +18,7 @@ import * as T from '../shared/types/common-types'
 
 })
 export class GraphComponent implements OnInit {
-    dummyData = true;
+    isDummyData = true;
     account: Account;
     data: T.DataPoint[] = [];
     chartData: Array<any> = [];
@@ -61,8 +61,11 @@ export class GraphComponent implements OnInit {
     }
 
     updateStackedData(oldStackedData, newData: T.DataPoint[]) {
-        console.log('new data = ' + JSON.stringify(newData));
+        if (newData === null || newData.length === 0) {
+            return null;
+        }
 
+        // console.log('new data = ' + JSON.stringify(newData));
         // add time tick
         oldStackedData.ticks.push(+new Date())
 
@@ -79,6 +82,10 @@ export class GraphComponent implements OnInit {
             }
         });
 
+        // align the array lengths
+        const toAlign = _.filter(oldStackedData.data, (a) => a.length < oldStackedData.ticks.length);
+        _.each(toAlign, (a) => a.push(a[a.length - 1]));
+
         if (oldStackedData.ticks.length > oldStackedData.historyLength + 1) {
             // forget the oldest data point
             _.each(oldStackedData.data, (a) => a.splice(1, 1));
@@ -89,8 +96,12 @@ export class GraphComponent implements OnInit {
         return oldStackedData;
     }
 
+    toggleDummy() {
+        this.isDummyData = !this.isDummyData;
+    }
+
     refresh() {
-        if (this.dummyData) {
+        if (this.isDummyData) {
             this.data = this.pieDataService.addData(1, this.data);
             this.chartData = _.map(this.data, (item) => [item.name, item.count]);
             this.updateStackedData(this.stackedData, this.data);

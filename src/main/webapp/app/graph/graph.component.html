@@ -7,6 +7,7 @@
 
         <div [ngSwitch]="isAuthenticated()">
             <div *ngSwitchCase="true">
+                    <button class="toggleStack" (click)="toggleDummy()">{{ isDummyData == true ? 'Real' : 'Dummy' }} Data</button>
                 <equoid-topk></equoid-topk>
                 <!-- D3:
                 <equoid-piechart [data]='data' [colors]='colors'></equoid-piechart> -->
