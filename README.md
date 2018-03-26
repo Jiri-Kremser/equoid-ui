@@ -64,8 +64,6 @@ To ensure everything worked, run:
 
 Then navigate to [http://localhost:8080](http://localhost:8080) in your browser.
 
-For more information, refer to the [Running tests page][].
-
 ## OpenShift
 
 You can deploy the application into local OpenShift cloud by invoking
