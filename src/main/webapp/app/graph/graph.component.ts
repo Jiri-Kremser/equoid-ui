@@ -18,7 +18,7 @@ import * as T from '../shared/types/common-types'
 
 })
 export class GraphComponent implements OnInit {
-    isDummyData = true;
+    isDummyData = false;
     account: Account;
     data: T.DataPoint[] = [];
     chartData: Array<any> = [];
