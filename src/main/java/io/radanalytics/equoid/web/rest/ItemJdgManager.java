@@ -35,11 +35,13 @@ public class ItemJdgManager {
         } else {
             log.error("Unable to access infinispan cache");
         }
-        // todo: delete me
         if (!all.entrySet().isEmpty()) {
             Map.Entry<Object, Object> item = all.entrySet().iterator().next();
-            if (item.getKey() instanceof String && item.getKey() instanceof String) {
-                log.info("trying to handle the intervals");
+            if (item.getKey() instanceof String && item.getValue() instanceof String && ((String) item.getKey()).endsWith("econds")) {
+                log.info("trying to handle the 'N seconds -> string' format");
+                return handleNSecondsData((String) item.getKey(), (String) item.getValue());
+            } else if (item.getKey() instanceof String && item.getValue() instanceof String) {
+                log.info("trying to handle the 'interval -> string' format");
                 return handleIntervalData(all);
             }
         }
@@ -82,26 +84,14 @@ public class ItemJdgManager {
         }
     }
 
-    // todo: delete me
-    private List<Item> handleIntervalData(Map<Object, Object> all) {
-        List<ImmutablePair<Integer, String>> list = all.entrySet().stream()
-            .flatMap(entry -> {
-                try {
-                    int interval = Integer.parseInt((String) entry.getKey());
-                    return Stream.of(new ImmutablePair<Integer, String>(interval, entry.getValue().toString()));
-                } catch (NumberFormatException nfe) {
-                    log.error("case 0");
-                    return Stream.empty();
-                }
-            })
-            .collect(Collectors.toList());
-        if (list.isEmpty()) {
-            log.error("case 0.5");
-            return Collections.emptyList();
-        }
-        ImmutablePair<Integer, String> latestState = Collections.max(list, Comparator.comparingInt(ImmutablePair::getLeft));
-        if (latestState.getRight().contains(";")) {
-            String[] items = latestState.getRight().split(";");
+    private List<Item> handleNSecondsData(String interval, String data) {
+        log.info("retrieving the data for last " + interval);
+        return parseData(data);
+    }
+
+    private List<Item> parseData(String data) {
+        if (data.contains(";")) {
+            String[] items = data.split(";");
             if (items.length > 0) {
                 List<Item> retList = Arrays.stream(items).flatMap(item -> {
                     if (item.contains(":")) {
@@ -135,6 +125,28 @@ public class ItemJdgManager {
             log.error("case 5");
             return Collections.emptyList();
         }
+    }
+
+    // todo: delete me
+    // this is here to handle the implementation that has been deprecated
+    private List<Item> handleIntervalData(Map<Object, Object> all) {
+        List<ImmutablePair<Integer, String>> list = all.entrySet().stream()
+            .flatMap(entry -> {
+                try {
+                    int interval = Integer.parseInt((String) entry.getKey());
+                    return Stream.of(new ImmutablePair<Integer, String>(interval, entry.getValue().toString()));
+                } catch (NumberFormatException nfe) {
+                    log.error("case 0");
+                    return Stream.empty();
+                }
+            })
+            .collect(Collectors.toList());
+        if (list.isEmpty()) {
+            log.error("case 0.5");
+            return Collections.emptyList();
+        }
+        ImmutablePair<Integer, String> latestState = Collections.max(list, Comparator.comparingInt(ImmutablePair::getLeft));
+        return parseData(latestState.getRight());
     }
 
 }
