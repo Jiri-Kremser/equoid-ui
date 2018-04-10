@@ -29,7 +29,7 @@
     "jhiPrefix": "equoid",
     "enableTranslation": false,
     "appsFolders": [
-      "equoid-ui-prototype"
+      "equoid-ui"
     ],
     "directoryPath": ".",
     "monitoring": "prometheus",
