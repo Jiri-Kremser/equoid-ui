@@ -38,7 +38,7 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
         colors: this.data.colors
       },
       legend: {
-        position: 'right'
+        position: 'bottom'
       },
       tooltip: {
         grouped: true,
