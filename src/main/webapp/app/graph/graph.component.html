@@ -13,7 +13,6 @@
 
         <div [ngSwitch]="isAuthenticated()">
             <div *ngSwitchCase="true">
-
                 <equoid-topk></equoid-topk>
                 <!-- D3: -->
                 <equoid-piechart [data]='data' [colors]='colors'></equoid-piechart>

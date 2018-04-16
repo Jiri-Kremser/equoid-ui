@@ -89,13 +89,6 @@ export class GraphComponent implements OnInit {
         // _.each(toAlign, (a) => a.push(a[a.length - 1]));
         _.each(toAlign, (a) => a.push(0));
 
-        // // remove all zeros
-        // if (oldStackedData.ticks.length > 3) {
-        //     const filtered = _.filter(oldStackedData.data, (s) => !_.every(_.rest(s, 1), (e) => e === 0))
-        //     console.log('filtered=' + JSON.stringify(filtered))
-        //     oldStackedData.data = filtered;
-        // }
-
         if (oldStackedData.ticks.length > oldStackedData.historyLength + 1) {
             // forget the oldest data point
             _.each(oldStackedData.data, (a) => a.splice(1, 1));
@@ -114,7 +107,6 @@ export class GraphComponent implements OnInit {
             // this.data = this.pieDataService.addData(1, this.data);
             this.data = this.jdgFakeDataService.getData(15);
             this.chartData = _.map(this.data, (item) => [item.name, item.count]);
-            // console.log('chartData=' + this.chartData);
             this.updateStackedData(this.stackedData, this.data);
         } else {
             this.itemRestDataService.getData(0).subscribe(

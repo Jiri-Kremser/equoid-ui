@@ -71,8 +71,6 @@ export class PiechartComponent implements OnInit, OnChanges {
     const outerRadius = this.radius + 20;
     const hoverRadius = this.radius + 25;
     this.pieColors = this.colors;
-    console.log('colors=' + JSON.stringify(this.colors));
-    console.log('pieColors=' + JSON.stringify(this.pieColors));
     this.tooltip = this.elRef.nativeElement.querySelector('.tooltip');
 
     // create a pie generator and tell it where to get numeric values from and whether sorting is needed or not
