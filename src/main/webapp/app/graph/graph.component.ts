@@ -4,6 +4,7 @@ import * as _ from 'underscore';
 import { Account, LoginService, Principal } from '../shared';
 // Services
 import { PieDataService } from '../piechart/piechart.service';
+import { JdgFakeDataService } from './jdg-fake-data.service';
 import { ItemRestDataService } from '../piechart/item-rest-data.service';
 
 // Types
@@ -56,11 +57,12 @@ export class GraphComponent implements OnInit {
         private loginService: LoginService,
         private eventManager: JhiEventManager,
         private pieDataService: PieDataService,
+        private jdgFakeDataService: JdgFakeDataService,
         private itemRestDataService: ItemRestDataService
     ) {
     }
 
-    updateStackedData(oldStackedData, newData: T.DataPoint[]) {
+    updateStackedData(oldStackedData: T.StackedChartData, newData: T.DataPoint[]) {
         if (newData === null || newData.length === 0) {
             return null;
         }
@@ -84,7 +86,15 @@ export class GraphComponent implements OnInit {
 
         // align the array lengths
         const toAlign = _.filter(oldStackedData.data, (a) => a.length < oldStackedData.ticks.length);
-        _.each(toAlign, (a) => a.push(a[a.length - 1]));
+        // _.each(toAlign, (a) => a.push(a[a.length - 1]));
+        _.each(toAlign, (a) => a.push(0));
+
+        // // remove all zeros
+        // if (oldStackedData.ticks.length > 3) {
+        //     const filtered = _.filter(oldStackedData.data, (s) => !_.every(_.rest(s, 1), (e) => e === 0))
+        //     console.log('filtered=' + JSON.stringify(filtered))
+        //     oldStackedData.data = filtered;
+        // }
 
         if (oldStackedData.ticks.length > oldStackedData.historyLength + 1) {
             // forget the oldest data point
@@ -92,7 +102,6 @@ export class GraphComponent implements OnInit {
             oldStackedData.ticks.splice(1, 1);
         }
 
-        // todo: remove data series that is no longer frequent
         return oldStackedData;
     }
 
@@ -102,8 +111,10 @@ export class GraphComponent implements OnInit {
 
     refresh() {
         if (this.isDummyData) {
-            this.data = this.pieDataService.addData(1, this.data);
+            // this.data = this.pieDataService.addData(1, this.data);
+            this.data = this.jdgFakeDataService.getData(15);
             this.chartData = _.map(this.data, (item) => [item.name, item.count]);
+            // console.log('chartData=' + this.chartData);
             this.updateStackedData(this.stackedData, this.data);
         } else {
             this.itemRestDataService.getData(0).subscribe(

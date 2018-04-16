@@ -2,21 +2,18 @@ import { Component, OnInit, OnChanges, ViewChild, ElementRef, Input } from '@ang
 import * as d3 from 'd3';
 import * as _ from 'underscore';
 
-// Services
-import { PieDataService } from './piechart.service';
-
 @Component({
-  selector: 'equoid-piechart',
-  templateUrl: './piechart.component.html',
+  selector: 'equoid-donutchart',
+  templateUrl: './donutchart.component.html',
   styleUrls: [
-    'piechart.scss'
+    'donutchart.scss'
   ]
 })
 
-export class PiechartComponent implements OnInit, OnChanges {
-  @ViewChild('containerPieChart') chartContainer: ElementRef;
+export class DonutchartComponent implements OnInit, OnChanges {
+  @ViewChild('containerDonutChart') chartContainer: ElementRef;
   @Input() data: any;
-  @Input() colors: Array<string>;
+  @Input() colours: Array<string>;
 
   hostElement: any;
   svg: any;
@@ -32,10 +29,10 @@ export class PiechartComponent implements OnInit, OnChanges {
   labels: Array<string>;
   tooltip: any;
   centralLabel: any;
-  pieColors: any;
+  pieColours: any;
   slices: Array<any>;
   selectedSlice: any;
-  colorSlices: Array<string>;
+  colourSlices: Array<string>;
   arc: any;
   arcEnter: any;
 
@@ -58,8 +55,7 @@ export class PiechartComponent implements OnInit, OnChanges {
   }
 
   constructor(
-    private elRef: ElementRef,
-    private pieDataService: PieDataService
+    private elRef: ElementRef
   ) {}
 
   createChart = () => {
@@ -67,12 +63,10 @@ export class PiechartComponent implements OnInit, OnChanges {
     this.hostElement = this.chartContainer.nativeElement;
 
     this.radius = Math.min(this.hostElement.offsetWidth, this.hostElement.offsetHeight) / 3;
-    const innerRadius = this.radius + 5;
-    const outerRadius = this.radius + 20;
-    const hoverRadius = this.radius + 25;
-    this.pieColors = this.colors;
-    console.log('colors=' + JSON.stringify(this.colors));
-    console.log('pieColors=' + JSON.stringify(this.pieColors));
+    const innerRadius = this.radius - 35;
+    const outerRadius = this.radius - 15;
+    const hoverRadius = this.radius - 5;
+    this.pieColours = this.colours ? d3.scaleOrdinal().range(this.colours) : d3.scaleOrdinal(d3.schemeCategory10);
     this.tooltip = this.elRef.nativeElement.querySelector('.tooltip');
 
     // create a pie generator and tell it where to get numeric values from and whether sorting is needed or not
@@ -101,7 +95,7 @@ export class PiechartComponent implements OnInit, OnChanges {
 
     this.slices = this.updateSlices(this.data);
     this.labels = this.slices.map((slice) => slice.name);
-    this.colorSlices = this.slices.map((slice) => this.pieColors[slice.name]);
+    this.colourSlices = this.slices.map((slice) => this.pieColours(slice.name));
 
     this.values = firstRun ? [0, 0, 0] : _.toArray(this.slices).map((slice) => slice.count);
 
@@ -126,7 +120,7 @@ export class PiechartComponent implements OnInit, OnChanges {
     // to compute the transition using interpolation
     d3.select(this.hostElement).selectAll('path')
       .data(this.pieGenerator)
-      .attr('fill', (datum, index) => this.pieColors[this.labels[index]])
+      .attr('fill', (datum, index) => this.pieColours(this.labels[index]))
       .attr('d', this.arcGenerator)
       .transition()
       .duration(750)

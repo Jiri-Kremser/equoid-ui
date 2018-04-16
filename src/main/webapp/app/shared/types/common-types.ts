@@ -1,12 +1,12 @@
 export interface StackedChartData {
-    historyLength: Number,
-    ticks: (String|Number)[],
+    historyLength: number,
+    ticks: (String|number)[],
     colors: {},
-    data: (String|Number)[][]
+    data: (String|number)[][]
 }
 
 export interface DataPoint {
     id: String,
     name: String,
-    count: Number
+    count: number
 }

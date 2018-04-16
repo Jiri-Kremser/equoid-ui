@@ -1,17 +1,23 @@
 <div class="row">
-    <div class="col-md-1">
+    <div class="col-md-2">
+        <div [ngSwitch]="isAuthenticated()">
+            <br /><br /><br /><br /><br /><br /><br /><br />
+            <div *ngSwitchCase="true">
+                <button class="toggleStack" (click)="toggleDummy()">{{ isDummyData == true ? 'Real' : 'Dummy' }} Data</button>
+            </div>
+        </div>
     </div>
-    <div class="col-md-9">
-        <h1 class="display-4">Graph</h1>
+    <div class="col-md-8">
+        <h1 class="display-3">Graph</h1>
         <br/>
 
         <div [ngSwitch]="isAuthenticated()">
             <div *ngSwitchCase="true">
-                    <button class="toggleStack" (click)="toggleDummy()">{{ isDummyData == true ? 'Real' : 'Dummy' }} Data</button>
+
                 <equoid-topk></equoid-topk>
-                <!-- D3:
-                <equoid-piechart [data]='data' [colors]='colors'></equoid-piechart> -->
-                <pfng-chart-donut [chartData]='chartData' [config]='largeConfig'></pfng-chart-donut>
+                <!-- D3: -->
+                <equoid-piechart [data]='data' [colors]='colors'></equoid-piechart>
+                <!--<pfng-chart-donut [chartData]='chartData' [config]='largeConfig'></pfng-chart-donut>-->
                 <equoid-stackchart [data]='stackedData' [colors]='colors'></equoid-stackchart>
             </div>
             <div class="alert alert-warning" *ngSwitchCase="false">

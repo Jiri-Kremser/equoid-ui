@@ -38,7 +38,7 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
         colors: this.data.colors
       },
       legend: {
-        position: 'right'
+        show: false
       },
       tooltip: {
         grouped: true,
@@ -95,6 +95,28 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
     this.chart.load({
       columns: all
     });
+    const chart = this.chart;
+    d3.select('#legend-stack').selectAll('*').remove();
+    const filtered = _.filter(this.data.data, (s) => !_.every(_.rest(s, 1), (e) => e === 0))
+    const keys: string[] = _.map(filtered, (a) => a[0]);
+    d3.select('#legend-stack').selectAll('span')
+      .data(keys)
+      .enter().append('div')
+      .attr('style', 'cursor:pointer;padding:0 10px;flex-direction:row;box-sizing:border-box;display:flex;max-height: 100%;place-content:center flex-start;align-items:center;')
+      .attr('fxlayoutalign', 'start center')
+      .html((id) => {
+        const circle = 'height: 15px;width: 15px;border-radius: 50%;margin-right: 5px;';
+        return '<div class="circle" style="' + circle + 'background-color: ' + chart.color(id) + ';"></div><div style="white-space:nowrap">' + id + '</div>'
+      })
+      .on('mouseover', function(id) {
+        chart.focus(id);
+      })
+      .on('mouseout', function(id) {
+        chart.revert();
+      })
+      .on('click', function(id) {
+        chart.toggle(id);
+      });
 
     if (this.firstRun && this.isStacked) {
       this.chart.groups([_.map(this.data.data, (a) => a[0])]);

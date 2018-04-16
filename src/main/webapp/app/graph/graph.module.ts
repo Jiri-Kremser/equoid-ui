@@ -5,6 +5,7 @@ import { GRAPH_ROUTE, GraphComponent } from './';
 import { EquoidTopkModule } from '../topk/topk.module';
 import { ChartModule } from 'patternfly-ng';
 import { PiechartComponent } from '../piechart/piechart.component';
+import { DonutchartComponent } from '../donutchart/donutchart.component';
 import { StackchartComponent } from '../stackchart/stackchart.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -19,6 +20,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     declarations: [
         GraphComponent,
         PiechartComponent,
+        DonutchartComponent,
         StackchartComponent
     ],
     entryComponents: [

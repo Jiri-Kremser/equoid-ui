@@ -15,6 +15,7 @@ import { customHttpProvider } from './blocks/interceptor/http.provider';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
 import { PieDataService } from './piechart/piechart.service'
 import { ItemRestDataService } from './piechart/item-rest-data.service'
+import { JdgFakeDataService } from './graph/jdg-fake-data.service'
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 
 import {
@@ -52,7 +53,8 @@ import {
         PaginationConfig,
         UserRouteAccessService,
         PieDataService,
-        ItemRestDataService
+        ItemRestDataService,
+        JdgFakeDataService
     ],
     bootstrap: [ JhiMainComponent ]
 })
