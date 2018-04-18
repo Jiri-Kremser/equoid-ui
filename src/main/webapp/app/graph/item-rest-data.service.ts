@@ -9,18 +9,25 @@ import { Observable } from 'rxjs/Observable';
 export class ItemRestDataService {
   private resourceUrl = SERVER_API_URL + 'api/items?cached=true';
 
+  private publisherResourceUrl = SERVER_API_URL + 'api/publisher';
+
   constructor(private http: Http) { }
 
-  getData = (num: number) => {
+  getData = (num: number): Observable<ResponseWrapper> => {
     const result: Observable<ResponseWrapper> = this.http.get(this.resourceUrl)
       .map((res: Response) => this.convertResponse(res));
 
     return result;
   }
 
+  newItem = (item: string): Observable<ResponseWrapper> => {
+    const result: Observable<ResponseWrapper> = this.http.post(this.publisherResourceUrl, item)
+    return result;
+  }
+
   private convertResponse(res: Response): ResponseWrapper {
     const jsonResponse: Array<any> = res.json();
-    console.log(res.json());
+    // console.log(res.json());
     return new ResponseWrapper(res.headers, jsonResponse, res.status);
   }
 }

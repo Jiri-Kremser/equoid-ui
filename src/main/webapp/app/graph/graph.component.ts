@@ -5,7 +5,7 @@ import { Account, LoginService, Principal } from '../shared';
 // Services
 import { PieDataService } from '../piechart/piechart.service';
 import { JdgFakeDataService } from './jdg-fake-data.service';
-import { ItemRestDataService } from '../piechart/item-rest-data.service';
+import { ItemRestDataService } from './item-rest-data.service';
 
 // Types
 import * as T from '../shared/types/common-types'
@@ -60,6 +60,16 @@ export class GraphComponent implements OnInit {
         private jdgFakeDataService: JdgFakeDataService,
         private itemRestDataService: ItemRestDataService
     ) {
+    }
+
+    addItem(item: string) {
+        this.itemRestDataService.newItem(item).subscribe(
+            (data) => {
+                this.data = data.json;
+                // todo: notification
+            },
+            (err) => console.error(err)
+        );
     }
 
     updateStackedData(oldStackedData: T.StackedChartData, newData: T.DataPoint[]) {
