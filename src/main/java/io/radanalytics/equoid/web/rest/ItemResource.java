@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -48,16 +49,25 @@ public class ItemResource {
      */
     @PostMapping("/items")
     @Timed
-    public ResponseEntity<Item> createItem(@Valid @RequestBody Item item) throws URISyntaxException {
+    public ResponseEntity<String> createItem(@Valid @RequestBody Item item) throws URISyntaxException {
         log.info("REST request to save Item : {}", item);
         if (item.getId() != null) {
             throw new BadRequestAlertException("A new item cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        jdgManager.put(item);
+//        jdgManager.put(item);
+
+        RestTemplate restTemplate = new RestTemplate();
+        log.debug("Adding new frequent item: " + item);
+        ResponseEntity<String> stringResponseEntity = restTemplate.postForEntity("http://equoid-data-publisher:8080/api", item.getName(), String.class);
+        if (!stringResponseEntity.getStatusCode().is2xxSuccessful()) {
+            log.error("Error: " + stringResponseEntity.toString());
+            return stringResponseEntity;
+        }
+
         Item result = itemRepository.save(item);
         return ResponseEntity.created(new URI("/api/items/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+            .body(item.getName());
     }
 
     /**
@@ -71,7 +81,7 @@ public class ItemResource {
      */
     @PutMapping("/items")
     @Timed
-    public ResponseEntity<Item> updateItem(@Valid @RequestBody Item item) throws URISyntaxException {
+    public ResponseEntity<String> updateItem(@Valid @RequestBody Item item) throws URISyntaxException {
         log.debug("REST request to update Item : {}", item);
         if (item.getId() == null) {
             return createItem(item);
@@ -80,7 +90,7 @@ public class ItemResource {
         Item result = itemRepository.save(item);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, item.getId().toString()))
-            .body(result);
+            .body(result.getName());
     }
 
     /**

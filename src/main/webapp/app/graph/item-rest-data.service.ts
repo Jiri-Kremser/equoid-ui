@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
 export class ItemRestDataService {
   private resourceUrl = SERVER_API_URL + 'api/items?cached=true';
 
-  private publisherResourceUrl = SERVER_API_URL + 'api/publisher';
+  // private publisherResourceUrl = SERVER_API_URL + 'api/publisher';
 
   constructor(private http: Http) { }
 
@@ -21,7 +21,11 @@ export class ItemRestDataService {
   }
 
   newItem = (item: string): Observable<ResponseWrapper> => {
-    const result: Observable<ResponseWrapper> = this.http.post(this.publisherResourceUrl, item)
+    const newItem = {
+      name: item,
+      count: 0
+    };
+    const result: Observable<ResponseWrapper> = this.http.post(this.resourceUrl, newItem);
     return result;
   }
 
