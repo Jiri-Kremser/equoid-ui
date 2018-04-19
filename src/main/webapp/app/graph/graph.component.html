@@ -1,15 +1,23 @@
 <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-1">
         <div [ngSwitch]="isAuthenticated()">
-            <br /><br /><br /><br /><br /><br /><br /><br />
             <div *ngSwitchCase="true">
+                <br />
                 <button class="toggleStack" (click)="toggleDummy()">{{ isDummyData == true ? 'Real' : 'Dummy' }} Data</button>
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
                 <form>
                     <div class="form-group">
-                        <label for="newItem" class="control-label">New frequent item:</label>
+                        <label for="newItem" class="control-label">New frequent:</label>
                         <input type="text" class="form-control" required="required" #newItem />
                     </div>
-    
+
                     <div class="form-group">
                         <button (click)="addItem(newItem.value)" type="button" class="btn btn-primary">Add</button>
                     </div>
@@ -33,5 +41,14 @@
                 To be able to see the graph, you need to login
             </div>
         </div>
+    </div>
+    <div class="col-sm-12">
+        <pfng-toast-notification-list
+            [notifications]="notifications"
+            (onActionSelect)="handleAction($event)"
+            (onCloseSelect)="handleClose($event)"
+            (onViewingChange)="handleViewingChange($event)"
+            [showClose]="true">
+        </pfng-toast-notification-list>
     </div>
 </div>

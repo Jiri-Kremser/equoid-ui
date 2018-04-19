@@ -5,7 +5,7 @@
   
   .pie-chart {
     width: 100%;
-    height: 200px !important;
+    height: 180px !important;
       
     /deep/ path {
       stroke: #fff;
@@ -14,12 +14,12 @@
   
     /deep/ .label{
       font-family: "Open Sans", Helvetica, Arial, sans-serif;
-      font-size: 1.2em;
+      font-size: 0.85em;
     }
   
     /deep/ .percent{
       font-family: "Open Sans", Helvetica, Arial, sans-serif;
-      font-size: 2em;
+      font-size: 1.6em;
     }
   }
   
@@ -39,7 +39,7 @@
   }
   
   .tooltip{
-    width: 150px;
+    width: 80px;
     position: fixed;
     background: #f5f6f5;
     pointer-events: none;

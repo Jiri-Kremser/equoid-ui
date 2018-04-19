@@ -8,6 +8,8 @@ import { PiechartComponent } from '../piechart/piechart.component';
 import { DonutchartComponent } from '../donutchart/donutchart.component';
 import { StackchartComponent } from '../stackchart/stackchart.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { NotificationModule } from 'patternfly-ng/notification';
+import { NotificationService } from 'patternfly-ng/notification/notification-service/notification.service';
 
 @NgModule({
     imports: [
@@ -15,6 +17,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
         EquoidTopkModule,
         ChartModule,
         FlexLayoutModule,
+        NotificationModule,
         RouterModule.forChild([ GRAPH_ROUTE ])
     ],
     declarations: [
@@ -25,7 +28,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     ],
     entryComponents: [
     ],
-    providers: [],
+    providers: [NotificationService],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class EquoidGraphModule {}

@@ -6,6 +6,7 @@ import { Account, LoginService, Principal } from '../shared';
 import { PieDataService } from '../piechart/piechart.service';
 import { JdgFakeDataService } from './jdg-fake-data.service';
 import { ItemRestDataService } from './item-rest-data.service';
+import { NotificationService } from 'patternfly-ng/notification/notification-service/notification.service';
 
 // Types
 import * as T from '../shared/types/common-types'
@@ -52,23 +53,70 @@ export class GraphComponent implements OnInit {
         }
     };
 
+    notifications = [];
+
     constructor(
         private principal: Principal,
         private loginService: LoginService,
         private eventManager: JhiEventManager,
         private pieDataService: PieDataService,
         private jdgFakeDataService: JdgFakeDataService,
-        private itemRestDataService: ItemRestDataService
+        private itemRestDataService: ItemRestDataService,
+        private notificationService: NotificationService
     ) {
     }
 
+    handleClose($event): void {
+        const index = this.notifications.indexOf($event.notification);
+        if (index !== -1) {
+          this.notifications.splice(index, 1);
+        }
+    }
+
+    handleViewingChange($event): void {
+        this.notificationService.setViewing($event.notification, $event.isViewing);
+    }
+
     addItem(item: string) {
+        if (!item || item.length < 2) {
+            this.notifications.push({
+                header: 'Validation failed',
+                isPersistent: false,
+                isViewing: false,
+                message: 'Enter some sensible data.',
+                showClose: true,
+                type: 'warning',
+                visible: true
+            });
+            return;
+        }
         this.itemRestDataService.newItem(item).subscribe(
             (data) => {
                 this.data = data.json;
-                // todo: notification
+                this.notifications.push({
+                    header: 'REST call performed',
+                    isPersistent: false,
+                    isViewing: false,
+                    message: 'New frequent item has been added to publisher.',
+                    showClose: true,
+                    type: 'success',
+                    visible: true
+                });
             },
-            (err) => console.error(err)
+            (err) => {
+                console.error(err);
+                const body = JSON.parse(err._body);
+                const details = `${body.title} with status code: ${body.status} and detail message ${body.detail}`;
+                this.notifications.push({
+                    header: 'REST call failed',
+                    isPersistent: false,
+                    isViewing: false,
+                    message: err.statusText + ' when calling POST on ' + err.url + '   Details: ' + details,
+                    showClose: true,
+                    type: 'danger',
+                    visible: true
+                });
+            }
         );
     }
 
@@ -121,7 +169,8 @@ export class GraphComponent implements OnInit {
         } else {
             this.itemRestDataService.getData(0).subscribe(
                 (data) => {
-                    this.data = data.json;
+                    // todo: taking just first interval for now
+                    this.data = data.json[Object.keys(data.json)[0]];
                     this.chartData = _.map(this.data, (item) => [item.name, item.count]);
                     this.updateStackedData(this.stackedData, this.data);
                 },

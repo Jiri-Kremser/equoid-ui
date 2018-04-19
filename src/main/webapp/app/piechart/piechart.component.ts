@@ -153,14 +153,14 @@ export class PiechartComponent implements OnInit, OnChanges {
       .attr('dy', '-10px')
       .style('text-anchor', 'middle')
       .attr('class', 'label')
-      .attr('fill', '#000')
+      .attr('fill', '#333')
       .text(this.labels[i]);
 
     this.svg.append('text')
       .attr('dy', '20px')
       .style('text-anchor', 'middle')
       .attr('class', 'percent')
-      .attr('fill', '#000')
+      .attr('fill', '#333')
       .text(this.toPercent(this.values[i], this.values.reduce((sum, value) => sum + value)));
 
     // Tooltip

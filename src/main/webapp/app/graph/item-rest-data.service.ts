@@ -30,7 +30,7 @@ export class ItemRestDataService {
   }
 
   private convertResponse(res: Response): ResponseWrapper {
-    const jsonResponse: Array<any> = res.json();
+    const jsonResponse = res.json();
     // console.log(res.json());
     return new ResponseWrapper(res.headers, jsonResponse, res.status);
   }
