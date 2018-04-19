@@ -7,7 +7,6 @@ import org.infinispan.client.hotrod.RemoteCacheManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -26,7 +25,7 @@ public class ItemJdgManager {
         this.cacheManager = cacheManager;
     }
 
-    public List<Item> getAll() {
+    public Map<String, List<Item>> getAll() {
         RemoteCache<Object, Object> cache = cacheManager.getCache();
         Map<Object, Object> all = Collections.emptyMap();
         if (cache != null) {
@@ -39,28 +38,10 @@ public class ItemJdgManager {
             Map.Entry<Object, Object> item = all.entrySet().iterator().next();
             if (item.getKey() instanceof String && item.getValue() instanceof String && ((String) item.getKey()).endsWith("econds")) {
                 log.info("trying to handle the 'N seconds -> string' format");
-                return handleNSecondsData((String) item.getKey(), (String) item.getValue());
-            } else if (item.getKey() instanceof String && item.getValue() instanceof String) {
-                log.info("trying to handle the 'interval -> string' format");
-                return handleIntervalData(all);
+                return handleNSecondsData(all);
             }
         }
-
-        return all
-            .entrySet()
-            .stream()
-            .flatMap(entry -> {
-                if (entry.getValue() instanceof Long && entry.getKey() instanceof String) {
-                    return Stream.of(new Item((String) entry.getKey(), (Long) entry.getValue()));
-                } else {
-                    log.error("Broken contract when trying to retrieve items of type (String -> Long)");
-                    log.error("entry: " + entry);
-                    log.error("type of key: " + entry.getKey().getClass().getCanonicalName());
-                    log.error("type of value: " + entry.getValue().getClass().getCanonicalName());
-                    return Stream.empty();
-                }
-            })
-            .collect(Collectors.toList());
+        return Collections.emptyMap();
     }
 
 
@@ -84,14 +65,17 @@ public class ItemJdgManager {
         }
     }
 
-    private List<Item> handleNSecondsData(String interval, String data) {
-        log.info("retrieving the data for last " + interval);
-        return parseData(data);
+    private Map<String, List<Item>> handleNSecondsData(Map<Object, Object> data) {
+        return data.entrySet().stream().map(entry -> {
+            String key = (String) entry.getKey();
+            String value = (String) entry.getValue();
+            return new ImmutablePair<>(key, parse(value));
+        }).collect(Collectors.toMap(e -> e.getLeft(), e -> e.getRight()));
     }
 
-    private List<Item> parseData(String data) {
-        if (data.contains(";")) {
-            String[] items = data.split(";");
+    private List<Item> parse(String value) {
+        if (value.contains(";")) {
+            String[] items = value.split(";");
             if (items.length > 0) {
                 List<Item> retList = Arrays.stream(items).flatMap(item -> {
                     if (item.contains(":")) {
@@ -101,52 +85,30 @@ public class ItemJdgManager {
                                 long count = Long.parseLong(itemChunks[1]);
                                 return Stream.of(new Item(itemChunks[0], count));
                             } catch (NumberFormatException nfe) {
-                                log.error("case 1");
+                                log.error("case 1 - nfe");
                                 return Stream.empty();
                             }
                         } else {
-                            log.error("case 2");
+                            log.error("case 2 - colon split the chunk into more or less than 2 pieces");
                             return Stream.empty();
                         }
                     } else {
-                        log.error("case 3");
+                        log.error("case 3 - no colon in the chunk");
                         return Stream.empty();
                     }
                 }).collect(Collectors.toList());
                 if (retList.isEmpty()) {
-                    log.error("case 3.5");
+                    log.error("case 4 - empty list");
                 }
                 return retList;
             } else {
-                log.error("case 4");
+                log.error("case 5 - empty array");
                 return Collections.emptyList();
             }
         } else {
-            log.error("case 5");
+            log.error("case 6 - no semicolon in the data");
             return Collections.emptyList();
         }
-    }
-
-    // todo: delete me
-    // this is here to handle the implementation that has been deprecated
-    private List<Item> handleIntervalData(Map<Object, Object> all) {
-        List<ImmutablePair<Integer, String>> list = all.entrySet().stream()
-            .flatMap(entry -> {
-                try {
-                    int interval = Integer.parseInt((String) entry.getKey());
-                    return Stream.of(new ImmutablePair<Integer, String>(interval, entry.getValue().toString()));
-                } catch (NumberFormatException nfe) {
-                    log.error("case 0");
-                    return Stream.empty();
-                }
-            })
-            .collect(Collectors.toList());
-        if (list.isEmpty()) {
-            log.error("case 0.5");
-            return Collections.emptyList();
-        }
-        ImmutablePair<Integer, String> latestState = Collections.max(list, Comparator.comparingInt(ImmutablePair::getLeft));
-        return parseData(latestState.getRight());
     }
 
 }

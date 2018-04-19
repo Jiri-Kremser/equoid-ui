@@ -17,7 +17,9 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -100,12 +102,16 @@ public class ItemResource {
      */
     @GetMapping("/items")
     @Timed
-    public List<Item> getAllItems(@RequestParam(required = false, defaultValue = "false") boolean cached) {
+    public Map<String, List<Item>> getAllItems(@RequestParam(required = false, defaultValue = "false") boolean cached) {
         log.debug("REST request to get all Items");
         if (cached) {
             return jdgManager.getAll();
         } else {
-            return itemRepository.findAll();
+            return new HashMap<String, List<Item>>(){
+                {
+                    put("all", itemRepository.findAll());
+                }
+            };
         }
     }
 
