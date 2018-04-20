@@ -25,22 +25,21 @@ eg $input-color: red;
     margin-top: 100px !important;
 }
 
-a.nav-link {
+.navbar a.nav-link {
     color: #fff !important;
     font-family: Open Sans,Helvetica,Arial,sans-serif !important;
     padding: 25px 15px !important;
     display: block !important;
 }
 
-a.nav-link:focus {
+.navbar a.nav-link:focus {
     color: #3bb1dc!important;
     background-color: rgb(44, 44, 44) !important;
 }
 
-a.nav-link:hover {
+.navbar a.nav-link:hover {
     background-color: rgb(44, 44, 44) !important;
 }
-
 
 .dropdown-menu>li>a:hover {
     border-color: #bee1f4;

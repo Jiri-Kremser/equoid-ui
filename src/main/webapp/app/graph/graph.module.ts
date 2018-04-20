@@ -11,6 +11,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { NotificationModule } from 'patternfly-ng/notification';
 import { NotificationService } from 'patternfly-ng/notification/notification-service/notification.service';
 
+import { TabsModule } from 'ngx-bootstrap/tabs';
+
 @NgModule({
     imports: [
         EquoidSharedModule,
@@ -18,6 +20,7 @@ import { NotificationService } from 'patternfly-ng/notification/notification-ser
         ChartModule,
         FlexLayoutModule,
         NotificationModule,
+        TabsModule.forRoot(),
         RouterModule.forChild([ GRAPH_ROUTE ])
     ],
     declarations: [

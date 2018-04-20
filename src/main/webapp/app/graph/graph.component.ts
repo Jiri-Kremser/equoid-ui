@@ -42,6 +42,7 @@ export class GraphComponent implements OnInit {
         colors: this.colors,
         data: []
     };
+    allData = [this.data, this.stackedData];
     largeConfig = {
         chartId: 'exampleDonut',
         colors: this.colors,
@@ -121,7 +122,7 @@ export class GraphComponent implements OnInit {
     }
 
     updateStackedData(oldStackedData: T.StackedChartData, newData: T.DataPoint[]) {
-        if (newData === null || newData.length === 0) {
+        if (newData === undefined || newData === null || newData.length === 0) {
             return null;
         }
 

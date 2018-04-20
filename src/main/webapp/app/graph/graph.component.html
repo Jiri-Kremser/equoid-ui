@@ -1,7 +1,10 @@
 <div class="row">
-    <div class="col-md-1">
-        <div [ngSwitch]="isAuthenticated()">
-            <div *ngSwitchCase="true">
+    <div [ngSwitch]="isAuthenticated()">
+        <div class="alert alert-warning" *ngSwitchCase="false">
+            To be able to see the graph, you need to login
+        </div>
+        <div *ngSwitchCase="true">
+            <div class="col-md-1">
                 <br />
                 <button class="toggleStack" (click)="toggleDummy()">{{ isDummyData == true ? 'Real' : 'Dummy' }} Data</button>
                 <br />
@@ -23,32 +26,28 @@
                     </div>
                 </form>
             </div>
-        </div>
-    </div>
-    <div class="col-md-8">
-        <h1 class="display-3">Graph</h1>
-        <br/>
 
-        <div [ngSwitch]="isAuthenticated()">
-            <div *ngSwitchCase="true">
-                <equoid-topk></equoid-topk>
-                <!-- D3: -->
-                <equoid-piechart [data]='data' [colors]='colors'></equoid-piechart>
-                <!--<pfng-chart-donut [chartData]='chartData' [config]='largeConfig'></pfng-chart-donut>-->
-                <equoid-stackchart [data]='stackedData' [colors]='colors'></equoid-stackchart>
+            <div class="col-md-8">
+                <div>
+                    <tabset *ngFor="let data of allData; let i = index">
+                        <tab heading="Graph" id="tab1">
+                            <h1 class="display-3">Graph</h1>
+                            <br/>
+                            <equoid-topk></equoid-topk>
+                            <!-- D3: -->
+                            <equoid-piechart [data]='data[0]' [colors]='colors'></equoid-piechart>
+                            <!--<pfng-chart-donut [chartData]='chartData' [config]='largeConfig'></pfng-chart-donut>-->
+                            <equoid-stackchart [data]='data[1]' [colors]='colors'></equoid-stackchart>
+                        </tab>
+                    </tabset>
+                </div>
             </div>
-            <div class="alert alert-warning" *ngSwitchCase="false">
-                To be able to see the graph, you need to login
+
+            <div class="col-sm-12">
+                <pfng-toast-notification-list [notifications]="notifications" (onActionSelect)="handleAction($event)" (onCloseSelect)="handleClose($event)"
+                    (onViewingChange)="handleViewingChange($event)" [showClose]="true">
+                </pfng-toast-notification-list>
             </div>
         </div>
-    </div>
-    <div class="col-sm-12">
-        <pfng-toast-notification-list
-            [notifications]="notifications"
-            (onActionSelect)="handleAction($event)"
-            (onCloseSelect)="handleClose($event)"
-            (onViewingChange)="handleViewingChange($event)"
-            [showClose]="true">
-        </pfng-toast-notification-list>
     </div>
 </div>
