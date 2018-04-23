@@ -1,6 +1,5 @@
 #!/bin/bash
 DIR="${DIR:-$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )}"
-echo dir=$DIR
 BASE_URL="${BASE_URL:-$DIR}"
 KC_REALM_PATH="${KC_REALM_PATH:-"$DIR/../src/main/docker/realm-config/"}"
 METRICS="${METRICS:-"0"}"
