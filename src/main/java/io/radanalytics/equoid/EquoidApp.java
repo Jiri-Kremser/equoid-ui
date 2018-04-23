@@ -75,6 +75,7 @@ public class EquoidApp {
                 "External: \t{}://{}:{}\n\t" +
                 "Keycloak: \thttp://{}\n\t" +
                 "Infinispan: \thttp://{}\n\t" +
+                "Publisher: \thttp://{}\n\t" +
                 "Profile(s): \t{}\n----------------------------------------------------------\n",
             env.getProperty("spring.application.name"),
             protocol,
@@ -83,6 +84,7 @@ public class EquoidApp {
             InetAddress.getLocalHost().getHostAddress(),
             env.getProperty("server.port"),
             env.getProperty("application.keycloak"),
+            env.getProperty("application.publisher"),
             env.getProperty("application.infinispan"),
             env.getActiveProfiles());
     }

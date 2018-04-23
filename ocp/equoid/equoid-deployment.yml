@@ -28,17 +28,17 @@ parameters:
     required: true
     displayName: Application Name
   -
-    name: SECRET_REF
-    value: equoid-ds-secret-ref
-    description: Name of the DataSource Secret Reference
+    name: PUBLISHER_URL
+    value: "equoid-data-publisher:8080"
+    description: Publisher URL (host:port)
     required: true
-    displayName: "*** PLEASE DO NOT CHANGE THIS ***"
+    displayName: "Publisher service url in form host:port"
   -
-    name: REG_SECRET_REF
-    value: reg-secret-ref
-    description: Name of the Registry Secret Reference
+    name: KEYCLOAK_URL
+    value: "127.0.0.1:9080"
+    description: Keycloak URL (host:port)
     required: true
-    displayName: "*** PLEASE DO NOT CHANGE THIS ***"
+    displayName: "Keycloak service url in form host:port"
   -
     name: APP_PORT
     value: "8080"
@@ -69,7 +69,7 @@ objects:
         spec:
           containers:
           - name: ${APPLICATION_NAME}
-            image: jkremser/equoid:0.0.1
+            image: jkremser/equoid:0.0.7
             imagePullPolicy: IfNotPresent
             env:
             - name: SPRING_PROFILES_ACTIVE
@@ -80,6 +80,14 @@ objects:
               value: "true"
             - name: JHIPSTER_METRICS_PROMETHEUS_ENDPOINT
               value: "/prometheusMetrics"
+            - name: KEYCLOAK_URL
+              value: ${KEYCLOAK_URL}
+            - name: PUBLISHER_URL
+              value: ${PUBLISHER_URL}
+            - name: INFINISPAN_SERVICE_HOST
+              value: datagrid-hotrod
+            - name: INFINISPAN_SERVICE_PORT
+              value: "11222"
             ports:
             - name: http
               containerPort: "${APP_PORT}"
