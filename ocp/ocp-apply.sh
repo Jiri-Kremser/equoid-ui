@@ -28,4 +28,5 @@ fi
 
 oc process -f https://raw.githubusercontent.com/Jiri-Kremser/equoid-ui/master/ocp/equoid/equoid-deployment.yml \
   -p KEYCLOAK_URL=$KC_ROUTE \
-  -p PUBLISHER_URL=$PUBLISHER_URL
+  -p PUBLISHER_URL=$PUBLISHER_URL \
+  | oc apply -f -
