@@ -167,4 +167,5 @@ jhipster:
 
 application:
     keycloak: ${KEYCLOAK_URL:127.0.0.1:9080}
+    publisher: ${PUBLISHER_URL:127.0.0.1:8080}
     infinispan: ${INFINISPAN_URL:127.0.0.1:11222}

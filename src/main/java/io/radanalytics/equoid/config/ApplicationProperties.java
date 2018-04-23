@@ -12,6 +12,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class ApplicationProperties {
 
     private String keycloak;
+    private String publisher;
+    private String infinispan;
 
     public String getKeycloak() {
         return keycloak;
@@ -21,7 +23,13 @@ public class ApplicationProperties {
         this.keycloak = keycloak;
     }
 
-    private String infinispan;
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
 
     public String getInfinispan() {
         return infinispan;
