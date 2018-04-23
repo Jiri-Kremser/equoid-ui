@@ -1,6 +1,8 @@
 #!/bin/bash
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DIR="${DIR:-$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )}"
+echo dir=$DIR
 BASE_URL="${BASE_URL:-$DIR}"
+KC_REALM_PATH="${KC_REALM_PATH:-"$DIR/../src/main/docker/realm-config/"}"
 METRICS="${METRICS:-"0"}"
 
 # Prometheus and Grafana
@@ -9,8 +11,8 @@ if [ "$METRICS" = "1" ] ; then
 fi
 
 # Keycloak SSO
-oc secrets new kc-realm jhipster-realm.json=$DIR/keycloak/realm-config/jhipster-realm.json
-oc secrets new kc-users jhipster-users-0.json=$DIR/keycloak/realm-config/jhipster-users-0.json
+oc secrets new kc-realm jhipster-realm.json=$KC_REALM_PATH/jhipster-realm.json
+oc secrets new kc-users jhipster-users-0.json=$KC_REALM_PATH/jhipster-users-0.json
 oc process -f $BASE_URL/keycloak/keycloak.yml | oc apply -f -
 
 # Finally, deploy the Equoid app
