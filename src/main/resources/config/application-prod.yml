@@ -167,6 +167,6 @@ jhipster:
 # ===================================================================
 
 application:
-    keycloak: ${KEYCLOAK_URL:${KEYCLOAK_SERVICE_HOST}:${KEYCLOAK_SERVICE_PORT}}
+    keycloak: ${KEYCLOAK_URL}
     publisher: ${PUBLISHER_URL:equoid-data-publisher:8080}
     infinispan: ${INFINISPAN_URL:${INFINISPAN_SERVICE_HOST}:${INFINISPAN_SERVICE_PORT}}
