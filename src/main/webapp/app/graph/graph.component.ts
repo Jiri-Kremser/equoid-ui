@@ -42,7 +42,7 @@ export class GraphComponent implements OnInit {
         colors: this.colors,
         data: []
     };
-    allData = [this.data, this.stackedData];
+    allData = [[this.data, this.stackedData]];
     largeConfig = {
         chartId: 'exampleDonut',
         colors: this.colors,

@@ -29,15 +29,15 @@
 
             <div class="col-md-8">
                 <div>
-                    <tabset *ngFor="let data of allData; let i = index">
-                        <tab heading="Graph" id="tab1">
+                    <tabset>
+                        <tab *ngFor="let d of allData; let i = index" heading="Graph">
                             <h1 class="display-3">Graph</h1>
                             <br/>
                             <equoid-topk></equoid-topk>
                             <!-- D3: -->
-                            <equoid-piechart [data]='data[0]' [colors]='colors'></equoid-piechart>
+                            <equoid-piechart [data]='data' [colors]='colors'></equoid-piechart>
                             <!--<pfng-chart-donut [chartData]='chartData' [config]='largeConfig'></pfng-chart-donut>-->
-                            <equoid-stackchart [data]='data[1]' [colors]='colors'></equoid-stackchart>
+                            <equoid-stackchart [data]='d[1]' [colors]='colors'></equoid-stackchart>
                         </tab>
                     </tabset>
                 </div>

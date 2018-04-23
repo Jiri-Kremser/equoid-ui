@@ -1,6 +1,7 @@
 package io.radanalytics.equoid.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import io.radanalytics.equoid.config.ApplicationProperties;
 import io.radanalytics.equoid.domain.Item;
 
 import io.radanalytics.equoid.repository.ItemRepository;
@@ -37,9 +38,12 @@ public class ItemResource {
 
     private final ItemJdgManager jdgManager;
 
-    public ItemResource(ItemRepository itemRepository, ItemJdgManager jdgManager) {
+    private final ApplicationProperties props;
+
+    public ItemResource(ItemRepository itemRepository, ItemJdgManager jdgManager, ApplicationProperties props) {
         this.itemRepository = itemRepository;
         this.jdgManager = jdgManager;
+        this.props = props;
     }
 
     /**
@@ -60,7 +64,7 @@ public class ItemResource {
 
         RestTemplate restTemplate = new RestTemplate();
         log.debug("Adding new frequent item: " + item);
-        ResponseEntity<String> stringResponseEntity = restTemplate.postForEntity("http://equoid-data-publisher:8080/api", item.getName(), String.class);
+        ResponseEntity<String> stringResponseEntity = restTemplate.postForEntity("http://" + props.getPublisher() + "/api", item.getName(), String.class);
         if (!stringResponseEntity.getStatusCode().is2xxSuccessful()) {
             log.error("Error: " + stringResponseEntity.toString());
             return stringResponseEntity;
