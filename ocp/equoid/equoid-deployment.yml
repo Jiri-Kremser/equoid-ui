@@ -28,6 +28,12 @@ parameters:
     required: true
     displayName: Application Name
   -
+    name: TAG
+    value: latest
+    description: image tag
+    required: true
+    displayName: Tag of container image
+  -
     name: PUBLISHER_URL
     value: "equoid-data-publisher:8080"
     description: Publisher URL (host:port)
@@ -69,7 +75,7 @@ objects:
         spec:
           containers:
           - name: ${APPLICATION_NAME}
-            image: jkremser/equoid:0.0.7
+            image: jkremser/equoid:${TAG}
             imagePullPolicy: IfNotPresent
             env:
             - name: SPRING_PROFILES_ACTIVE

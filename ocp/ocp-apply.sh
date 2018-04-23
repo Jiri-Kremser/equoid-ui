@@ -6,6 +6,7 @@ BASE_URL="${BASE_URL:-$DIR}"
 KC_REALM_PATH="${KC_REALM_PATH:-"$DIR/../src/main/docker/realm-config/"}"
 METRICS="${METRICS:-"0"}"
 LOCAL="${LOCAL:-0}"
+TAG="${TAG:-latest}"
 
 # Prometheus and Grafana
 if [ "$METRICS" = "1" ] ; then
@@ -34,4 +35,5 @@ echo "PUBLISHER_URL=$PUBLISHER_URL"
 oc process -f https://raw.githubusercontent.com/Jiri-Kremser/equoid-ui/master/ocp/equoid/equoid-deployment.yml \
   -p KEYCLOAK_URL=$KC_ROUTE \
   -p PUBLISHER_URL=$PUBLISHER_URL \
+  -p TAG=$TAG \
   | oc apply -f -
