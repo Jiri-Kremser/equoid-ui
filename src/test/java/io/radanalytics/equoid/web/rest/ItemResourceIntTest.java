@@ -2,6 +2,7 @@ package io.radanalytics.equoid.web.rest;
 
 import io.radanalytics.equoid.EquoidApp;
 
+import io.radanalytics.equoid.config.ApplicationProperties;
 import io.radanalytics.equoid.domain.Item;
 import io.radanalytics.equoid.repository.ItemRepository;
 import io.radanalytics.equoid.web.rest.errors.ExceptionTranslator;
@@ -51,6 +52,9 @@ public class ItemResourceIntTest {
     private ItemJdgManager itemJdgManager;
 
     @Autowired
+    private ApplicationProperties props;
+
+    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -69,7 +73,7 @@ public class ItemResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final ItemResource itemResource = new ItemResource(itemRepository, itemJdgManager);
+        final ItemResource itemResource = new ItemResource(itemRepository, itemJdgManager, props);
         this.restItemMockMvc = MockMvcBuilders.standaloneSetup(itemResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
