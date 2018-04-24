@@ -23,7 +23,6 @@ export class GraphComponent implements OnInit {
     isDummyData = false;
     account: Account;
     data: T.DataPoint[] = [];
-    chartData: Array<any> = [];
     colors = {
         'Slivovitz': '#0088ce',
         'Jim Beam': '#3f9c35',
@@ -36,12 +35,16 @@ export class GraphComponent implements OnInit {
         'Arrow Gin': '#6957c6',
         'Wolfschmidt': '#c69857'
     }
-    stackedData: T.StackedChartData = {
-        historyLength: 50,
-        ticks: ['x'],
-        colors: this.colors,
-        data: []
-    };
+    getStackedDataPrototype(): T.StackedChartData {
+        return {
+            historyLength: 50,
+            ticks: ['x'],
+            colors: _.clone(this.colors),
+            data: []
+        };
+    }
+    stackedData: T.StackedChartData = this.getStackedDataPrototype();
+    allDataBySec = {};
     allData = [];
     largeConfig = {
         chartId: 'exampleDonut',
@@ -126,6 +129,8 @@ export class GraphComponent implements OnInit {
             return null;
         }
 
+        if (oldStackedData === undefined)
+
         // console.log('new data = ' + JSON.stringify(newData));
         // add time tick
         oldStackedData.ticks.push(+new Date())
@@ -169,20 +174,20 @@ export class GraphComponent implements OnInit {
             }
             this.allData[0][0] = this.data;
             this.allData[1][0] = this.data;
-            this.chartData = _.map(this.data, (item) => [item.name, item.count]);
             this.updateStackedData(this.stackedData, this.data);
         } else {
             this.itemRestDataService.getData(0).subscribe(
                 (data) => {
-                    const res = _.map(data.json, (val: T.DataPoint[], key) => {
+                    const res = _.map(data.json, (dataPoint: T.DataPoint[], key) => {
                         const chunks = key.split(' ')[0];
                         const seconds = (chunks.length > 1) ? chunks[0] : key;
-                        const massaged: T.StackedChartData = _.map(val, (item) => [item.name, item.count]);
-                        return [val, this.updateStackedData(massaged, val), seconds];
+                        const stackedBySeconds = this.allDataBySec[''+seconds];
+                        const stacked = this.updateStackedData(stackedBySeconds || this.getStackedDataPrototype(), dataPoint);
+                        this.allDataBySec[''+seconds] = stacked;
+                        return [dataPoint, stacked, seconds];
                     });
                     this.allData = res;
                     // this.data = data.json[Object.keys(data.json)[0]];
-                    // this.chartData = _.map(this.data, (item) => [item.name, item.count]);
                     // this.updateStackedData(this.stackedData, this.data);
                 },
                 (err) => console.error(err)
