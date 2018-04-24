@@ -11,7 +11,7 @@ metadata:
   name: equoid-metrics-template
   annotations:
     description: This template defines objects that are required to spin up metrics monitoring pod
-    tags: prometheus, alertmanager, grafana, equoid-metrics  ,ephemeral
+    tags: prometheus, alertmanager, grafana, equoid-metrics, ephemeral
     openshift.io/display-name: equoid-metrics-monitoring-template
     openshift.io/long-description: "This template provides objects that are required to spin up a metrics monitoring pod. It contains
     prometheus for metrics aggregation, and grafana for visualization .The database is not stored on persistent storage, so any restart of the service will result in all data being lost."

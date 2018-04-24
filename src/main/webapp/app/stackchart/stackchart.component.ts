@@ -16,6 +16,7 @@ import * as T from '../shared/types/common-types'
 export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
   @ViewChild('containerStackChart') chartContainer: ElementRef;
   @Input() data: T.StackedChartData;
+  @Input() id: string;
   svg: any;
   chart: any;
   isStacked = true;
@@ -23,7 +24,7 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngAfterViewInit() {
     this.chart = c3.generate({
-      bindto: '#chart',
+      bindto: '#chart-' + this.id,
       data: {
         x: 'x',
         columns: [
@@ -33,9 +34,9 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
         type: 'area',
         // type: 'area-spline',
         groups: [
-          _.map(this.data.data, (a) => a[0])
+          _.map(this.data[1].data, (a) => a[0])
         ],
-        colors: this.data.colors
+        colors: this.data[1].colors
       },
       legend: {
         show: false
@@ -90,19 +91,19 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   update = () => {
-    const all = [this.data.ticks].concat(this.data.data);
+    const all = [this.data[1].ticks].concat(this.data[1].data);
     // console.log(JSON.stringify(all));
     this.chart.load({
       columns: all
     });
     const chart = this.chart;
     d3.select('#legend-stack').selectAll('*').remove();
-    const filtered = _.filter(this.data.data, (s) => !_.every(_.rest(s, 1), (e) => e === 0))
+    const filtered = _.filter(this.data[1].data, (s) => !_.every(_.rest(s, 1), (e) => e === 0))
     const keys: string[] = _.map(filtered, (a) => a[0]);
     d3.select('#legend-stack').selectAll('span')
       .data(keys)
       .enter().append('div')
-      .attr('style', 'cursor:pointer;padding:0 10px;flex-direction:row;box-sizing:border-box;display:flex;max-height: 100%;place-content:center flex-start;align-items:center;')
+      .attr('style', 'cursor:pointer;padding:0 10px;flex-direction:row;box-sizing:border-box;display:flex;max-height:100%;place-content:center flex-start;align-items:center;')
       .attr('fxlayoutalign', 'start center')
       .html((id) => {
         const circle = 'height: 15px;width: 15px;border-radius: 50%;margin-right: 5px;';
@@ -119,7 +120,7 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
       });
 
     if (this.firstRun && this.isStacked) {
-      this.chart.groups([_.map(this.data.data, (a) => a[0])]);
+      this.chart.groups([_.map(this.data[1].data, (a) => a[0])]);
     }
   }
 
@@ -127,7 +128,7 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
     if (this.isStacked) {
       this.chart.groups([]);
     } else {
-      this.chart.groups([_.map(this.data.data, (a) => a[0])]);
+      this.chart.groups([_.map(this.data[1].data, (a) => a[0])]);
     }
     this.isStacked = !this.isStacked;
   }

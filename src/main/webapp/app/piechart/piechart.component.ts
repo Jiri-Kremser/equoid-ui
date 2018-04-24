@@ -14,11 +14,10 @@ import { PieDataService } from './piechart.service';
 })
 
 export class PiechartComponent implements OnInit, OnChanges {
-  @ViewChild('containerPieChart') chartContainer: ElementRef;
   @Input() data: any;
+  @Input() id: string;
   @Input() colors: Array<string>;
 
-  hostElement: any;
   svg: any;
   radius: number;
   innerRadius: number;
@@ -41,13 +40,12 @@ export class PiechartComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     // create chart and render
-    this.createChart();
+    setTimeout(() => {
+      this.createChart();
+      this.updateChart(true);
+    }, 50);
 
-    // Initial update
-    this.updateChart(true);
-
-    // For animation purpose we load the real value after a second
-    setTimeout(() => this.updateChart(false), 50);
+    setInterval(() => this.updateChart(false), 3000);
   }
 
   ngOnChanges() {
@@ -63,13 +61,6 @@ export class PiechartComponent implements OnInit, OnChanges {
   ) {}
 
   createChart = () => {
-    // chart configuration
-    this.hostElement = this.chartContainer.nativeElement;
-
-    this.radius = Math.min(this.hostElement.offsetWidth, this.hostElement.offsetHeight) / 3;
-    const innerRadius = this.radius + 5;
-    const outerRadius = this.radius + 20;
-    const hoverRadius = this.radius + 25;
     this.pieColors = this.colors;
     this.tooltip = this.elRef.nativeElement.querySelector('.tooltip');
 
@@ -80,24 +71,24 @@ export class PiechartComponent implements OnInit, OnChanges {
     // create an arc generator and configure it
     // this is just a function that will be called to obtain data prior binding that data to arc elements of the chart
     this.arcGenerator = d3.arc()
-      .innerRadius(innerRadius)
-      .outerRadius(outerRadius);
+      .innerRadius(50)
+      .outerRadius(60);
 
     this.arcHover = d3.arc()
-      .innerRadius(innerRadius)
-      .outerRadius(hoverRadius);
+      .innerRadius(50)
+      .outerRadius(63);
 
-    // create svg element, configure dimentions and centre and add to DOM
-    this.svg = d3.select(this.hostElement).append('svg')
-      .attr('viewBox', '0, 0, ' + this.hostElement.offsetWidth + ', ' + this.hostElement.offsetHeight)
+    // create svg element, configure dimensions and centre and add to DOM
+    this.svg = d3.select('#pie-chart-' + this.id).append('svg')
+      .attr('viewBox', '0, 0, 935, 180')
       .append('g')
-      .attr('transform', `translate(${this.hostElement.offsetWidth / 2}, ${this.hostElement.offsetHeight / 2})`);
+      .attr('transform', 'translate(467, 90)');
   }
 
   updateChart = (firstRun: boolean) => {
     const vm = this;
 
-    this.slices = this.updateSlices(this.data);
+    this.slices = this.updateSlices(this.data[0]);
     this.labels = this.slices.map((slice) => slice.name);
     this.colorSlices = this.slices.map((slice) => this.pieColors[slice.name]);
 
@@ -122,7 +113,7 @@ export class PiechartComponent implements OnInit, OnChanges {
     // configure a transition to play on d elements of a path
     // whenever new values are passed in, the values and the previously stored values will be used
     // to compute the transition using interpolation
-    d3.select(this.hostElement).selectAll('path')
+    d3.select('#pie-chart-' + this.id).selectAll('path')
       .data(this.pieGenerator)
       .attr('fill', (datum, index) => this.pieColors[this.labels[index]])
       .attr('d', this.arcGenerator)

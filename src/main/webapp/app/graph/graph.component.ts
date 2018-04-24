@@ -42,7 +42,7 @@ export class GraphComponent implements OnInit {
         colors: this.colors,
         data: []
     };
-    allData = [[this.data, this.stackedData]];
+    allData = [];
     largeConfig = {
         chartId: 'exampleDonut',
         colors: this.colors,
@@ -162,18 +162,28 @@ export class GraphComponent implements OnInit {
     }
 
     refresh() {
-        if (this.isDummyData) {
-            // this.data = this.pieDataService.addData(1, this.data);
+        if (this.isDummyData) { // dummy data for testing (showing 2 graphs)
             this.data = this.jdgFakeDataService.getData(15);
+            if (this.allData.length !== 2) {
+                this.allData = [[this.data, this.stackedData, 30], [this.data, this.stackedData, 60]];
+            }
+            this.allData[0][0] = this.data;
+            this.allData[1][0] = this.data;
             this.chartData = _.map(this.data, (item) => [item.name, item.count]);
             this.updateStackedData(this.stackedData, this.data);
         } else {
             this.itemRestDataService.getData(0).subscribe(
                 (data) => {
-                    // todo: taking just first interval for now
-                    this.data = data.json[Object.keys(data.json)[0]];
-                    this.chartData = _.map(this.data, (item) => [item.name, item.count]);
-                    this.updateStackedData(this.stackedData, this.data);
+                    const res = _.map(data.json, (val: T.DataPoint[], key) => {
+                        const chunks = key.split(' ')[0];
+                        const seconds = (chunks.length > 1) ? chunks[0] : key;
+                        const massaged: T.StackedChartData = _.map(val, (item) => [item.name, item.count]);
+                        return [val, this.updateStackedData(massaged, val), seconds];
+                    });
+                    this.allData = res;
+                    // this.data = data.json[Object.keys(data.json)[0]];
+                    // this.chartData = _.map(this.data, (item) => [item.name, item.count]);
+                    // this.updateStackedData(this.stackedData, this.data);
                 },
                 (err) => console.error(err)
             );
