@@ -187,10 +187,7 @@ export class GraphComponent implements OnInit {
                         this.allDataBySec['' + seconds] = stacked;
                         return [dataPoint, stacked, seconds];
                     });
-                    // console.log('data (res)' + JSON.stringify(res));
                     this.allData = res;
-                    // this.data = data.json[Object.keys(data.json)[0]];
-                    // this.updateStackedData(this.stackedData, this.data);
                 },
                 (err) => console.error(err)
             );

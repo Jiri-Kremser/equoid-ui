@@ -23,7 +23,6 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
   firstRun = true;
 
   ngAfterViewInit() {
-    console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJJJJ      chudak');
     this.chart = c3.generate({
       bindto: '#chart-' + this.id,
       data: {
@@ -155,11 +154,9 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnChanges() {
-    console.log('foobar                    dsf');
     const self = this;
     // update chart on data input value change
     if (this.chart) {
-      console.log('foobar                    dsf2');
       this.update();
     }
   }

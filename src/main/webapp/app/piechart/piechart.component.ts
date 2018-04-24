@@ -62,7 +62,6 @@ export class PiechartComponent implements OnInit, OnChanges {
   ) {}
 
   createChart = () => {
-    console.log('CCCCCCCCCCCCCCCCREATED                      pic');
     this.pieColors = this.colors;
     this.tooltip = this.elRef.nativeElement.querySelector('.tooltip');
 
@@ -85,7 +84,6 @@ export class PiechartComponent implements OnInit, OnChanges {
       .attr('viewBox', '0, 0, 935, 180')
       .append('g')
       .attr('transform', 'translate(467, 90)');
-      console.log(JSON.stringify(this.svg));
   }
 
   updateChart = (firstRun: boolean) => {
@@ -177,8 +175,6 @@ export class PiechartComponent implements OnInit, OnChanges {
   }
 
   toPercent = (a: number, b: number): string => {
-    console.log('a= ' + a);
-    console.log('b= ' + b);
     return Math.round( a / b * 100) + '%';
   }
 
