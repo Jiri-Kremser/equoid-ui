@@ -84,8 +84,8 @@ public class EquoidApp {
             InetAddress.getLocalHost().getHostAddress(),
             env.getProperty("server.port"),
             env.getProperty("application.keycloak"),
-            env.getProperty("application.publisher"),
             env.getProperty("application.infinispan"),
+            env.getProperty("application.publisher"),
             env.getActiveProfiles());
     }
 }
