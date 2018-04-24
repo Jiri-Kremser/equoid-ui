@@ -77,6 +77,7 @@ module.exports = (options) => ({
             utils.root('src/main/webapp/app'), {}
         ),
         new CopyWebpackPlugin([
+            { from: './json', to: 'js' },
             { from: './node_modules/swagger-ui/dist/css', to: 'swagger-ui/dist/css' },
             { from: './node_modules/swagger-ui/dist/lib', to: 'swagger-ui/dist/lib' },
             { from: './node_modules/swagger-ui/dist/swagger-ui.min.js', to: 'swagger-ui/dist/swagger-ui.min.js' },

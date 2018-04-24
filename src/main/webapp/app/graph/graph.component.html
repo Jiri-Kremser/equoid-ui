@@ -6,7 +6,7 @@
         <div *ngSwitchCase="true">
             <div class="col-md-1">
                 <br />
-                <button class="toggleStack" (click)="toggleDummy()">{{ isDummyData == true ? 'Real' : 'Dummy' }} Data</button>
+                <button class="btn btn-primary toggleStack" (click)="toggleDummy()">{{ isDummyData == true ? 'Real' : 'Dummy' }} Data</button>
                 <br />
                 <br />
                 <br />
@@ -29,16 +29,33 @@
 
             <div class="col-md-8">
                 <div>
-                    <tabset>
+                     <!-- <tabset>
                         <tab *ngFor="let d of allData; let i = index" heading="Graph ({{d[2]}}s)">
                             <h1 class="display-3">Graph</h1>
-                            <h4>(3 most frequent items for last {{d[2]}} seconds)</h4>
+                             <h4>(3 most frequent items for last {{d[2]}} seconds)</h4>
+                             <p>data:  {{d | json}}</p>
+                            <equoid-topk></equoid-topk>
+                            <equoid-piechart [data]='d[0]' [id]='i' [colors]='d[1].colors'></equoid-piechart>
+                            <equoid-stackchart [data]='d[1]' [id]='i' [colors]='colors'></equoid-stackchart>
+                        </tab>
+                    </tabset> -->
+
+                    <tabset>
+                        <tab heading="Graph 20s">
+                            <h1 class="display-3">Graph</h1>
+                            <p>data:  {{allData[0][0] | json}}</p>
+                            <equoid-topk></equoid-topk>
+                            <equoid-piechart [data]='allData[0][0]' [id]='0' [colors]='allData[0][1].colors'></equoid-piechart>
+                            <!--<pfng-chart-donut [chartData]='chartData' [config]='largeConfig'></pfng-chart-donut>-->
+                            <equoid-stackchart [data]='allData[0][1]' [id]='0' [colors]='colors'></equoid-stackchart>
+                        </tab>
+                        <tab heading="Graph 60s">
+                            <h1 class="display-3">Graph</h1>
                             <!-- <p>data:  {{d | json}}</p> -->
                             <equoid-topk></equoid-topk>
-                            <!-- D3: -->
-                            <equoid-piechart [data]='d' [id]='i' [colors]='colors'></equoid-piechart>
+                            <equoid-piechart [data]='allData[1][0]' [id]='1' [colors]='allData[1][1].colors'></equoid-piechart>
                             <!--<pfng-chart-donut [chartData]='chartData' [config]='largeConfig'></pfng-chart-donut>-->
-                            <equoid-stackchart [data]='d' [id]='i' [colors]='colors'></equoid-stackchart>
+                            <equoid-stackchart [data]='allData[1][1]' [id]='1' [colors]='colors'></equoid-stackchart>
                         </tab>
                     </tabset>
                 </div>

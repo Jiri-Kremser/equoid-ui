@@ -23,6 +23,7 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
   firstRun = true;
 
   ngAfterViewInit() {
+    console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJJJJ      chudak');
     this.chart = c3.generate({
       bindto: '#chart-' + this.id,
       data: {
@@ -34,9 +35,9 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
         type: 'area',
         // type: 'area-spline',
         groups: [
-          _.map(this.data[1].data, (a) => a[0])
+          _.map(this.data.data, (a) => a[0])
         ],
-        colors: this.data[1].colors
+        colors: this.data.colors
       },
       legend: {
         show: false
@@ -91,16 +92,19 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   update = () => {
-    const all = [this.data[1].ticks].concat(this.data[1].data);
+    // if (this.data[1].ticks === undefined) {
+    //   this.data[1].ticks = ['x'];
+    // }
+    const all = [this.data.ticks].concat(this.data.data);
     // console.log(JSON.stringify(all));
     this.chart.load({
       columns: all
     });
     const chart = this.chart;
-    d3.select('#legend-stack').selectAll('*').remove();
-    const filtered = _.filter(this.data[1].data, (s) => !_.every(_.rest(s, 1), (e) => e === 0))
+    d3.select('#legend-stack-' + this.id).selectAll('*').remove();
+    const filtered = _.filter(this.data.data, (s) => !_.every(_.rest(s, 1), (e) => e === 0))
     const keys: string[] = _.map(filtered, (a) => a[0]);
-    d3.select('#legend-stack').selectAll('span')
+    d3.select('#legend-stack-' + this.id).selectAll('span')
       .data(keys)
       .enter().append('div')
       .attr('style', 'cursor:pointer;padding:0 10px;flex-direction:row;box-sizing:border-box;display:flex;max-height:100%;place-content:center flex-start;align-items:center;')
@@ -120,7 +124,8 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
       });
 
     if (this.firstRun && this.isStacked) {
-      this.chart.groups([_.map(this.data[1].data, (a) => a[0])]);
+      this.chart.groups([_.map(this.data.data, (a) => a[0])]);
+      this.firstRun = false;
     }
   }
 
@@ -128,7 +133,7 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
     if (this.isStacked) {
       this.chart.groups([]);
     } else {
-      this.chart.groups([_.map(this.data[1].data, (a) => a[0])]);
+      this.chart.groups([_.map(this.data.data, (a) => a[0])]);
     }
     this.isStacked = !this.isStacked;
   }
@@ -143,15 +148,18 @@ export class StackchartComponent implements OnInit, OnChanges, AfterViewInit {
     const self = this;
 
     setInterval(() => self.update(), 3000);
+    setTimeout(() =>  self.update(), 50);
 
     // For animation purpose we load the real value after a second
     setTimeout(() => this.updateChart(false), 50);
   }
 
   ngOnChanges() {
+    console.log('foobar                    dsf');
     const self = this;
     // update chart on data input value change
     if (this.chart) {
+      console.log('foobar                    dsf2');
       this.update();
     }
   }

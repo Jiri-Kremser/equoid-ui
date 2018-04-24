@@ -35,14 +35,6 @@ export class GraphComponent implements OnInit {
         'Arrow Gin': '#6957c6',
         'Wolfschmidt': '#c69857'
     }
-    getStackedDataPrototype(): T.StackedChartData {
-        return {
-            historyLength: 50,
-            ticks: ['x'],
-            colors: _.clone(this.colors),
-            data: []
-        };
-    }
     stackedData: T.StackedChartData = this.getStackedDataPrototype();
     allDataBySec = {};
     allData = [];
@@ -68,6 +60,14 @@ export class GraphComponent implements OnInit {
         private itemRestDataService: ItemRestDataService,
         private notificationService: NotificationService
     ) {
+    }
+    getStackedDataPrototype(): T.StackedChartData {
+        return {
+            historyLength: 50,
+            ticks: ['x'],
+            colors: _.clone(this.colors),
+            data: []
+        };
     }
 
     handleClose($event): void {
@@ -129,8 +129,6 @@ export class GraphComponent implements OnInit {
             return null;
         }
 
-        if (oldStackedData === undefined)
-
         // console.log('new data = ' + JSON.stringify(newData));
         // add time tick
         oldStackedData.ticks.push(+new Date())
@@ -170,22 +168,26 @@ export class GraphComponent implements OnInit {
         if (this.isDummyData) { // dummy data for testing (showing 2 graphs)
             this.data = this.jdgFakeDataService.getData(15);
             if (this.allData.length !== 2) {
+                this.stackedData = this.getStackedDataPrototype();
                 this.allData = [[this.data, this.stackedData, 30], [this.data, this.stackedData, 60]];
             }
+            this.updateStackedData(this.stackedData, this.data);
             this.allData[0][0] = this.data;
             this.allData[1][0] = this.data;
-            this.updateStackedData(this.stackedData, this.data);
+            this.allData[0][1] = this.stackedData;
+            this.allData[1][1] = this.stackedData;
         } else {
             this.itemRestDataService.getData(0).subscribe(
                 (data) => {
                     const res = _.map(data.json, (dataPoint: T.DataPoint[], key) => {
-                        const chunks = key.split(' ')[0];
+                        const chunks = key.split(' ');
                         const seconds = (chunks.length > 1) ? chunks[0] : key;
-                        const stackedBySeconds = this.allDataBySec[''+seconds];
+                        const stackedBySeconds = this.allDataBySec['' + seconds];
                         const stacked = this.updateStackedData(stackedBySeconds || this.getStackedDataPrototype(), dataPoint);
-                        this.allDataBySec[''+seconds] = stacked;
+                        this.allDataBySec['' + seconds] = stacked;
                         return [dataPoint, stacked, seconds];
                     });
+                    // console.log('data (res)' + JSON.stringify(res));
                     this.allData = res;
                     // this.data = data.json[Object.keys(data.json)[0]];
                     // this.updateStackedData(this.stackedData, this.data);
@@ -203,7 +205,7 @@ export class GraphComponent implements OnInit {
         this.refresh();
         setInterval(() => {
             this.refresh();
-        }, 3000);
+        }, 5000);
     }
 
     registerAuthenticationSuccess() {

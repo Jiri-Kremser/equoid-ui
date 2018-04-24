@@ -11,6 +11,7 @@
   .bar-chart {
     height: 400px !important;
     margin-left: -180px;
+    max-width: 1200px;
   
     /deep/ path {
       stroke: #fff;

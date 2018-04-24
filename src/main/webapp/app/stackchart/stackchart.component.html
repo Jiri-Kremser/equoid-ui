@@ -5,8 +5,8 @@
 
   <div class="col-md-8">
     <div class='bar-chart' #containerStackChart id='chart-{{id}}'></div>
-    <div id='legend-stack' fxlayout="row" fxlayoutalign="center center" ng-reflect-layout="row" ng-reflect-align="center center" style="flex-wrap:wrap;flex-direction: row; box-sizing: border-box; display: flex; max-height: 100%; place-content: center; align-items: center;"></div>
+    <div id='legend-stack-{{id}}' fxlayout="row" fxlayoutalign="center center" ng-reflect-layout="row" ng-reflect-align="center center" style="flex-wrap:wrap;flex-direction: row; box-sizing: border-box; display: flex; max-height: 100%; place-content: center; align-items: center;"></div>
     <br/>
-    <button class="toggleStack" (click)="toggleStack()">{{ isStacked == true ? 'Unstack' : 'Stack' }}</button>
+    <button class="toggleStack btn btn-primary" (click)="toggleStack()">{{ isStacked == true ? 'Unstack' : 'Stack' }}</button>
   </div>
 </div>
