@@ -29,7 +29,8 @@
 
             <div class="col-md-8">
                 <div>
-                     <!-- <tabset>
+                     <!-- unfortunatelly this can't be used because it updates the unrelated tabs with data all the time
+                          <tabset>
                         <tab *ngFor="let d of allData; let i = index" heading="Graph ({{d[2]}}s)">
                             <h1 class="display-3">Graph</h1>
                              <h4>(3 most frequent items for last {{d[2]}} seconds)</h4>
@@ -40,22 +41,34 @@
                         </tab>
                     </tabset> -->
 
-                    <tabset>
-                        <tab heading="Graph 20s">
+                    <tabset> <!-- ugly ugly -->
+                        <tab *ngIf="allData.length > 0" heading="Graph ({{allData[0][2]}}s)">
                             <h1 class="display-3">Graph</h1>
-                            <p>data:  {{allData[0][0] | json}}</p>
+                            <h4>(3 most frequent items for last {{allData[0][2]}} seconds)</h4>
                             <equoid-topk></equoid-topk>
                             <equoid-piechart [data]='allData[0][0]' [id]='0' [colors]='allData[0][1].colors'></equoid-piechart>
-                            <!--<pfng-chart-donut [chartData]='chartData' [config]='largeConfig'></pfng-chart-donut>-->
                             <equoid-stackchart [data]='allData[0][1]' [id]='0' [colors]='colors'></equoid-stackchart>
                         </tab>
-                        <tab heading="Graph 60s">
+                        <tab *ngIf="allData.length > 1" heading="Graph ({{allData[1][2]}}s)">
                             <h1 class="display-3">Graph</h1>
-                            <!-- <p>data:  {{d | json}}</p> -->
+                            <h4>(3 most frequent items for last {{allData[1][2]}} seconds)</h4>
                             <equoid-topk></equoid-topk>
                             <equoid-piechart [data]='allData[1][0]' [id]='1' [colors]='allData[1][1].colors'></equoid-piechart>
-                            <!--<pfng-chart-donut [chartData]='chartData' [config]='largeConfig'></pfng-chart-donut>-->
                             <equoid-stackchart [data]='allData[1][1]' [id]='1' [colors]='colors'></equoid-stackchart>
+                        </tab>
+                        <tab *ngIf="allData.length > 2" heading="Graph ({{allData[2][2]}}s)">
+                            <h1 class="display-3">Graph</h1>
+                            <h4>(3 most frequent items for last {{allData[2][2]}} seconds)</h4>
+                            <equoid-topk></equoid-topk>
+                            <equoid-piechart [data]='allData[2][0]' [id]='2' [colors]='allData[2][1].colors'></equoid-piechart>
+                            <equoid-stackchart [data]='allData[2][1]' [id]='2' [colors]='colors'></equoid-stackchart>
+                        </tab>
+                        <tab *ngIf="allData.length > 3" heading="Graph ({{allData[3][2]}}s)">
+                            <h1 class="display-3">Graph</h1>
+                            <h4>(3 most frequent items for last {{allData[3][2]}} seconds)</h4>
+                            <equoid-topk></equoid-topk>
+                            <equoid-piechart [data]='allData[3][0]' [id]='3' [colors]='allData[3][1].colors'></equoid-piechart>
+                            <equoid-stackchart [data]='allData[3][1]' [id]='3' [colors]='colors'></equoid-stackchart>
                         </tab>
                     </tabset>
                 </div>
