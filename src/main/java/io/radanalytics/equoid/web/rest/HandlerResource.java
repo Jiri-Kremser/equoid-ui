@@ -1,6 +1,7 @@
 package io.radanalytics.equoid.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import io.fabric8.kubernetes.api.model.EnvVar;
 import io.fabric8.openshift.api.model.DeploymentConfig;
 import io.fabric8.openshift.client.DefaultOpenShiftClient;
 import io.fabric8.openshift.client.OpenShiftClient;
@@ -19,9 +20,12 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * REST controller for managing Handler.
@@ -93,7 +97,8 @@ public class HandlerResource {
     @Timed
     public List<Handler> getAllHandlers() {
         log.debug("REST request to get all Handlers (doing nothing)");
-        return Collections.emptyList();
+        return findAllExistingHandlers();
+//        return Collections.emptyList();
 //        return handlerRepository.findAll();
     }
 
@@ -146,6 +151,42 @@ public class HandlerResource {
             .findFirst()
             .orElse(null);
         return deploymentConfig;
+    }
+
+    private List<Handler> findAllExistingHandlers() {
+        List<Handler> retList = osClient.pods()
+            .list()
+            .getItems()
+            .stream()
+            .filter(pod -> {
+                String name = pod.getMetadata().getName();
+                boolean ready = pod.getStatus().getContainerStatuses().iterator().next().getReady();
+                return ready &&
+                    name.startsWith("equoid-data-handler-")
+                    && !name.endsWith("-build");
+            })
+            .flatMap(pod -> {
+                EnvVar envVar = pod.getSpec().getContainers().iterator()
+                    .next().getEnv().stream().filter(kv -> "WINDOW_SECONDS".equals(kv.getName()))
+                    .findFirst()
+                    .orElse(null);
+                if (envVar == null) {
+                    log.error("There was a handler pod with no WINDOW_SECONDS variable on it");
+                    return Stream.empty();
+                }
+                try {
+                    int sec = Integer.parseInt(envVar.getValue());
+                    // happy path
+                    Handler h = new Handler();
+                    h.setSeconds(sec);
+                    return Stream.of(h);
+                } catch (NumberFormatException nfe) {
+                    log.error("There was a handler pod with WINDOW_SECONDS that wasn't an integer, but this: \n"
+                        + "'" + envVar.getValue() + "'");
+                    return Stream.empty();
+                }
+            }).collect(Collectors.toList());
+        return retList;
     }
 
     private DeploymentConfig customizeDc(DeploymentConfig deploymentConfig, String seconds) {
