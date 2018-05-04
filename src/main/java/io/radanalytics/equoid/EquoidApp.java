@@ -1,5 +1,9 @@
 package io.radanalytics.equoid;
 
+import io.fabric8.kubernetes.api.model.ServiceList;
+import io.fabric8.openshift.api.model.DeploymentConfig;
+import io.fabric8.openshift.client.DefaultOpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftClient;
 import io.radanalytics.equoid.config.ApplicationProperties;
 import io.radanalytics.equoid.config.DefaultProfileUtil;
 
@@ -21,6 +25,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 
 @ComponentScan
 @EnableAutoConfiguration(exclude = {MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class})
@@ -87,5 +92,45 @@ public class EquoidApp {
             env.getProperty("application.infinispan"),
             env.getProperty("application.publisher"),
             env.getActiveProfiles());
+
+        OpenShiftClient osClient = new DefaultOpenShiftClient();
+        DeploymentConfig deploymentConfig = osClient.deploymentConfigs()
+            .list()
+            .getItems()
+            .stream()
+            .filter(dc -> dc.getMetadata().getName().startsWith("equoid-data-handler-90"))
+            .findFirst()
+            .orElse(null);
+
+        DeploymentConfig newDc = customizeDc(deploymentConfig, "127");
+        log.info(newDc.toString());
+        osClient.resource(newDc).createOrReplace();
+
+
+//        osClient.resource(deploymentConfig.).createOrReplace();
+//        log.info(myServices.toString());
+
+    }
+
+    private static DeploymentConfig customizeDc(DeploymentConfig deploymentConfig, String seconds) {
+        String newName = "equoid-data-handler-" + seconds;
+        deploymentConfig.getMetadata().setResourceVersion(null);
+        deploymentConfig.getMetadata().setUid(null);
+        deploymentConfig.getMetadata().getLabels().put("app", newName);
+        deploymentConfig.getMetadata().getLabels().put("resourceVersion", null);
+        deploymentConfig.getMetadata().setName(newName);
+        deploymentConfig.getSpec().getSelector().put("app", newName);
+        deploymentConfig.getSpec().getSelector().put("deploymentconfig", newName);
+        deploymentConfig.getSpec().getTemplate().getMetadata().getLabels().put("app", newName);
+        deploymentConfig.getSpec().getTemplate().getMetadata().getLabels().put("deploymentconfig", newName);
+        deploymentConfig.getSpec().getTemplate().getSpec().getContainers().iterator().next().getEnv()
+            .stream().forEach(env -> {
+                if ("WINDOW_SECONDS".equals(env.getName()) || "SLIDE_SECONDS".equals(env.getName())) {
+                    env.setValue(seconds);
+                }
+        });
+        deploymentConfig.setStatus(null);
+//        deploymentConfig.getSpec().setTriggers(Collections.emptyList());
+        return deploymentConfig;
     }
 }
