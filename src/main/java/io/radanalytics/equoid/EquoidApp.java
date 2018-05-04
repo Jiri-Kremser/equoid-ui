@@ -102,7 +102,7 @@ public class EquoidApp {
             .findFirst()
             .orElse(null);
 
-        DeploymentConfig newDc = customizeDc(deploymentConfig, "127");
+        DeploymentConfig newDc = customizeDc(deploymentConfig, "128");
         log.info(newDc.toString());
         osClient.resource(newDc).createOrReplace();
 
@@ -119,6 +119,7 @@ public class EquoidApp {
         deploymentConfig.getMetadata().getLabels().put("app", newName);
         deploymentConfig.getMetadata().getLabels().put("resourceVersion", null);
         deploymentConfig.getMetadata().setName(newName);
+        deploymentConfig.getSpec().setReplicas(1);
         deploymentConfig.getSpec().getSelector().put("app", newName);
         deploymentConfig.getSpec().getSelector().put("deploymentconfig", newName);
         deploymentConfig.getSpec().getTemplate().getMetadata().getLabels().put("app", newName);

@@ -1,0 +1,3 @@
+entity Handler {
+  seconds Integer required min(0)
+}

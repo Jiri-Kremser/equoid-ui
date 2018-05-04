@@ -8,7 +8,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ItemRestDataService {
   private resourceUrl = SERVER_API_URL + 'api/items?cached=true';
-  //private resourceUrl = 'http://localhost:9000/js/json';
+//private resourceUrl = 'http://localhost:9000/js/json';
   constructor(private http: Http) { }
 
   getData = (num: number): Observable<ResponseWrapper> => {

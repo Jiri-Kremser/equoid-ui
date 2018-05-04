@@ -1,0 +1,26 @@
+
+<div *ngIf="handler">
+    <h2><span>Handler</span> {{handler.id}}</h2>
+    <hr>
+    <equoid-alert-error></equoid-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span>Seconds</span></dt>
+        <dd>
+            <span>{{handler.seconds}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'handler/'+ handler.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span> Edit</span>
+    </button>
+</div>
