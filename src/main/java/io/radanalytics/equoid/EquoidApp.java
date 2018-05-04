@@ -74,6 +74,7 @@ public class EquoidApp {
         if (env.getProperty("server.ssl.key-store") != null) {
             protocol = "https";
         }
+        OpenShiftClient osClient = new DefaultOpenShiftClient();
         log.info("\n\n----------------------------------------------------------\n\t" +
                 "Application '{}' is running! Access URLs:\n\t" +
                 "Local: \t\t{}://localhost:{}\n\t" +
@@ -81,6 +82,8 @@ public class EquoidApp {
                 "Keycloak: \thttp://{}\n\t" +
                 "Infinispan: \thttp://{}\n\t" +
                 "Publisher: \thttp://{}\n\t" +
+                "OpenShift URL: \t{}\n\t" +
+                "OS namespace: \t{}\n\t" +
                 "Profile(s): \t{}\n----------------------------------------------------------\n",
             env.getProperty("spring.application.name"),
             protocol,
@@ -91,47 +94,10 @@ public class EquoidApp {
             env.getProperty("application.keycloak"),
             env.getProperty("application.infinispan"),
             env.getProperty("application.publisher"),
+            osClient.getOpenshiftUrl().toString(),
+            osClient.getNamespace(),
             env.getActiveProfiles());
-
-        OpenShiftClient osClient = new DefaultOpenShiftClient();
-        DeploymentConfig deploymentConfig = osClient.deploymentConfigs()
-            .list()
-            .getItems()
-            .stream()
-            .filter(dc -> dc.getMetadata().getName().startsWith("equoid-data-handler-90"))
-            .findFirst()
-            .orElse(null);
-
-        DeploymentConfig newDc = customizeDc(deploymentConfig, "128");
-        log.info(newDc.toString());
-        osClient.resource(newDc).createOrReplace();
-
-
-//        osClient.resource(deploymentConfig.).createOrReplace();
-//        log.info(myServices.toString());
-
     }
 
-    private static DeploymentConfig customizeDc(DeploymentConfig deploymentConfig, String seconds) {
-        String newName = "equoid-data-handler-" + seconds;
-        deploymentConfig.getMetadata().setResourceVersion(null);
-        deploymentConfig.getMetadata().setUid(null);
-        deploymentConfig.getMetadata().getLabels().put("app", newName);
-        deploymentConfig.getMetadata().getLabels().put("resourceVersion", null);
-        deploymentConfig.getMetadata().setName(newName);
-        deploymentConfig.getSpec().setReplicas(1);
-        deploymentConfig.getSpec().getSelector().put("app", newName);
-        deploymentConfig.getSpec().getSelector().put("deploymentconfig", newName);
-        deploymentConfig.getSpec().getTemplate().getMetadata().getLabels().put("app", newName);
-        deploymentConfig.getSpec().getTemplate().getMetadata().getLabels().put("deploymentconfig", newName);
-        deploymentConfig.getSpec().getTemplate().getSpec().getContainers().iterator().next().getEnv()
-            .stream().forEach(env -> {
-                if ("WINDOW_SECONDS".equals(env.getName()) || "SLIDE_SECONDS".equals(env.getName())) {
-                    env.setValue(seconds);
-                }
-        });
-        deploymentConfig.setStatus(null);
-//        deploymentConfig.getSpec().setTriggers(Collections.emptyList());
-        return deploymentConfig;
-    }
+
 }

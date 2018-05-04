@@ -1,6 +1,9 @@
 package io.radanalytics.equoid.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import io.fabric8.openshift.api.model.DeploymentConfig;
+import io.fabric8.openshift.client.DefaultOpenShiftClient;
+import io.fabric8.openshift.client.OpenShiftClient;
 import io.radanalytics.equoid.domain.Handler;
 
 import io.radanalytics.equoid.repository.HandlerRepository;
@@ -16,6 +19,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,10 +34,9 @@ public class HandlerResource {
 
     private static final String ENTITY_NAME = "handler";
 
-    private final HandlerRepository handlerRepository;
+    private final OpenShiftClient osClient = new DefaultOpenShiftClient();
 
-    public HandlerResource(HandlerRepository handlerRepository) {
-        this.handlerRepository = handlerRepository;
+    public HandlerResource() {
     }
 
     /**
@@ -50,10 +53,12 @@ public class HandlerResource {
         if (handler.getId() != null) {
             throw new BadRequestAlertException("A new handler cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Handler result = handlerRepository.save(handler);
-        return ResponseEntity.created(new URI("/api/handlers/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
-            .body(result);
+        deployNewHandler(handler.getSeconds());
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(handler));
+//        Handler result = handlerRepository.save(handler);
+//        return ResponseEntity.created(new URI("/api/handlers/" + result.getId()))
+//            .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
+//            .body(result);
     }
 
     /**
@@ -68,14 +73,15 @@ public class HandlerResource {
     @PutMapping("/handlers")
     @Timed
     public ResponseEntity<Handler> updateHandler(@Valid @RequestBody Handler handler) throws URISyntaxException {
-        log.debug("REST request to update Handler : {}", handler);
+        log.debug("REST request to update Handler (doing nothing) : {}", handler);
         if (handler.getId() == null) {
             return createHandler(handler);
         }
-        Handler result = handlerRepository.save(handler);
-        return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, handler.getId().toString()))
-            .body(result);
+//        Handler result = handlerRepository.save(handler);
+//        return ResponseEntity.ok()
+//            .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, handler.getId().toString()))
+//            .body(result);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(handler));
     }
 
     /**
@@ -86,9 +92,10 @@ public class HandlerResource {
     @GetMapping("/handlers")
     @Timed
     public List<Handler> getAllHandlers() {
-        log.debug("REST request to get all Handlers");
-        return handlerRepository.findAll();
-        }
+        log.debug("REST request to get all Handlers (doing nothing)");
+        return Collections.emptyList();
+//        return handlerRepository.findAll();
+    }
 
     /**
      * GET  /handlers/:id : get the "id" handler.
@@ -99,9 +106,9 @@ public class HandlerResource {
     @GetMapping("/handlers/{id}")
     @Timed
     public ResponseEntity<Handler> getHandler(@PathVariable Long id) {
-        log.debug("REST request to get Handler : {}", id);
-        Handler handler = handlerRepository.findOne(id);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(handler));
+        log.debug("REST request to get Handler (doing nothing) : {}", id);
+//        Handler handler = handlerRepository.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(null));
     }
 
     /**
@@ -113,8 +120,53 @@ public class HandlerResource {
     @DeleteMapping("/handlers/{id}")
     @Timed
     public ResponseEntity<Void> deleteHandler(@PathVariable Long id) {
-        log.debug("REST request to delete Handler : {}", id);
-        handlerRepository.delete(id);
+        log.debug("REST request to delete Handler (doing nothing) : {}", id);
+//        handlerRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+
+    private void deployNewHandler(int seconds) {
+        if (seconds < 3) {
+            log.error("for new handler use the interval at least 3 seconds");
+            return;
+        }
+        DeploymentConfig oldDc = findSomeExistingHandler();
+        DeploymentConfig newDc = customizeDc(oldDc, String.valueOf(seconds));
+        log.info("creating new resource:\n\n" + newDc.toString() + "\n\n");
+        osClient.resource(newDc).createOrReplace();
+    }
+
+    private DeploymentConfig findSomeExistingHandler() {
+        DeploymentConfig deploymentConfig = osClient.deploymentConfigs()
+            .list()
+            .getItems()
+            .stream()
+            .filter(dc -> dc.getMetadata().getName().startsWith("equoid-data-handler-"))
+            .findFirst()
+            .orElse(null);
+        return deploymentConfig;
+    }
+
+    private DeploymentConfig customizeDc(DeploymentConfig deploymentConfig, String seconds) {
+        String newName = "equoid-data-handler-" + seconds;
+        deploymentConfig.getMetadata().setResourceVersion(null);
+        deploymentConfig.getMetadata().setUid(null);
+        deploymentConfig.getMetadata().getLabels().put("app", newName);
+        deploymentConfig.getMetadata().getLabels().put("resourceVersion", null);
+        deploymentConfig.getMetadata().setName(newName);
+        deploymentConfig.getSpec().setReplicas(1);
+        deploymentConfig.getSpec().getSelector().put("app", newName);
+        deploymentConfig.getSpec().getSelector().put("deploymentconfig", newName);
+        deploymentConfig.getSpec().getTemplate().getMetadata().getLabels().put("app", newName);
+        deploymentConfig.getSpec().getTemplate().getMetadata().getLabels().put("deploymentconfig", newName);
+        deploymentConfig.getSpec().getTemplate().getSpec().getContainers().iterator().next().getEnv()
+            .stream().forEach(env -> {
+            if ("WINDOW_SECONDS".equals(env.getName()) || "SLIDE_SECONDS".equals(env.getName())) {
+                env.setValue(seconds);
+            }
+        });
+        deploymentConfig.setStatus(null);
+        return deploymentConfig;
     }
 }
