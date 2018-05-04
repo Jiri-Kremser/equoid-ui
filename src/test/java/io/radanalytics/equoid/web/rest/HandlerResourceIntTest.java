@@ -63,7 +63,7 @@ public class HandlerResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final HandlerResource handlerResource = new HandlerResource(handlerRepository);
+        final HandlerResource handlerResource = new HandlerResource();
         this.restHandlerMockMvc = MockMvcBuilders.standaloneSetup(handlerResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
