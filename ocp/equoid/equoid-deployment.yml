@@ -75,7 +75,7 @@ objects:
           containers:
           - name: ${APPLICATION_NAME}
             image: jkremser/equoid:${TAG}
-            imagePullPolicy: IfNotPresent
+            imagePullPolicy: Always
             env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod,swagger
