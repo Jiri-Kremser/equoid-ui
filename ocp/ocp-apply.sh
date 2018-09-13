@@ -32,7 +32,7 @@ fi
 # deploy the web-ui
 echo "KEYCLOAK_URL=$KC_ROUTE"
 echo "PUBLISHER_URL=$PUBLISHER_URL"
-oc process -f https://raw.githubusercontent.com/Jiri-Kremser/equoid-ui/master/ocp/equoid/equoid-deployment.yml \
+oc process -f https://raw.githubusercontent.com/radanalyticsio/equoid-ui/master/ocp/equoid/equoid-deployment.yml \
   -p KEYCLOAK_URL=$KC_ROUTE \
   -p PUBLISHER_URL=$PUBLISHER_URL \
   -p TAG=$TAG \
