@@ -1,6 +1,6 @@
 # Equoid-UI
 
-[![Build status](https://travis-ci.org/Jiri-Kremser/equoid-ui.svg?branch=master)](https://travis-ci.org/Jiri-Kremser/equoid-ui)
+[![Build status](https://travis-ci.org/radanalyticsio/equoid-ui.svg?branch=master)](https://travis-ci.org/radanalyticsio/equoid-ui)
 [![License](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
 ## Development
