@@ -19,7 +19,7 @@ if [ "$LOCAL" = "0" ] ; then
     if [ -s "$KC_REALM_PATH/jhipster-$f.json" ] ; then 
       oc create secret generic kc-$f --from-file=$KC_REALM_PATH/jhipster-$f.json
     else
-      curl https://raw.githubusercontent.com/radanalyticsio/equoid-ui/master/ocp/../src/main/docker/realm-config/jhipster-$f.json
+      curl -LO https://raw.githubusercontent.com/radanalyticsio/equoid-ui/master/ocp/../src/main/docker/realm-config/jhipster-$f.json
       oc create secret generic kc-$f --from-file=./jhipster-$f.json || rm ./jhipster-$f.json
     fi
   done
