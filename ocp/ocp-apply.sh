@@ -15,8 +15,14 @@ fi
 
 if [ "$LOCAL" = "0" ] ; then
   # Keycloak SSO
-  oc secrets new kc-realm jhipster-realm.json=$KC_REALM_PATH/jhipster-realm.json
-  oc secrets new kc-users jhipster-users-0.json=$KC_REALM_PATH/jhipster-users-0.json
+  for f in realm users-0; do 
+    if [ -s "$KC_REALM_PATH/jhipster-$f.json" ] ; then 
+      oc create secret generic kc-$f --from-file=$KC_REALM_PATH/jhipster-$f.json
+    else
+      curl https://raw.githubusercontent.com/radanalyticsio/equoid-ui/master/ocp/../src/main/docker/realm-config/jhipster-$f.json
+      oc create secret generic kc-$f --from-file=./jhipster-$f.json || rm ./jhipster-$f.json
+    fi
+  done
   oc process -f $BASE_URL/keycloak/keycloak.yml | oc apply -f -
 
   KC_ROUTE=`oc get routes -l app=equoid-keycloak --no-headers | awk '{print $2}'`

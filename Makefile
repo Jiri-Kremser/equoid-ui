@@ -39,8 +39,8 @@ grafana-dashboard:
 
 .PHONY: os-deploy-keycloak
 os-deploy-keycloak:
-	oc secrets new kc-realm jhipster-realm.json=./src/main/docker/realm-config/jhipster-realm.json
-	oc secrets new kc-users jhipster-users-0.json=./src/main/docker/realm-config/jhipster-users-0.json
+	oc create secret generic kc-realm --from-file=./src/main/docker/realm-config/jhipster-realm.json
+	oc create secret generic kc-users-0 --from-file=./src/main/docker/realm-config/jhipster-users-0.json
 	oc process -f ./ocp/keycloak/keycloak.yml | oc apply -f -
 
 .PHONY: os-add-service-account
